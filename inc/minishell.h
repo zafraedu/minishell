@@ -33,7 +33,20 @@ typedef enum e_token
 }	t_token;
 /*══════════════════════════ [  STRUCTS  ] ═══════════════════════════════════*/
 
+// estructura sujeto a cambios
+typedef struct s_pipe
+{
+	int		src_fd;
+	int		dst_fd;
+	int		pipe_fd[2];
+	char	**paths;
+	char	**cmd_args;
+	char	*cmd;
+	pid_t	pid;
+	int		i;
+	char	*str;
 
+}			t_pipe;
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
 
 #endif
