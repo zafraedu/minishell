@@ -5,19 +5,19 @@
 //personal libs
 # include "libft/inc/libft.h"
 //global libs
-# include <libgen.h>
 # include <dirent.h>
-# include <signal.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <unistd.h>
 # include <fcntl.h>
-# include <stdlib.h>
+# include <libgen.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
+# include <unistd.h>
 /*═══════════════════════════ [  MACROS  ] ═══════════════════════════════════*/
 //errors
 
@@ -30,10 +30,11 @@ typedef enum e_token
 {
 	T_PIPE,
 	T_SIZE
-}	t_token;
+}			t_token;
+
 /*══════════════════════════ [  STRUCTS  ] ═══════════════════════════════════*/
 
-// estructura sujeto a cambios
+// estructura sujeta a cambios
 typedef struct s_pipe
 {
 	int		src_fd;
@@ -47,6 +48,7 @@ typedef struct s_pipe
 	char	*str;
 
 }			t_pipe;
+
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
 
 #endif
