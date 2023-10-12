@@ -6,7 +6,7 @@
 /*   By: zafraedu <zafraedu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 18:19:40 by ezafra-r          #+#    #+#             */
-/*   Updated: 2023/10/09 00:53:24 by zafraedu         ###   ########.fr       */
+/*   Updated: 2023/10/12 18:14:35 by zafraedu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 /*════════════════════════════ [  LIBS ] ═════════════════════════════════════*/
 # include "./ft_printf.h"
 # include "./get_next_line.h"
-# include <fcntl.h>
-# include <limits.h>
-# include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -46,6 +43,7 @@ int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
 int					ft_issign(int c);
+int					ft_isspace(int c);
 char				*ft_itoa(int n);
 char				*ft_sltoa(long long nl);
 char				*ft_ultoa(unsigned long long ul);
@@ -73,6 +71,7 @@ void				ft_putnbr_fd(int n, int fd);
 void				ft_putstr_fd(char *s, int fd);
 char				**ft_split(char const *s, char c);
 char				*ft_strchr(const char *str, int c);
+int					ft_strcmp_space(const char *s1, const char *s2);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strdup(const char *str);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));

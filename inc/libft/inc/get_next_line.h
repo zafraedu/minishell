@@ -6,7 +6,7 @@
 /*   By: zafraedu <zafraedu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 00:08:05 by zafraedu          #+#    #+#             */
-/*   Updated: 2023/10/09 00:53:18 by zafraedu         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:19:26 by zafraedu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,7 @@
 
 /*════════════════════════════ [  LIBS ] ═════════════════════════════════════*/
 # include "./libft.h"
-# include <fcntl.h>
-# include <limits.h>
-# include <stdarg.h>
 # include <stddef.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
 
 /*════════════════════════════ [  MACROS ] ═══════════════════════════════════*/
 # ifndef BUFFER_SIZE
