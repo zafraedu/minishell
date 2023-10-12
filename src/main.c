@@ -25,26 +25,34 @@ int	main(int argc, char **argv, char **envp)
 	*signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	(void)envp;                      //? todavia no se usa
 	if (argc != 1 || argv[1])
-		exit(0);
+		return (EXIT_FAILURE);
 	//* printf(HEADER); //imprime el header
 	//* usar envp para crear la variable de entorno
 	ft_getinput(); //funcion para obtener la linea; como parametro va tools
 	return (EXIT_SUCCESS);
 }
 
-static void	ft_getinput(void)
+static void	ft_getinput(void) // aqui va tools como parametro
 {
-	char	*input;
+	char *input;
+	char *tmp;
 
 	while (1)
 	{
 		input = readline(READLINE_MSG);
-		if (!input || !ft_strcmp_space(input, "exit")) //cambiar exit a builds
-			exit(EXIT_SUCCESS);
+		tmp = ft_strtrim(input, " ");
+		if (!input || !ft_strcmp(tmp, "exit"))
+		{
+			ft_memfree(tmp);
+			ft_memfree(input);
+			break ;
+		}
 		add_history(input);
-		if (input[0] == 0)         //test
-			printf("%s", input);   //test
+		if (input[0] == 0)
+			printf("%s", input);   // tiene que resetear tools
 		else                       //test
 			printf("%s\n", input); //test
+		ft_memfree(tmp);
+		ft_memfree(input);
 	}
 }

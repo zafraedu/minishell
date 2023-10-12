@@ -6,7 +6,7 @@
 /*   By: zafraedu <zafraedu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 18:19:40 by ezafra-r          #+#    #+#             */
-/*   Updated: 2023/10/12 18:14:35 by zafraedu         ###   ########.fr       */
+/*   Updated: 2023/10/12 22:52:04 by zafraedu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void				ft_putnbr_fd(int n, int fd);
 void				ft_putstr_fd(char *s, int fd);
 char				**ft_split(char const *s, char c);
 char				*ft_strchr(const char *str, int c);
-int					ft_strcmp_space(const char *s1, const char *s2);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strdup(const char *str);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
