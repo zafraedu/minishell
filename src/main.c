@@ -1,38 +1,12 @@
 #include "../inc/minishell.h"
 
-static void	ft_getinput(void);
-
 // void ft_leaks(void)
 // {
 // 	system("leaks -q minishell");
 // }
 //atexit(ft_leaks);
 
-void	sigint_handler(int sig) //! no va aqui
-{
-	(void)sig;
-	ft_putchar_fd('\n', 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	//? t_tools tools; ?
-	//? t_pipe pipe; ?
-	*signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
-	*signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
-	(void)envp;                      //? todavia no se usa
-	if (argc != 1 || argv[1])
-		return (EXIT_FAILURE);
-	//* printf(HEADER); //imprime el header
-	//* usar envp para crear la variable de entorno
-	ft_getinput(); //funcion para obtener la linea; como parametro va tools
-	return (EXIT_SUCCESS);
-}
-
-static void	ft_getinput(void) // aqui va tools como parametro
+static void	ft_getinput(t_token **token_list) // aqui va tools como parametro
 {
 	char *input;
 	char *tmp;
@@ -47,6 +21,7 @@ static void	ft_getinput(void) // aqui va tools como parametro
 			ft_memfree(input);
 			break ;
 		}
+		ft_lexical(input, token_list);  // Creacion de tokens
 		add_history(input);
 		if (input[0] == 0)
 			printf("%s", input);   // tiene que resetear tools
@@ -55,4 +30,29 @@ static void	ft_getinput(void) // aqui va tools como parametro
 		ft_memfree(tmp);
 		ft_memfree(input);
 	}
+}
+
+void	sigint_handler(int sig) //! no va aqui
+{
+	(void)sig;
+	ft_putchar_fd('\n', 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_token	*token_list;   // Pongo esta lista en el main hasta definir si solo se usará dentro de ft_getinput o no
+	//? t_tools tools; ?
+	//? t_pipe pipe; ?
+	*signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
+	*signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
+	(void)envp;                      //? todavia no se usa
+	if (argc != 1 || argv[1])
+		return (EXIT_FAILURE);
+	//* printf(HEADER); //imprime el header
+	//* usar envp para crear la variable de entorno
+	ft_getinput(&token_list); //funcion para obtener la linea; como parametro va tools
+	return (EXIT_SUCCESS);
 }
