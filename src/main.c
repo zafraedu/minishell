@@ -32,22 +32,22 @@ static void	ft_getinput(t_token **token_list) // aqui va tools como parametro
 	}
 }
 
-void	sigint_handler(int sig) //! no va aqui
+/* void	sigint_handler(int sig) //! no va aqui
 {
 	(void)sig;
 	ft_putchar_fd('\n', 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
-	rl_redisplay();
-}
+	rl_redisplay()
+} */
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_token	*token_list;   // Pongo esta lista en el main hasta definir si solo se usará dentro de ft_getinput o no
 	//? t_tools tools; ?
 	//? t_pipe pipe; ?
-	*signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
-	*signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
+	//*signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
+	//*signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	(void)envp;                      //? todavia no se usa
 	if (argc != 1 || argv[1])
 		return (EXIT_FAILURE);

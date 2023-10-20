@@ -60,7 +60,7 @@ typedef struct s_pipe
 
 }			t_pipe;
 
-typedef struct 		t_token
+typedef struct t_token
 {
 	char			*data;
 	int				type;
@@ -68,6 +68,13 @@ typedef struct 		t_token
 }					t_token;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
-void    ft_lexer(char *input, t_token **token_list);
+void	ft_lexer(char *input, t_token **token_list);
+int		is_space(char c);
+int		is_special(char *str, int i);
+void	add_type(t_token **token_list, int type);
+void	ft_add_token(t_token **token_list, char *input, int i, int size);
+void	treat_special(char *input, t_token **token_list, int *i, int type);
+int		treat_quotes(char *input, t_token **token_list, int *i, int *j);
+void	treat_general(char *input, t_token **token_list, int *i, int *j);
 
 #endif
