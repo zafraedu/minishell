@@ -21,7 +21,7 @@ static void	ft_getinput(t_token **token_list) // aqui va tools como parametro
 			ft_memfree(input);
 			break ;
 		}
-		ft_lexical(input, token_list);  // Creacion de tokens
+		ft_lexer(input, token_list);  // Creacion de tokens
 		add_history(input);
 		if (input[0] == 0)
 			printf("%s", input);   // tiene que resetear tools

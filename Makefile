@@ -7,7 +7,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 RM = rm -rf
 
 SRCS = $(SRC_DIR)/main.c\
-		$(SRC_DIR)/token.c
+		$(SRC_DIR)/lexer.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

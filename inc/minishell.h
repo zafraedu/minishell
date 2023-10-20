@@ -68,6 +68,6 @@ typedef struct 		t_token
 }					t_token;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
-void    ft_lexical(char *input, t_token **token_list);
+void    ft_lexer(char *input, t_token **token_list);
 
 #endif

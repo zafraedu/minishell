@@ -88,7 +88,7 @@ void treat_general(char *input, t_token **token_list, int *i, int *j)
     (*i) = (*j);
 }
 
-void    ft_lexical(char *input, t_token **token_list)
+void    ft_lexer(char *input, t_token **token_list)
 {
 	int		i;	
 	int		j;
