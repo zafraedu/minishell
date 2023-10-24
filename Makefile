@@ -58,7 +58,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 
 $(NAME): $(OBJS)
 	@make -sC $(LIBFT_DIR)
-	@$(CC) $(OBJS) $(LIBFT) $(CFLAGS) $(INC) -lreadline -g -o $@
+	@$(CC) $(OBJS) $(LIBFT) $(CFLAGS) $(INC) -lreadline  -g -o $@
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
 .PHONY: all bonus show clean fclean re test5 test100 test500

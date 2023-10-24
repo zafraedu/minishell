@@ -76,5 +76,6 @@ void	ft_add_token(t_token **token_list, char *input, int i, int size);
 void	treat_special(char *input, t_token **token_list, int *i, int type);
 int		treat_quotes(char *input, t_token **token_list, int *i, int *j);
 void	treat_general(char *input, t_token **token_list, int *i, int *j);
+void	ft_free_tokenlist(t_token **token_list);
 
 #endif

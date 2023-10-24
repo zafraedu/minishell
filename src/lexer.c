@@ -62,7 +62,7 @@ void	ft_lexer(char *input, t_token **token_list)
 	return ;
 }
 
-// Funcion para liberar la lista de tokens, todavía sin implementar
+// Funcion para liberar la lista de tokens
 void	ft_free_tokenlist(t_token **token_list)
 {
 	t_token	*tmp;
@@ -74,4 +74,5 @@ void	ft_free_tokenlist(t_token **token_list)
 		free(*token_list);
 		*token_list = tmp;
 	}
+	*token_list = NULL;
 }

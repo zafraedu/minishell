@@ -1,16 +1,18 @@
 #include "../inc/minishell.h"
 
-// void ft_leaks(void)
-// {
-// 	system("leaks -q minishell");
-// }
-//atexit(ft_leaks);
 
-static void	ft_getinput(t_token **token_list) // aqui va tools como parametro
+void ft_leaks(void)
 {
-	char *input;
-	char *tmp;
+system("leaks -q minishell");
+}
 
+static void	ft_getinput() // aqui va tools como parametro
+{
+	char	*input;
+	char	*tmp;
+	t_token	*token_list;
+
+	token_list = NULL;
 	while (1)
 	{
 		input = readline(READLINE_MSG);
@@ -19,9 +21,10 @@ static void	ft_getinput(t_token **token_list) // aqui va tools como parametro
 		{
 			ft_memfree(tmp);
 			ft_memfree(input);
+			ft_free_tokenlist(&token_list);
 			break ;
 		}
-		ft_lexer(input, token_list);  // Creacion de tokens
+		ft_lexer(input, &token_list);  // Creacion de tokens
 		add_history(input);
 		if (input[0] == 0)
 			printf("%s", input);   // tiene que resetear tools
@@ -29,30 +32,33 @@ static void	ft_getinput(t_token **token_list) // aqui va tools como parametro
 			printf("%s\n", input); //test
 		ft_memfree(tmp);
 		ft_memfree(input);
+		ft_free_tokenlist(&token_list);
 	}
 }
 
-/* void	sigint_handler(int sig) //! no va aqui
+void	sigint_handler(int sig) //! no va aqui
 {
 	(void)sig;
 	ft_putchar_fd('\n', 1);
-	rl_replace_line("", 0);
+	//rl_replace_line("", 0);
 	rl_on_new_line();
-	rl_redisplay()
-} */
+	rl_redisplay();
+}
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_token	*token_list;   // Pongo esta lista en el main hasta definir si solo se usará dentro de ft_getinput o no
+   // Pongo esta lista en el main hasta definir si solo se usará dentro de ft_getinput o no
 	//? t_tools tools; ?
 	//? t_pipe pipe; ?
-	//*signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
-	//*signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
+	signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
+	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
+
+	atexit(ft_leaks);
 	(void)envp;                      //? todavia no se usa
 	if (argc != 1 || argv[1])
 		return (EXIT_FAILURE);
 	//* printf(HEADER); //imprime el header
 	//* usar envp para crear la variable de entorno
-	ft_getinput(&token_list); //funcion para obtener la linea; como parametro va tools
+	ft_getinput(); //funcion para obtener la linea; como parametro va tools
 	return (EXIT_SUCCESS);
 }
