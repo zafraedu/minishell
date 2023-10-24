@@ -1,12 +1,11 @@
 #include "../inc/minishell.h"
 
+// void ft_leaks(void)
+// {
+// system("leaks -q minishell");
+// }
 
-void ft_leaks(void)
-{
-system("leaks -q minishell");
-}
-
-static void	ft_getinput() // aqui va tools como parametro
+static void	ft_getinput()
 {
 	char	*input;
 	char	*tmp;
@@ -25,11 +24,9 @@ static void	ft_getinput() // aqui va tools como parametro
 			break ;
 		}
 		ft_lexer(input, &token_list);  // Creacion de tokens
-		add_history(input);
+		// add_history(input); //todavia no se usa
 		if (input[0] == 0)
 			printf("%s", input);   // tiene que resetear tools
-		else                       //test
-			printf("%s\n", input); //test
 		ft_memfree(tmp);
 		ft_memfree(input);
 		ft_free_tokenlist(&token_list);
@@ -53,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 
-	atexit(ft_leaks);
+	// atexit(ft_leaks);
 	(void)envp;                      //? todavia no se usa
 	if (argc != 1 || argv[1])
 		return (EXIT_FAILURE);

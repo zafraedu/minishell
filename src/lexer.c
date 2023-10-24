@@ -1,12 +1,5 @@
 #include "../inc/minishell.h"
 
-int	is_space(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f')
-		return (1);
-	return (0);
-}
-
 int	is_special(char *str, int i)
 {
 	if (str[i] == '|')
@@ -36,7 +29,7 @@ void	ft_lexer(char *input, t_token **token_list)
 	i = 0;
 	while (input[i])
 	{
-		if (is_space(input[i])) // Tratar espacios
+		if (ft_isspace(input[i])) // Tratar espacios
 			i++;
 		else
 		{

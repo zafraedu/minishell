@@ -10,6 +10,7 @@ void	add_type(t_token **token_list, int type)
 	current->type = type;
 }
 
+
 void	ft_add_token(t_token **token_list, char *input, int i, int size)
 {
 	t_token	*new;
@@ -71,7 +72,7 @@ int	treat_quotes(char *input, t_token **token_list, int *i, int *j)
 void	treat_general(char *input, t_token **token_list, int *i, int *j)
 {
 	(*j) = (*i);
-	while (input[(*j)] && !is_space(input[(*j)]) && is_special(input,
+	while (input[(*j)] && !ft_isspace(input[(*j)]) && is_special(input,
 			(*j)) == T_GENERAL)
 		(*j)++;
 	ft_add_token(token_list, input, (*i), (*j) - (*i));
