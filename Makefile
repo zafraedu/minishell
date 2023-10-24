@@ -7,17 +7,19 @@ LIBFT = $(LIBFT_DIR)/libft.a
 RM = rm -rf
 
 SRCS = $(SRC_DIR)/main.c\
-		$(SRC_DIR)/lexer.c\
-		$(SRC_DIR)/lexer_utils.c
+		$(SRC_DIR_PARSER)/lexer.c\
+		$(SRC_DIR_PARSER)/lexer_utils.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 #═════════════════════════  directorios(rutas)  ═══════════════════════════════#
-OBJ_DIR = obj
 SRC_DIR = src
-INC_DIR = inc
-LIBFT_DIR = inc/libft
+SRC_DIR_PARSER = $(SRC_DIR)/parser
 
+OBJ_DIR = obj
+
+INC_DIR = inc
+LIBFT_DIR = $(INC_DIR)/libft
 
 #══════════════════════════════  Colors  ══════════════════════════════════════#
 RED		= \033[31;1m
@@ -53,6 +55,7 @@ re: fclean all
 #══════════════════════════════  Normas  ══════════════════════════════════════#
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/parser
 	@echo "$(BLUE)MINISHELL Compiling:$(END) $(notdir $<)"
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INC)
 
@@ -61,4 +64,4 @@ $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(LIBFT) $(CFLAGS) $(INC) -lreadline  -g -o $@
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
-.PHONY: all bonus show clean fclean re test5 test100 test500
+.PHONY: all bonus show clean fclean re
