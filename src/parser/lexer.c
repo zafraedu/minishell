@@ -34,7 +34,7 @@ void	ft_lexer(char *input, t_token **token_list)
 		else
 		{
 			type = is_special(input, i);
-			if (type != T_GENERAL) // Tratar caracteres especiales (pipe, redir, etc)
+			if (type != T_GENERAL) // Tratar caracteres especiales
 				treat_special(input, token_list, &i, type);
 			else if (input[i] == '\'' || input[i] == '\"') // Tratar comillas
 			{
@@ -49,7 +49,8 @@ void	ft_lexer(char *input, t_token **token_list)
 	current_token = *token_list;
 	while (current_token)
 	{
-		printf("%s\n", current_token->data);
+		printf("data: %s\n", current_token->data);
+		printf("type: %i\n\n", current_token->type);
 		current_token = current_token->next;
 	}
 	return ;
