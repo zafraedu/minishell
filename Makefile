@@ -6,7 +6,9 @@ INC = -I $(INC_DIR) -I $(LIBFT_DIR)/inc
 LIBFT = $(LIBFT_DIR)/libft.a
 RM = rm -rf
 
-SRCS = $(SRC_DIR)/main.c
+SRCS = $(SRC_DIR)/main.c\
+		$(SRC_DIR)/lexer.c\
+		$(SRC_DIR)/lexer_utils.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -56,7 +58,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 
 $(NAME): $(OBJS)
 	@make -sC $(LIBFT_DIR)
-	@$(CC) $(OBJS) $(LIBFT) $(CFLAGS) $(INC) -lreadline -g -o $@
+	@$(CC) $(OBJS) $(LIBFT) $(CFLAGS) $(INC) -lreadline  -g -o $@
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
 .PHONY: all bonus show clean fclean re test5 test100 test500
