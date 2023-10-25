@@ -22,7 +22,6 @@ int	is_special(char *str, int i)
 void	ft_lexer(char *input, t_token **token_list)
 {
 	int		i;
-	int		j;
 	int		type;
 	t_token	*current_token;
 
@@ -38,11 +37,11 @@ void	ft_lexer(char *input, t_token **token_list)
 				treat_special(input, token_list, &i, type);
 			else if (input[i] == '\'' || input[i] == '\"') // Tratar comillas
 			{
-				if (!treat_quotes(input, token_list, &i, &j))
+				if (!treat_quotes(input, token_list, &i))
 					break ;
 			}
 			else // Tratar otros caracteres
-				treat_general(input, token_list, &i, &j);
+				treat_general(input, token_list, &i);
 		}
 	}
 	// Imprimir tokens (test)
