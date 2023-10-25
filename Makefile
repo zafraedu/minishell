@@ -2,8 +2,8 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 UNAME = $(shell uname)
-INC = -I $(INC_DIR) -I $(LIBFT_DIR)/inc
-LIBFT = $(LIBFT_DIR)/libft.a
+INC = -I$(INC_DIR) -I$(LIBFT_DIR)/inc -I/opt/vagrant/embedded/include
+LIBS = $(LIBFT_DIR)/libft.a -lreadline -L/opt/vagrant/embedded/lib
 RM = rm -rf
 
 SRCS = $(SRC_DIR)/main.c\
@@ -57,11 +57,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/parser
 	@echo "$(BLUE)MINISHELL Compiling:$(END) $(notdir $<)"
-	@$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+	@$(CC) $(INC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@make -sC $(LIBFT_DIR)
-	@$(CC) $(OBJS) $(LIBFT) $(CFLAGS) $(INC) -lreadline  -g -o $@
+	@$(CC) $(OBJS) $(CFLAGS) $(INC) $(LIBS) -g -o $@
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
 .PHONY: all bonus show clean fclean re
