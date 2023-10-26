@@ -6,7 +6,7 @@
 /*   By: zafraedu <zafraedu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 18:19:40 by ezafra-r          #+#    #+#             */
-/*   Updated: 2023/10/12 22:52:04 by zafraedu         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:44:55 by zafraedu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_list
 
 /*═════════════════════════ [  FUNCTIONS ] ═══════════════════════════════════*/
 
+char				**ft_arraydup(char **array);
+int					ft_arraylen(char **array);
 double				ft_atof(char *str);
 int					ft_atoi(const char *str);
 void				ft_bzero(void *str, size_t size);

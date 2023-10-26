@@ -1,4 +1,4 @@
-#include "../inc/minishell.h"
+#include "minishell.h"
 
 int	is_special(char *str, int i)
 {

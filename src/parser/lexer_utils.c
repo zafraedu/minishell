@@ -1,4 +1,4 @@
-#include "../inc/minishell.h"
+#include "minishell.h"
 
 void	add_type(t_token **token_list, int type)
 {
@@ -9,7 +9,6 @@ void	add_type(t_token **token_list, int type)
 		current = current->next;
 	current->type = type;
 }
-
 
 void	ft_add_token(t_token **token_list, char *input, int i, int size)
 {
@@ -72,10 +71,11 @@ int	treat_quotes(char *input, t_token **token_list, int *i)
 
 void	treat_general(char *input, t_token **token_list, int *i)
 {
-	int		j;
+	int	j;
 
 	j = (*i);
-	while (input[j] && !ft_isspace(input[j]) && is_special(input, j) == T_GENERAL)
+	while (input[j] && !ft_isspace(input[j]) && is_special(input,
+			j) == T_GENERAL)
 		j++;
 	ft_add_token(token_list, input, (*i), j - (*i));
 	add_type(token_list, T_GENERAL);

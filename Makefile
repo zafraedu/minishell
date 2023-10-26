@@ -2,20 +2,24 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 UNAME = $(shell uname)
-INC = -I$(INC_DIR) -I$(LIBFT_DIR)/inc -I/opt/vagrant/embedded/include
-LIBS = $(LIBFT_DIR)/libft.a -lreadline -L/opt/vagrant/embedded/lib
+INC = -I$(INC_DIR) -I$(LIBFT_DIR)/inc
+LIBS = $(LIBFT_DIR)/libft.a -lreadline
 RM = rm -rf
 
+ifeq ($(UNAME), Darwin)
+	INC += -I/opt/vagrant/embedded/include
+	LIBS += -L/opt/vagrant/embedded/lib
+endif
+
 SRCS = $(SRC_DIR)/main.c\
-		$(SRC_DIR_PARSER)/lexer.c\
-		$(SRC_DIR_PARSER)/lexer_utils.c
+		$(SRC_DIR)/parser/lexer.c\
+		$(SRC_DIR)/parser/lexer_utils.c\
+		$(SRC_DIR)/exec/signal.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 #═════════════════════════  directorios(rutas)  ═══════════════════════════════#
 SRC_DIR = src
-SRC_DIR_PARSER = $(SRC_DIR)/parser
-
 OBJ_DIR = obj
 
 INC_DIR = inc
@@ -35,10 +39,11 @@ END 	= \033[0m
 all: $(NAME)
 
 show:
+	@printf "OS	: $(UNAME)\n"
 	@printf "NAME  	: $(NAME)\n"
 	@printf "CC	: $(CC)\n"
 	@printf "CFLAGS	: $(CFLAGS)\n"
-	@printf "SRCS	:$(addprefix \n\t , $(notdir $(SRCS)))\n"$
+	@printf "SRCS	:$(addprefix \n\t , $(notdir $(SRCS)))\n"
 
 clean:
 	@$(RM) $(OBJ_DIR)
@@ -55,6 +60,9 @@ re: fclean all
 #══════════════════════════════  Normas  ══════════════════════════════════════#
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)/builtins
+	@mkdir -p $(OBJ_DIR)/exec
+	@mkdir -p $(OBJ_DIR)/global_utils
 	@mkdir -p $(OBJ_DIR)/parser
 	@echo "$(BLUE)MINISHELL Compiling:$(END) $(notdir $<)"
 	@$(CC) $(INC) $(CFLAGS) -c $< -o $@

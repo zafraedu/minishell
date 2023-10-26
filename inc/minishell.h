@@ -41,24 +41,9 @@ typedef enum e_token_type
 	T_LESS_LESS,   // << HEREDOC
 	T_GENERAL,     // TEX
 	T_SIZE
-}			t_token_type;
+}					t_token_type;
 
 /*══════════════════════════ [  STRUCTS  ] ═══════════════════════════════════*/
-
-// estructura sujeta a cambios
-typedef struct s_pipe
-{
-	int		src_fd;
-	int		dst_fd;
-	int		pipe_fd[2];
-	char	**paths;
-	char	**cmd_args;
-	char	*cmd;
-	pid_t	pid;
-	int		i;
-	char	*str;
-
-}			t_pipe;
 
 typedef struct t_token
 {
@@ -67,14 +52,43 @@ typedef struct t_token
 	struct t_token	*next;
 }					t_token;
 
+// estructura sujeta a cambios
+typedef struct s_shell
+{
+	char			**envp;
+	char			**paths;
+	int				pipe_fd[2];
+	int				src_fd;
+	int				dst_fd;
+	char			**cmd_args;
+	char			*cmd;
+	pid_t			pid;
+	t_token			*token_list;
+	int				i;
+	char			*str;
+}					t_shell;
+
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
-void	ft_lexer(char *input, t_token **token_list);
-int		is_special(char *str, int i);
-void	add_type(t_token **token_list, int type);
-void	ft_add_token(t_token **token_list, char *input, int i, int size);
-void	treat_special(char *input, t_token **token_list, int *i, int type);
-int		treat_quotes(char *input, t_token **token_list, int *i);
-void	treat_general(char *input, t_token **token_list, int *i);
-void	ft_free_tokenlist(t_token **token_list);
+//parser
+//lexer.c
+
+int					is_special(char *str, int i);
+void				ft_lexer(char *input, t_token **token_list);
+void				ft_free_tokenlist(t_token **token_list);
+
+//lexer_utils.c
+
+void				add_type(t_token **token_list, int type);
+void				ft_add_token(t_token **token_list, char *input, int i,
+						int size);
+void				treat_special(char *input, t_token **token_list, int *i,
+						int type);
+int					treat_quotes(char *input, t_token **token_list, int *i);
+void				treat_general(char *input, t_token **token_list, int *i);
+
+//exec
+//signal.c
+
+void				sigint_handler(int sig);
 
 #endif
