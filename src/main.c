@@ -34,6 +34,13 @@ static void	ft_getinput(t_shell *msh)
 			break ;
 		add_history(tmp);
 		ft_lexer(input, &msh->token_list); // Creacion de tokens
+		if (!check_lexer(msh->token_list)) //comprobacion de syntaxis
+		{
+			printf("syntaxis mal\n"); //test
+		}
+		else
+			printf("syntaxis bien\n"); //test
+		//ft_parser(); //no existe aun
 		ft_memfree(input);
 		ft_memfree(tmp);
 		ft_free_tokenlist(&msh->token_list);
@@ -48,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[1])
 		return (EXIT_FAILURE);
 	//* printf(HEADER); //imprime el header
-	msh.envp = ft_arraydup(envp);
+	msh.envp = ft_arraydup(envp); // se puede mejorar
 	ft_getinput(&msh);
 	return (EXIT_SUCCESS);
 }

@@ -91,4 +91,5 @@ void				treat_general(char *input, t_token **token_list, int *i);
 
 void				sigint_handler(int sig);
 
+int					check_lexer(t_token *node);
 #endif

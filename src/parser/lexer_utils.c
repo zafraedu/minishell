@@ -65,6 +65,7 @@ int	treat_quotes(char *input, t_token **token_list, int *i)
 	{
 		ft_add_token(token_list, input, (*i), j - (*i) + 1);
 		add_type(token_list, T_GENERAL);
+		printf("error comillas\n"); //test
 		return (0);
 	}
 }

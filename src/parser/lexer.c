@@ -21,10 +21,10 @@ int	is_special(char *str, int i)
 
 void	ft_lexer(char *input, t_token **token_list)
 {
-	int		i;
-	int		type;
-	t_token	*current_token;
+	int	i;
+	int	type;
 
+	t_token *current_token; //solo sirve para inprimir
 	i = 0;
 	while (input[i])
 	{
@@ -46,13 +46,35 @@ void	ft_lexer(char *input, t_token **token_list)
 	}
 	// Imprimir tokens (test)
 	current_token = *token_list;
+	i = 0;
 	while (current_token)
 	{
 		printf("data: %s\n", current_token->data);
-		printf("type: %i\n\n", current_token->type);
+		printf("type: %i\n", current_token->type);
+		printf("node: %i\n\n", i++);
 		current_token = current_token->next;
 	}
 	return ;
+}
+
+int	check_lexer(t_token *node) //error de sintaxis visual ;)
+{
+	if (node->type == T_PIPE)
+		return (printf("error syntax\n"), 0);
+	while (node->next)
+	{
+		if (node->type == T_GREAT && node->next->type != T_GENERAL)
+			return (printf("error syntax\n"), 0);
+		if (node->type == T_LESS && node->next->type != T_GENERAL)
+			return (printf("error syntax\n"), 0);
+		if (node->type == T_GREAT_GREAT && node->next->type != T_GENERAL)
+			return (printf("error syntax\n"), 0);
+		if (node->type == T_LESS_LESS && node->next->type != T_GENERAL)
+			if (node->type == T_PIPE && node->next->type != T_GENERAL)
+				return (printf("error syntax\n"), 0);
+		node = node->next;
+	}
+	return (1);
 }
 
 // Funcion para liberar la lista de tokens
