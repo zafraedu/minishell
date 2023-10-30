@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	add_type(t_token **token_list, int type)
+void	add_type(t_lexer **token_list, int type)
 {
-	t_token	*current;
+	t_lexer	*current;
 
 	current = *token_list;
 	while (current->next != NULL)
@@ -10,12 +10,12 @@ void	add_type(t_token **token_list, int type)
 	current->type = type;
 }
 
-void	ft_add_token(t_token **token_list, char *input, int i, int size)
+void	ft_add_token(t_lexer **token_list, char *input, int i, int size)
 {
-	t_token	*new;
-	t_token	*current;
+	t_lexer	*new;
+	t_lexer	*current;
 
-	new = ft_calloc(1, sizeof(t_token));
+	new = ft_calloc(1, sizeof(t_lexer));
 	new->data = ft_substr(input, i, size);
 	new->next = NULL;
 	if (*token_list == NULL)
@@ -29,7 +29,7 @@ void	ft_add_token(t_token **token_list, char *input, int i, int size)
 	}
 }
 
-void	treat_special(char *input, t_token **token_list, int *i, int type)
+void	treat_special(char *input, t_lexer **token_list, int *i, int type)
 {
 	if (type == T_GREAT_GREAT || type == T_LESS_LESS)
 	{
@@ -45,7 +45,7 @@ void	treat_special(char *input, t_token **token_list, int *i, int type)
 	(*i)++;
 }
 
-int	treat_quotes(char *input, t_token **token_list, int *i)
+int	treat_quotes(char *input, t_lexer **token_list, int *i)
 {
 	char	quote_char;
 	int		j;
@@ -70,7 +70,7 @@ int	treat_quotes(char *input, t_token **token_list, int *i)
 	}
 }
 
-void	treat_general(char *input, t_token **token_list, int *i)
+void	treat_general(char *input, t_lexer **token_list, int *i)
 {
 	int	j;
 

@@ -32,7 +32,7 @@
 
 /*═══════════════════════════ [  ENUMS  ] ════════════════════════════════════*/
 
-typedef enum e_token_type
+typedef enum e_token
 {
 	T_PIPE,        // | pipe
 	T_GREAT,       // > REDIR_OUT
@@ -41,16 +41,16 @@ typedef enum e_token_type
 	T_LESS_LESS,   // << HEREDOC
 	T_GENERAL,     // TEX
 	T_SIZE
-}					t_token_type;
+}					t_token;
 
 /*══════════════════════════ [  STRUCTS  ] ═══════════════════════════════════*/
 
-typedef struct t_token
+typedef struct s_lexer
 {
 	char			*data;
 	int				type;
-	struct t_token	*next;
-}					t_token;
+	struct s_lexer	*next;
+}					t_lexer;
 
 // estructura sujeta a cambios
 typedef struct s_shell
@@ -62,34 +62,41 @@ typedef struct s_shell
 	int				dst_fd;
 	char			**cmd_args;
 	char			*cmd;
-	pid_t			pid;
-	t_token			*token_list;
-	int				i;
-	char			*str;
+	// pid_t			pid;
+	t_lexer			*token_list;
+	// int				i;
+	// char			*str;
 }					t_shell;
+
+typedef struct s_parser
+{
+	int				redir_in;
+	int				redir_out;
+	struct s_parser	*next;
+}					t_parser;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
 //parser
 //lexer.c
 
 int					is_special(char *str, int i);
-void				ft_lexer(char *input, t_token **token_list);
-void				ft_free_tokenlist(t_token **token_list);
+void				ft_lexer(char *input, t_lexer **token_list);
+int					check_syntaxis(t_lexer *node);
+void				ft_free_tokenlist(t_lexer **token_list);
 
 //lexer_utils.c
 
-void				add_type(t_token **token_list, int type);
-void				ft_add_token(t_token **token_list, char *input, int i,
+void				add_type(t_lexer **token_list, int type);
+void				ft_add_token(t_lexer **token_list, char *input, int i,
 						int size);
-void				treat_special(char *input, t_token **token_list, int *i,
+void				treat_special(char *input, t_lexer **token_list, int *i,
 						int type);
-int					treat_quotes(char *input, t_token **token_list, int *i);
-void				treat_general(char *input, t_token **token_list, int *i);
+int					treat_quotes(char *input, t_lexer **token_list, int *i);
+void				treat_general(char *input, t_lexer **token_list, int *i);
 
 //exec
 //signal.c
 
 void				sigint_handler(int sig);
 
-int					check_lexer(t_token *node);
 #endif

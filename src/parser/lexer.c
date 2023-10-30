@@ -19,12 +19,12 @@ int	is_special(char *str, int i)
 	return (T_GENERAL);
 }
 
-void	ft_lexer(char *input, t_token **token_list)
+void	ft_lexer(char *input, t_lexer **token_list)
 {
 	int	i;
 	int	type;
 
-	t_token *current_token; //solo sirve para inprimir
+	t_lexer *current_lexer; //solo sirve para inprimir
 	i = 0;
 	while (input[i])
 	{
@@ -45,19 +45,19 @@ void	ft_lexer(char *input, t_token **token_list)
 		}
 	}
 	// Imprimir tokens (test)
-	current_token = *token_list;
+	current_lexer = *token_list;
 	i = 0;
-	while (current_token)
+	while (current_lexer)
 	{
-		printf("data: %s\n", current_token->data);
-		printf("type: %i\n", current_token->type);
+		printf("data: %s\n", current_lexer->data);
+		printf("type: %i\n", current_lexer->type);
 		printf("node: %i\n\n", i++);
-		current_token = current_token->next;
+		current_lexer = current_lexer->next;
 	}
 	return ;
 }
 
-int	check_lexer(t_token *node) //error de sintaxis visual ;)
+int	check_syntaxis(t_lexer *node) //error de sintaxis visual ;)
 {
 	if (node->type == T_PIPE)
 		return (printf("error syntax\n"), 0);
@@ -78,9 +78,9 @@ int	check_lexer(t_token *node) //error de sintaxis visual ;)
 }
 
 // Funcion para liberar la lista de tokens
-void	ft_free_tokenlist(t_token **token_list)
+void	ft_free_tokenlist(t_lexer **token_list)
 {
-	t_token	*tmp;
+	t_lexer	*tmp;
 
 	while (*token_list)
 	{
