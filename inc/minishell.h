@@ -34,12 +34,14 @@
 
 typedef enum e_token
 {
-	T_PIPE,        // | pipe
-	T_GREAT,       // > REDIR_OUT
-	T_GREAT_GREAT, // >> APPEND
-	T_LESS,        // < REDIR_IN
-	T_LESS_LESS,   // << HEREDOC
-	T_GENERAL,     // TEX
+	T_GENERAL,
+	T_CMD,       // comando
+	T_ARG,       // argumento del comando
+	T_PIPE,      // | pipe
+	T_REDIR_OUT, // > REDIR_OUT
+	T_APPEND,    // >> APPEND
+	T_REDIR_IN,  // < REDIR_IN
+	T_HEREDOC,   // << HEREDOC
 	T_SIZE
 }					t_token;
 
@@ -47,56 +49,55 @@ typedef enum e_token
 
 typedef struct s_lexer
 {
-	char			*data;
-	int				type;
-	struct s_lexer	*next;
+	char *data;           //  contenido (valor literal)
+	int type;             //  numero equivalente al token (enum)
+	struct s_lexer *next; //  siguiente elemento en la lista
 }					t_lexer;
+
+typedef struct s_parser
+{
+	char *cmd;     // comando que será ejecutado
+	char **args;   // argumentos que acompañan al comando
+	int redir_in;  // redireccionamiento de entrada
+	int redir_out; // redireccionamiento de salida
+	struct s_parser	*next;
+}					t_parser;
 
 // estructura sujeta a cambios
 typedef struct s_shell
 {
 	char			**envp;
-	char			**paths;
-	int				pipe_fd[2];
-	int				src_fd;
-	int				dst_fd;
-	char			**cmd_args;
-	char			*cmd;
-	// pid_t			pid;
-	t_lexer			*token_list;
-	// int				i;
-	// char			*str;
+	char **paths;     //test
+	char **cmd_args;  //test
+	char *cmd;        //test
+	t_lexer *lexer;   // separación de tokens
+	t_parser *parser; // separación de comandos
 }					t_shell;
 
-typedef struct s_parser
-{
-	int				redir_in;
-	int				redir_out;
-	struct s_parser	*next;
-}					t_parser;
-
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
-//parser
-//lexer.c
-
-int					is_special(char *str, int i);
-void				ft_lexer(char *input, t_lexer **token_list);
-int					check_syntaxis(t_lexer *node);
-void				ft_free_tokenlist(t_lexer **token_list);
-
-//lexer_utils.c
-
-void				add_type(t_lexer **token_list, int type);
-void				ft_add_token(t_lexer **token_list, char *input, int i,
-						int size);
-void				treat_special(char *input, t_lexer **token_list, int *i,
-						int type);
-int					treat_quotes(char *input, t_lexer **token_list, int *i);
-void				treat_general(char *input, t_lexer **token_list, int *i);
-
 //exec
 //signal.c
 
 void				sigint_handler(int sig);
+
+//parser
+//lexer_utils.c
+
+int					get_type(char *str, int i);
+void				lexer_add_type(t_lexer **ls, int type);
+void				ft_add_token(t_lexer **lx, char *input, int i, int size);
+
+//lexer.c
+
+void				ft_lexer(char *input, t_lexer **lx);
+void	ft_free_tokenlist(t_lexer **lx); //no va aqui
+
+//parser.c
+
+//treat_tokens.c
+
+void				treat_special(char *input, t_lexer **lx, int *i, int type);
+int					treat_quotes(char *input, t_lexer **lx, int *i);
+void				treat_general(char *input, t_lexer **lx, int *i);
 
 #endif

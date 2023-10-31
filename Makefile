@@ -12,9 +12,11 @@ ifeq ($(UNAME), Darwin)
 endif
 
 SRCS = $(SRC_DIR)/main.c\
-		$(SRC_DIR)/parser/lexer.c\
+		$(SRC_DIR)/exec/signal.c\
 		$(SRC_DIR)/parser/lexer_utils.c\
-		$(SRC_DIR)/exec/signal.c
+		$(SRC_DIR)/parser/lexer.c\
+		$(SRC_DIR)/parser/parser.c\
+		$(SRC_DIR)/parser/treat_tokens.c\
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
