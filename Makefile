@@ -75,3 +75,5 @@ $(NAME): $(OBJS)
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
 .PHONY: all bonus show clean fclean re
+
+#-fsanitize=address

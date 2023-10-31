@@ -26,7 +26,7 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 		while (par)
 		{
 			j = -1;
-			ft_printf("%i. Cmd: %s", ++i, par->cmd);
+			ft_printf("%i. Cmd: %s", i++, par->cmd);
 			while (par->args[0] != NULL && par->args[++j])
 				ft_printf(" %s", par->args[j]);
 			ft_printf("\n");
@@ -36,53 +36,53 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-static char	*find_path(char **envp) //no va aqui
-{
-	while (ft_strncmp("PATH", *envp, 4))
-		envp++;
-	return (*envp + 5);
-}
+// static char	*find_path(char **envp) //no va aqui
+// {
+// 	while (ft_strncmp("PATH", *envp, 4))
+// 		envp++;
+// 	return (*envp + 5);
+// }
 
-static char	*get_cmd(char **paths, char *cmd) //no va aqui
-{
-	char *tmp;
-	char *command;
+// static char	*get_cmd(char **paths, char *cmd) //no va aqui
+// {
+// 	char *tmp;
+// 	char *command;
 
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, X_OK) == 0)
-			return (command);
-		free(command);
-		paths++;
-	}
-	return (NULL);
-}
+// 	while (*paths)
+// 	{
+// 		tmp = ft_strjoin(*paths, "/");
+// 		command = ft_strjoin(tmp, cmd);
+// 		free(tmp);
+// 		if (access(command, X_OK) == 0)
+// 			return (command);
+// 		free(command);
+// 		paths++;
+// 	}
+// 	return (NULL);
+// }
 
-void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
-{
-	char *path_var;
+// static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
+// {
+// 	char *path_var;
 
-	path_var = find_path(envp);
-	d->paths = ft_split(path_var, ':');
-	d->cmd_args = ft_split(cmd, ' ');
-	d->cmd = get_cmd(d->paths, d->cmd_args[0]);
-	if (!d->cmd)
-	{
-		printf("error CMD\n");
-		return ;
-	}
-	execve(d->cmd, d->cmd_args, envp);
-}
+// 	path_var = find_path(envp);
+// 	d->paths = ft_split(path_var, ':');
+// 	d->cmd_args = ft_split(cmd, ' ');
+// 	d->cmd = get_cmd(d->paths, d->cmd_args[0]);
+// 	if (!d->cmd)
+// 	{
+// 		printf("error CMD\n");
+// 		return ;
+// 	}
+// 	execve(d->cmd, d->cmd_args, envp);
+// }
 
 static void	ft_getinput(t_shell *msh, char **argv)
 {
 	char	*input;
 	char	*tmp;
 
-	pid_t pid;                      //test
+	// pid_t pid;                      //test
 	signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	while (1)
@@ -93,17 +93,17 @@ static void	ft_getinput(t_shell *msh, char **argv)
 			break ;
 		add_history(tmp);
 		ft_lexer(input, &msh->lexer); // Creacion de tokens, comprobacion y lex
-		//ft_parser(); //no existe aun
+		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
 		//ft_exec();   //no existe aun
-		pid = fork();                       //test
-		if (pid == 0)                       //test
-			ft_exec(msh, input, msh->envp); //test
-		else                                //test
-			waitpid(pid, NULL, 0);          //test
-		ft_memfree(input);                  //free global
-		ft_memfree(tmp);                    //free global
-		ft_free_tokenlist(&msh->lexer);     //free global
+		// pid = fork();                       //test
+		// if (pid == 0)                       //test
+		// 	ft_exec(msh, input, msh->envp); //test
+		// else                                //test
+		// 	waitpid(pid, NULL, 0);          //test
+		ft_memfree(input);              //free global
+		ft_memfree(tmp);                //free global
+		ft_free_tokenlist(&msh->lexer); //free global
 	}
 }
 

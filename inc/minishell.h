@@ -94,6 +94,8 @@ void	ft_free_tokenlist(t_lexer **lx); //no va aqui
 
 //parser.c
 
+void				ft_parser(t_parser **parser, t_lexer *lex);
+
 //treat_tokens.c
 
 void				treat_special(char *input, t_lexer **lx, int *i, int type);
