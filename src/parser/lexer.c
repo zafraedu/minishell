@@ -1,93 +1,81 @@
 #include "minishell.h"
 
-int	is_special(char *str, int i)
-{
-	if (str[i] == '|')
-		return (T_PIPE);
-	else if (str[i] == '>')
-	{
-		if (str[i + 1] == '>')
-			return (T_GREAT_GREAT);
-		return (T_GREAT);
-	}
-	else if (str[i] == '<')
-	{
-		if (str[i + 1] == '<')
-			return (T_LESS_LESS);
-		return (T_LESS);
-	}
-	return (T_GENERAL);
-}
+static int	check_syntaxis(t_lexer *node);
+static void	lexer_cmd(t_lexer *node);
 
-void	ft_lexer(char *input, t_token **token_list)
+void	ft_lexer(char *input, t_lexer **lexer)
 {
 	int	i;
 	int	type;
 
-	t_token *current_token; //solo sirve para inprimir
 	i = 0;
 	while (input[i])
 	{
 		if (ft_isspace(input[i])) // Tratar espacios
 			i++;
-		else
+		type = get_type(input, i);
+		if (type != T_GENERAL) // Tratar caracteres especiales
+			treat_special(input, lexer, &i, type);
+		else if (input[i] == 34 || input[i] == 39) // Tratar comillas
 		{
-			type = is_special(input, i);
-			if (type != T_GENERAL) // Tratar caracteres especiales
-				treat_special(input, token_list, &i, type);
-			else if (input[i] == '\'' || input[i] == '\"') // Tratar comillas
-			{
-				if (!treat_quotes(input, token_list, &i))
-					break ;
-			}
-			else // Tratar otros caracteres
-				treat_general(input, token_list, &i);
+			if (!treat_quotes(input, lexer, &i))
+				break ;
 		}
+		else // Tratar otros caracteres
+			treat_general(input, lexer, &i);
 	}
-	// Imprimir tokens (test)
-	current_token = *token_list;
-	i = 0;
-	while (current_token)
-	{
-		printf("data: %s\n", current_token->data);
-		printf("type: %i\n", current_token->type);
-		printf("node: %i\n\n", i++);
-		current_token = current_token->next;
-	}
-	return ;
+	if (!check_syntaxis(*lexer))
+		return ;
+	lexer_cmd(*lexer);
 }
 
-int	check_lexer(t_token *node) //error de sintaxis visual ;)
+// checkear que el prompt no haya errores de syntaxis
+static int	check_syntaxis(t_lexer *node)
 {
 	if (node->type == T_PIPE)
-		return (printf("error syntax\n"), 0);
+		return (printf("error pipe\n"), 0);
 	while (node->next)
 	{
-		if (node->type == T_GREAT && node->next->type != T_GENERAL)
+		if (node->type == T_REDIR_OUT && node->next->type != T_GENERAL)
 			return (printf("error syntax\n"), 0);
-		if (node->type == T_LESS && node->next->type != T_GENERAL)
+		if (node->type == T_REDIR_IN && node->next->type != T_GENERAL)
 			return (printf("error syntax\n"), 0);
-		if (node->type == T_GREAT_GREAT && node->next->type != T_GENERAL)
+		if (node->type == T_APPEND && node->next->type != T_GENERAL)
 			return (printf("error syntax\n"), 0);
-		if (node->type == T_LESS_LESS && node->next->type != T_GENERAL)
-			if (node->type == T_PIPE && node->next->type != T_GENERAL)
-				return (printf("error syntax\n"), 0);
+		if (node->type == T_HEREDOC && node->next->type != T_GENERAL)
+			return (printf("error syntax\n"), 0);
 		node = node->next;
 	}
 	return (1);
 }
 
-// Funcion para liberar la lista de tokens
-void	ft_free_tokenlist(t_token **token_list)
+// separar comando y argumentos
+static void	lexer_cmd(t_lexer *node)
 {
-	t_token	*tmp;
-
-	while (*token_list)
+	if (node->type == T_GENERAL)
+		node->type = T_CMD;
+	while (node->next)
 	{
-		tmp = (*token_list)->next;
-		free((*token_list)->data);
-		free(*token_list);
-		*token_list = tmp;
+		if ((node->type == T_CMD || node->type == T_ARG)
+			&& node->next->type == T_GENERAL)
+			node->next->type = T_ARG;
+		if (node->type == T_PIPE && node->next->type == T_GENERAL)
+			node->next->type = T_CMD;
+		node = node->next;
 	}
-	*token_list = NULL;
+}
+
+// Funcion para liberar la lista de tokens
+void	ft_free_tokenlist(t_lexer **lexer) //no va aqui
+{
+	t_lexer *tmp;
+
+	while (*lexer)
+	{
+		tmp = (*lexer)->next;
+		free((*lexer)->data);
+		free(*lexer);
+		*lexer = tmp;
+	}
+	*lexer = NULL;
 }
