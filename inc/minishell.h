@@ -38,10 +38,13 @@ typedef enum e_token
 	T_CMD,       // comando
 	T_ARG,       // argumento del comando
 	T_PIPE,      // | pipe
-	T_REDIR_OUT, // > REDIR_OUT
-	T_APPEND,    // >> APPEND
 	T_REDIR_IN,  // < REDIR_IN
+	T_INFILE,    // infile
 	T_HEREDOC,   // << HEREDOC
+	T_LIMITER,   // (str) para terminar de introducir datos
+	T_REDIR_OUT, // > REDIR_OUT
+	T_OUTFILE,   // outfile
+	T_APPEND,    // >> APPEND
 	T_SIZE
 }					t_token;
 

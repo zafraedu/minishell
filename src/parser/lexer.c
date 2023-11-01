@@ -32,6 +32,8 @@ void	ft_lexer(char *input, t_lexer **lexer)
 // checkear que el prompt no haya errores de syntaxis
 static int	check_syntaxis(t_lexer *node)
 {
+	if (!node)
+		return (1);
 	if (node->type == T_PIPE)
 		return (printf("error syntex\n"), 0);
 	while (node->next)
@@ -56,11 +58,20 @@ static void	lexer_cmd(t_lexer *node)
 		node->type = T_CMD;
 	while (node->next)
 	{
-		if ((node->type == T_CMD || node->type == T_ARG)
-			&& node->next->type == T_GENERAL)
-			node->next->type = T_ARG;
-		if (node->type == T_PIPE && node->next->type == T_GENERAL)
+		if (node->type == T_REDIR_IN && node->next->type == T_GENERAL)
+			node->next->type = T_INFILE;
+		else if (node->type == T_HEREDOC && node->next->type == T_GENERAL)
+			node->next->type = T_LIMITER;
+		else if (node->type == T_INFILE && node->next->type == T_GENERAL)
 			node->next->type = T_CMD;
+		else if ((node->type == T_CMD || node->type == T_ARG)
+				&& node->next->type == T_GENERAL)
+			node->next->type = T_ARG;
+		else if (node->type == T_PIPE && node->next->type == T_GENERAL)
+			node->next->type = T_CMD;
+		else if ((node->type == T_REDIR_OUT || node->type == T_APPEND)
+				&& node->next->type == T_GENERAL)
+			node->next->type = T_OUTFILE;
 		node = node->next;
 	}
 }
