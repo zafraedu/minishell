@@ -104,6 +104,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		ft_memfree(input);              //free global
 		ft_memfree(tmp);                //free global
 		ft_free_tokenlist(&msh->lexer); //free global
+		ft_free_parserlist(&msh->parser);
 	}
 }
 

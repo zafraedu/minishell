@@ -9,9 +9,10 @@ void	ft_lexer(char *input, t_lexer **lexer)
 	int	type;
 
 	i = 0;
+	input = ft_strtrim(input, " ");
 	while (input[i])
 	{
-		if (ft_isspace(input[i])) // Tratar espacios
+		while (ft_isspace(input[i])) // Tratar espacios
 			i++;
 		type = get_type(input, i);
 		if (type != T_GENERAL) // Tratar caracteres especiales
