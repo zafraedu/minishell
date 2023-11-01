@@ -12,6 +12,11 @@ ifeq ($(UNAME), Darwin)
 endif
 
 SRCS = $(SRC_DIR)/main.c\
+		$(SRC_DIR)/builtins/built.c\
+		$(SRC_DIR)/builtins/ft_echo.c\
+		$(SRC_DIR)/builtins/ft_pwd.c\
+		$(SRC_DIR)/builtins/ft_env.c\
+		$(SRC_DIR)/builtins/ft_exit.c\
 		$(SRC_DIR)/exec/signal.c\
 		$(SRC_DIR)/parser/lexer_utils.c\
 		$(SRC_DIR)/parser/lexer.c\

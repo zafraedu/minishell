@@ -78,6 +78,14 @@ typedef struct s_shell
 }					t_shell;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
+//bultins
+
+int					is_builting(t_shell *msh);
+void				ft_echo(t_shell *msh);
+void				ft_pwd(void);
+void				ft_env(t_shell *shell);
+void				ft_exit(t_shell *shell);
+
 //exec
 //signal.c
 
