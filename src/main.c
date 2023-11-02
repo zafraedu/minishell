@@ -68,6 +68,8 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 // 	path_var = find_path(envp);
 // 	d->paths = ft_split(path_var, ':');
 // 	d->cmd_args = ft_split(cmd, ' ');
+// 	if (is_builting(d))
+// 		return ;
 // 	d->cmd = get_cmd(d->paths, d->cmd_args[0]);
 // 	if (!d->cmd)
 // 	{
@@ -75,6 +77,10 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 // 		return ;
 // 	}
 // 	execve(d->cmd, d->cmd_args, envp);
+// 	ft_memfree_all(d->paths);
+// 	ft_memfree_all(d->cmd_args);
+// 	ft_memfree(cmd);
+// 	ft_memfree(d);
 // }
 
 static void	ft_getinput(t_shell *msh, char **argv)
@@ -83,7 +89,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 	char	*tmp;
 
 	// pid_t pid;                      //test
-	signal(SIGINT, sigint_handler); //crear funcion para manejar ctrl+c
+	signal(SIGINT, sigint_handler); // funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	while (1)
 	{
@@ -95,7 +101,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
-		//ft_exec();   //no existe aun
+		//ft_exec();   //no existe aun (el real me refiero)
 		// pid = fork();                       //test
 		// if (pid == 0)                       //test
 		// 	ft_exec(msh, input, msh->envp); //test

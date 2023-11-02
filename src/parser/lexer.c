@@ -33,7 +33,7 @@ void	ft_lexer(char *input, t_lexer **lexer)
 static int	check_syntaxis(t_lexer *node)
 {
 	if (!node)
-		return (1);
+		return (0);
 	if (node->type == T_PIPE)
 		return (printf("error syntex\n"), 0);
 	while (node->next)
