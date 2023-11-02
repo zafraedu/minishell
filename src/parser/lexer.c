@@ -9,7 +9,6 @@ void	ft_lexer(char *input, t_lexer **lexer)
 	int	type;
 
 	i = 0;
-	input = ft_strtrim(input, " ");
 	while (input[i])
 	{
 		while (ft_isspace(input[i])) // Tratar espacios
