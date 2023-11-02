@@ -92,7 +92,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		if (!input)
 			break ;
 		add_history(tmp);
-		ft_lexer(input, &msh->lexer); // Creacion de tokens, comprobacion y lex
+		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
 		//ft_exec();   //no existe aun
@@ -104,6 +104,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		ft_memfree(input);              //free global
 		ft_memfree(tmp);                //free global
 		ft_free_tokenlist(&msh->lexer); //free global
+		ft_free_parserlist(&msh->parser);
 	}
 }
 

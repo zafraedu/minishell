@@ -30,6 +30,8 @@
 
 # define READLINE_MSG "\033[1;36mminishell\033[34m$> \033[0m"
 
+#define MAX_ARGUMENTS 100
+
 /*═══════════════════════════ [  ENUMS  ] ════════════════════════════════════*/
 
 typedef enum e_token
@@ -52,6 +54,7 @@ typedef enum e_token
 
 typedef struct s_lexer
 {
+	int index;            //  indice del token
 	char *data;           //  contenido (valor literal)
 	int type;             //  numero equivalente al token (enum)
 	struct s_lexer *next; //  siguiente elemento en la lista
@@ -63,6 +66,7 @@ typedef struct s_parser
 	char **args;   // argumentos que acompañan al comando
 	int redir_in;  // redireccionamiento de entrada
 	int redir_out; // redireccionamiento de salida
+	//char *heredoc; // limitador de entrada
 	struct s_parser	*next;
 }					t_parser;
 
@@ -98,6 +102,7 @@ void	ft_free_tokenlist(t_lexer **lx); //no va aqui
 //parser.c
 
 void				ft_parser(t_parser **parser, t_lexer *lex);
+void	ft_free_parserlist(t_parser **parser);
 
 //treat_tokens.c
 

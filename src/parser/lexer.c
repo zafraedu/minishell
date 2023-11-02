@@ -11,7 +11,7 @@ void	ft_lexer(char *input, t_lexer **lexer)
 	i = 0;
 	while (input[i])
 	{
-		if (ft_isspace(input[i])) // Tratar espacios
+		while (ft_isspace(input[i])) // Tratar espacios
 			i++;
 		type = get_type(input, i);
 		if (type != T_GENERAL) // Tratar caracteres especiales
