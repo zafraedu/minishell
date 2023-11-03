@@ -94,7 +94,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 	while (1)
 	{
 		input = readline(READLINE_MSG);
-		tmp = ft_strtrim(input, " ");
+		tmp = ft_strtrim(input, " \t\n\v\f\r");
 		if (!input)
 			break ;
 		add_history(tmp);

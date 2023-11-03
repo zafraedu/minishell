@@ -30,8 +30,6 @@
 
 # define READLINE_MSG "\033[1;36mminishell\033[34m$> \033[0m"
 
-#define MAX_ARGUMENTS 100
-
 /*═══════════════════════════ [  ENUMS  ] ════════════════════════════════════*/
 
 typedef enum e_token
@@ -63,6 +61,7 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char *cmd;     // comando que será ejecutado
+	int argc;      // numero de argumentos
 	char **args;   // argumentos que acompañan al comando
 	int redir_in;  // redireccionamiento de entrada
 	int redir_out; // redireccionamiento de salida

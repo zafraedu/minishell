@@ -72,6 +72,8 @@ static void	lexer_cmd(t_lexer *node)
 		else if ((node->type == T_REDIR_OUT || node->type == T_APPEND)
 				&& node->next->type == T_GENERAL)
 			node->next->type = T_OUTFILE;
+		else if (node->type == T_OUTFILE && node->next->type == T_GENERAL)
+			node->next->type = T_CMD;
 		node = node->next;
 	}
 }

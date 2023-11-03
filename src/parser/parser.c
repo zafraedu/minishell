@@ -83,7 +83,7 @@ static void fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int *end)
     aux = *start;
     while (tmp && aux <= *end)
     {
-        if (tmp->type >= 4 && tmp->type <= 10) 
+        if (tmp->type == T_REDIR_IN || tmp->type == T_REDIR_OUT || tmp->type == T_APPEND || tmp->type == T_HEREDOC) 
         {
             if (tmp->index == *start) 
             {
@@ -105,7 +105,7 @@ static void fill_cmd_args(t_lexer *tmp, t_parser **cmd_node, int start, int end)
 {
     int i;
 
-    i = -1;
+    i = 0;
     while (tmp && start <= end)
     {
         if (tmp->type == T_PIPE)
@@ -113,21 +113,36 @@ static void fill_cmd_args(t_lexer *tmp, t_parser **cmd_node, int start, int end)
             tmp = tmp->next;
             start++;
         }
-        if ((*cmd_node)->cmd == NULL) // El type T_CMD no se esta actualizando correctamente cuando hay un a redireccion al principio
+        if ((*cmd_node)->cmd == NULL)
             (*cmd_node)->cmd = ft_strdup(tmp->data);
-        else // El type T_ARG no se esta actualizando correctamente cuando hay un a redireccion al principio
+        else if ((*cmd_node)->argc)
         {
-            if (++i < MAX_ARGUMENTS)
-                (*cmd_node)->args[i] = ft_strdup(tmp->data);
-            else
+            if (i < (*cmd_node)->argc)
             {
-                printf("Error: too many args\n");
-                break;
+                (*cmd_node)->args[i] = ft_strdup(tmp->data);
+                i++;
             }
+
         }
         tmp = tmp->next;
         start++;
     }
+}
+
+int count_args(t_lexer *lex, int end)
+{
+    t_lexer *tmp;
+    int i;
+
+    tmp = lex;
+    i = 0;
+    while (tmp && tmp->index <= end)
+    {
+        if (tmp->type == T_ARG)
+            i++;
+        tmp = tmp->next;
+    }
+    return i;
 }
 
 void ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
@@ -135,14 +150,12 @@ void ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
     t_lexer *tmp;
 
     tmp = lex;
-    while (tmp && tmp->index != start)
-        tmp = tmp->next;
     fill_redir(lex, cmd_node, &start, &end);
     while (tmp && tmp->index != start)
         tmp = tmp->next;
-    (*cmd_node)->args = ft_calloc(MAX_ARGUMENTS, sizeof(char *));
-    if ((*cmd_node)->args)
-        fill_cmd_args(tmp, cmd_node, start, end);
+    (*cmd_node)->argc = count_args(tmp, end);
+    (*cmd_node)->args = ft_calloc((*cmd_node)->argc + 1, sizeof(char*));
+    fill_cmd_args(tmp, cmd_node, start, end);
 }
 
 
@@ -166,7 +179,6 @@ void    ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
             (*cmd_node)->next = ft_calloc(1, sizeof(t_parser));
             *cmd_node = (*cmd_node)->next;
         }
-
         start = end + 2;
         i++;
     }
@@ -176,6 +188,8 @@ void	ft_parser(t_parser **parser, t_lexer *lex)
 {
     t_parser	*cmd_node;
 
+    if (lex == NULL)
+        return ;
     ft_index(lex);
 	if (*parser == NULL)
 	{
@@ -186,7 +200,6 @@ void	ft_parser(t_parser **parser, t_lexer *lex)
 		cmd_node = *parser;
     if (cmd_node)
         ft_add_nodes(&cmd_node, lex);
-
     //Imprimir lista de comandos (test)
     t_parser *tmp2 = *parser;
     while(tmp2)
