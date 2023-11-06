@@ -84,6 +84,7 @@ typedef struct s_shell
 //bultins
 
 int					is_builting(t_shell *msh);
+void				ft_cd(t_shell *msh);
 void				ft_echo(t_shell *msh);
 void				ft_pwd(void);
 void				ft_env(t_shell *shell);
@@ -109,7 +110,7 @@ void	ft_free_tokenlist(t_lexer **lx); //no va aqui
 //parser.c
 
 void				ft_parser(t_parser **parser, t_lexer *lex);
-void	ft_free_parserlist(t_parser **parser);
+void				ft_free_parserlist(t_parser **parser);
 
 //treat_tokens.c
 

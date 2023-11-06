@@ -13,6 +13,7 @@ endif
 
 SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/builtins/built.c\
+		$(SRC_DIR)/builtins/ft_cd.c\
 		$(SRC_DIR)/builtins/ft_echo.c\
 		$(SRC_DIR)/builtins/ft_pwd.c\
 		$(SRC_DIR)/builtins/ft_env.c\

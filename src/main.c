@@ -36,12 +36,15 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-// static char	*find_path(char **envp) //no va aqui
-// {
-// 	while (ft_strncmp("PATH", *envp, 4))
-// 		envp++;
-// 	return (*envp + 5);
-// }
+static char	**get_paths(char **envp) //no va aqui
+{
+	char *path;
+
+	while (ft_strncmp("PATH=", *envp, 5))
+		envp++;
+	path = (*envp + 5);
+	return (ft_split(path, ':'));
+}
 
 // static char	*get_cmd(char **paths, char *cmd) //no va aqui
 // {
@@ -61,27 +64,24 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 // 	return (NULL);
 // }
 
-// static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
-// {
-// 	char *path_var;
-
-// 	path_var = find_path(envp);
-// 	d->paths = ft_split(path_var, ':');
-// 	d->cmd_args = ft_split(cmd, ' ');
-// 	if (is_builting(d))
-// 		return ;
-// 	d->cmd = get_cmd(d->paths, d->cmd_args[0]);
-// 	if (!d->cmd)
-// 	{
-// 		printf("error CMD\n");
-// 		return ;
-// 	}
-// 	execve(d->cmd, d->cmd_args, envp);
-// 	ft_memfree_all(d->paths);
-// 	ft_memfree_all(d->cmd_args);
-// 	ft_memfree(cmd);
-// 	ft_memfree(d);
-// }
+static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
+{
+	d->paths = get_paths(envp);
+	d->cmd_args = ft_split(cmd, ' ');
+	if (is_builting(d))
+		return ;
+	// d->cmd = get_cmd(d->paths, d->cmd_args[0]);
+	// if (!d->cmd)
+	// {
+	// 	printf("error CMD\n");
+	// 	return ;
+	// }
+	// execve(d->cmd, d->cmd_args, envp);
+	// ft_memfree_all(d->paths);
+	// ft_memfree_all(d->cmd_args);
+	// ft_memfree(cmd);
+	// ft_memfree(d);
+}
 
 static void	ft_getinput(t_shell *msh, char **argv)
 {
@@ -101,10 +101,10 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
-		//ft_exec();   //no existe aun (el real me refiero)
+		// ft_exec();   //no existe aun (el real me refiero)
 		// pid = fork();                       //test
 		// if (pid == 0)                       //test
-		// 	ft_exec(msh, input, msh->envp); //test
+		ft_exec(msh, input, msh->envp); //test
 		// else                                //test
 		// 	waitpid(pid, NULL, 0);          //test
 		ft_memfree(input);              //free global
