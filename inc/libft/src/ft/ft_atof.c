@@ -6,14 +6,14 @@
 /*   By: zafraedu <zafraedu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 00:18:52 by zafraedu          #+#    #+#             */
-/*   Updated: 2023/10/08 23:20:02 by zafraedu         ###   ########.fr       */
+/*   Updated: 2023/11/09 10:39:37 by zafraedu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/libft.h"
 
 /**
- * Convierte una cadena de caracteres en un valor de tipo double.
+ * Convierte una cadena de caracteres en un valor de tipo double/float.
  *
  * Esta función toma una cadena de caracteres que representa un número decimal
  * y la convierte en un valor de tipo double. Puede manejar números enteros y

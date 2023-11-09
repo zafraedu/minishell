@@ -101,6 +101,8 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
+		// printf("valor de la variable %s:%s\n", "HOME", ft_getenv("HOME",
+		// 			msh->envp));
 		// ft_exec();   //no existe aun (el real me refiero)
 		// pid = fork();                       //test
 		// if (pid == 0)                       //test

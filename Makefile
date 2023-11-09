@@ -15,10 +15,13 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/builtins/built.c\
 		$(SRC_DIR)/builtins/ft_cd.c\
 		$(SRC_DIR)/builtins/ft_echo.c\
-		$(SRC_DIR)/builtins/ft_pwd.c\
 		$(SRC_DIR)/builtins/ft_env.c\
 		$(SRC_DIR)/builtins/ft_exit.c\
+		$(SRC_DIR)/builtins/ft_export.c\
+		$(SRC_DIR)/builtins/ft_pwd.c\
+		$(SRC_DIR)/builtins/ft_unset.c\
 		$(SRC_DIR)/exec/signal.c\
+		$(SRC_DIR)/global_utils/env_utils.c\
 		$(SRC_DIR)/parser/lexer_utils.c\
 		$(SRC_DIR)/parser/lexer.c\
 		$(SRC_DIR)/parser/parser.c\

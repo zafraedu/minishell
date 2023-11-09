@@ -88,7 +88,13 @@ void				ft_cd(t_shell *msh);
 void				ft_echo(t_shell *msh);
 void				ft_pwd(void);
 void				ft_env(t_shell *shell);
+void				ft_export(t_shell *msh);
 void				ft_exit(t_shell *shell);
+void				ft_unset(t_shell *msh);
+
+//global utils
+
+int					ft_foundenv(char *var, char **env);
 
 //exec
 //signal.c
