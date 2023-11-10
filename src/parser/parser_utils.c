@@ -50,7 +50,7 @@ int	get_last(t_lexer *lex, int start)
 
 void	ft_free_parserlist(t_parser **parser)
 {
-	t_parser *tmp;
+	t_parser	*tmp;
 
 	while (*parser)
 	{

@@ -22,13 +22,9 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	{
 		int i = 0;
 		ft_printf("\033[33;1m----parser----\033[0m\n\n");
-		//int j;
 		while (par)
 		{
-			//j = -1;
 			ft_printf("%i. Cmd: %s", i++, par->cmd);
-/* 			while (par->args[0] != NULL && par->args[++j])
-				ft_printf(" %s", par->args[j]); */
 			ft_printf("\n");
 			par = par->next;
 		}
@@ -101,14 +97,12 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
-			// printf("valor de la variable %s:%s\n", "HOME", ft_getenv("HOME",
-		// 			msh->envp));
 		// ft_exec();   //no existe aun (el real me refiero)
-		// pid = fork();                       //test
-		// if (pid == 0)                       //test
+		// pid = fork();
+		// if (pid == 0)
 		ft_exec(msh, input, msh->envp); //test
-			// else                                //test
-		// 	waitpid(pid, NULL, 0);          //test
+		// else
+		// waitpid(pid, NULL, 0);
 		ft_memfree(input);              //free global
 		ft_memfree(tmp);                //free global
 		ft_free_tokenlist(&msh->lexer); //free global

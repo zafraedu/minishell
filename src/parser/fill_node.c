@@ -66,7 +66,7 @@ int	ft_len_cmd(t_lexer *tmp)
 
 void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 {
-	int len;
+	int	len;
 
 	len = ft_len_cmd(tmp);
 	(*cmd_node)->cmd = ft_calloc(len, sizeof(char));
@@ -81,7 +81,7 @@ void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 
 void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 {
-	t_lexer	*tmp;
+	t_lexer *tmp;
 
 	tmp = lex;
 	fill_redir(lex, cmd_node, &start, end);

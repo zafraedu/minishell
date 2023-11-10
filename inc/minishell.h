@@ -36,7 +36,6 @@ typedef enum e_token
 {
 	T_GENERAL,
 	T_CMD,       // comando
-	//T_ARG,       // argumento del comando
 	T_PIPE,      // | pipe
 	T_REDIR_IN,  // < REDIR_IN
 	T_INFILE,    // infile
@@ -61,8 +60,6 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char *cmd;     // comando que será ejecutado
-	//int argc;      // numero de argumentos
-	//char **args;   // argumentos que acompañan al comando
 	int redir_in;  // redireccionamiento de entrada
 	int redir_out; // redireccionamiento de salida
 	//char *heredoc; // limitador de entrada
@@ -102,13 +99,15 @@ int					ft_foundenv(char *var, char **env);
 void				sigint_handler(int sig);
 
 //parser
-void	ft_index(t_lexer *lex);
-int	ft_count_pipes(t_lexer *lex);
-int	get_last(t_lexer *lex, int start);
-void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end);
-void	fill_cmd(t_lexer *tmp, t_parser **cmd_node);
-void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end);
-void	ft_free_parserlist(t_parser **parser);
+void				ft_index(t_lexer *lex);
+int					ft_count_pipes(t_lexer *lex);
+int					get_last(t_lexer *lex, int start);
+void				fill_redir(t_lexer *lex, t_parser **cmd_node, int *start,
+						int end);
+void				fill_cmd(t_lexer *tmp, t_parser **cmd_node);
+void				ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start,
+						int end);
+void				ft_free_parserlist(t_parser **parser);
 
 //lexer_utils.c
 
