@@ -22,10 +22,12 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/builtins/ft_unset.c\
 		$(SRC_DIR)/exec/signal.c\
 		$(SRC_DIR)/global_utils/env_utils.c\
-		$(SRC_DIR)/parser/lexer_utils.c\
-		$(SRC_DIR)/parser/lexer.c\
+		$(SRC_DIR)/lexer/lexer_utils.c\
+		$(SRC_DIR)/lexer/lexer.c\
+		$(SRC_DIR)/lexer/treat_tokens.c\
 		$(SRC_DIR)/parser/parser.c\
-		$(SRC_DIR)/parser/treat_tokens.c\
+		$(SRC_DIR)/parser/parser_utils.c\
+		$(SRC_DIR)/parser/fill_node.c\
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -74,6 +76,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 	@mkdir -p $(OBJ_DIR)/builtins
 	@mkdir -p $(OBJ_DIR)/exec
 	@mkdir -p $(OBJ_DIR)/global_utils
+	@mkdir -p $(OBJ_DIR)/lexer
 	@mkdir -p $(OBJ_DIR)/parser
 	@echo "$(BLUE)MINISHELL Compiling:$(END) $(notdir $<)"
 	@$(CC) $(INC) $(CFLAGS) -c $< -o $@
