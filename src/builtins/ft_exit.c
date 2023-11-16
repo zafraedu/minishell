@@ -5,9 +5,9 @@ static int	check_exit_args(t_shell *shell)
 {
 	int	i;
 
-	i = 0;
 	if (shell->cmd_args[1])
 	{
+		i = 0;
 		while (shell->cmd_args[1][i])
 		{
 			if (!ft_isdigit(shell->cmd_args[1][i]))
@@ -20,7 +20,7 @@ static int	check_exit_args(t_shell *shell)
 		}
 		return (ft_atoi(shell->cmd_args[1]));
 	}
-	return (0);
+	return (i);
 }
 
 void	ft_exit(t_shell *shell)

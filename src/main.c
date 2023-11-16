@@ -60,13 +60,12 @@ static char	**get_paths(char **envp) //no va aqui
 // 	return (NULL);
 // }
 
-static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
+static void	ft_exec_cmd(t_shell *msh) // no va aqui
 {
-	d->envp = ft_arraydup(envp);
-	d->paths = get_paths(envp);
-	d->cmd_args = ft_split(cmd, ' ');
-	if (is_builting(d))
-		return ;
+	if (is_builting(msh))
+		printf("yes\n");
+	else
+		printf("no\n");
 	// d->cmd = get_cmd(d->paths, d->cmd_args[0]);
 	// if (!d->cmd)
 	// {
@@ -80,21 +79,33 @@ static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
 	// ft_memfree(d);
 }
 
-// void	ft_exec(t_shell *msh, char **envp) //no va aqui
+// void pipe_config(t_parser *parser)
 // {
-// 	t_parser *parser;
-
-// 	parser = msh->parser;
-// 	msh->envp = ft_arraydup(envp);
-// 	msh->paths = get_paths(envp); //ns si va aqui o dentro del bucle
-// 	while (parser)
-// 	{
-// 		// extend quotes   " $ " (parser->cmd)
-// 		msh->cmd_args = ft_split(parser->cmd, ' ');
-// 		// ft_execute_process(msh, parser);
-// 		parser = parser->next;
-// 	}
 // }
+
+void	ft_executer(t_shell *msh, char **envp) //no va aqui
+{
+	t_parser *parser;
+
+	parser = msh->parser;
+	msh->envp = ft_arraydup(envp);
+	msh->paths = get_paths(envp); //ns si va aqui o dentro del bucle
+	while (parser)
+	{
+		// extend quotes   " $ " (parser->cmd)
+		// if no hay parser->cmd ?
+		msh->cmd_args = ft_split(parser->cmd, ' ');
+		printf("cmd[0]: %s\n", msh->cmd_args[0]);
+		ft_exec_cmd(msh);
+		// ft_execute_process(msh, parser);
+		// printf("fd_in: %i\nfd_out: %i\n", parser->redir_in, parser->redir_out);//test
+		// printf("----------- first -----------------\n");//test
+		// pipe_config(parser);
+		// printf("fd_in: %i\nfd_out: %i\n", parser->redir_in, parser->redir_out);//test
+		// printf("----------- second -----------------\n");//test
+		parser = parser->next;
+	}
+}
 
 static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 {
@@ -117,7 +128,7 @@ static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 		// ft_exec();   //no existe aun (el real me refiero)
 		// pid = fork();
 		// if (pid == 0)
-		ft_exec(msh, input, envp); //test
+		ft_executer(msh, envp); //test
 		// else
 		// waitpid(pid, NULL, 0);
 		ft_memfree(input);              //free global
