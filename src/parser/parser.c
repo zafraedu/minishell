@@ -27,8 +27,8 @@ void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
 void	ft_parser(t_parser **parser, t_lexer *lex)
 {
 	t_parser	*cmd_node;
-	t_parser	*tmp2;
 
+	// t_parser	*tmp2;
 	if (lex == NULL)
 		return ;
 	ft_index(lex);

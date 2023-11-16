@@ -85,8 +85,8 @@ void	ft_free_tokenlist(t_lexer **lexer) //no va aqui
 	while (*lexer)
 	{
 		tmp = (*lexer)->next;
-		free((*lexer)->data);
-		free(*lexer);
+		ft_memfree((*lexer)->data);
+		ft_memfree(*lexer);
 		*lexer = tmp;
 	}
 	*lexer = NULL;

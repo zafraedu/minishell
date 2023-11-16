@@ -62,6 +62,7 @@ static char	**get_paths(char **envp) //no va aqui
 
 static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
 {
+	d->envp = ft_arraydup(envp);
 	d->paths = get_paths(envp);
 	d->cmd_args = ft_split(cmd, ' ');
 	if (is_builting(d))
@@ -79,7 +80,23 @@ static void	ft_exec(t_shell *d, char *cmd, char **envp) // no va aqui
 	// ft_memfree(d);
 }
 
-static void	ft_getinput(t_shell *msh, char **argv)
+// void	ft_exec(t_shell *msh, char **envp) //no va aqui
+// {
+// 	t_parser *parser;
+
+// 	parser = msh->parser;
+// 	msh->envp = ft_arraydup(envp);
+// 	msh->paths = get_paths(envp); //ns si va aqui o dentro del bucle
+// 	while (parser)
+// 	{
+// 		// extend quotes   " $ " (parser->cmd)
+// 		msh->cmd_args = ft_split(parser->cmd, ' ');
+// 		// ft_execute_process(msh, parser);
+// 		parser = parser->next;
+// 	}
+// }
+
+static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 {
 	char	*input;
 	char	*tmp;
@@ -100,7 +117,7 @@ static void	ft_getinput(t_shell *msh, char **argv)
 		// ft_exec();   //no existe aun (el real me refiero)
 		// pid = fork();
 		// if (pid == 0)
-		ft_exec(msh, input, msh->envp); //test
+		ft_exec(msh, input, envp); //test
 		// else
 		// waitpid(pid, NULL, 0);
 		ft_memfree(input);              //free global
@@ -119,7 +136,7 @@ int	main(int argc, char **argv, char **envp)
 	// if (argc != 1 || argv[1])	// cuando el print ya no sea necesario
 	// 	return (EXIT_FAILURE);		// ya podremos descomentar
 	//* printf(HEADER); //imprime el header
-	msh.envp = ft_arraydup(envp); // se puede mejorar y no va aqui
-	ft_getinput(&msh, argv);      //argv sirve para imprimir (lo quitaremos);
+	// msh.envp = ft_arraydup(envp); // se puede mejorar y no va aqui
+	ft_getinput(&msh, argv, envp); //argv sirve para imprimir (lo quitaremos);
 	return (EXIT_SUCCESS);
 }
