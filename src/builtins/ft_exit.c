@@ -12,7 +12,7 @@ static int	check_exit_args(t_shell *shell)
 		{
 			if (!ft_isdigit(shell->cmd_args[1][i]))
 			{
-				perror("exit: numeric argument required: ");
+				printf("exit: numeric argument required\n");
 				ft_putendl_fd(shell->cmd_args[1], 2);
 				return (-1);
 			}
@@ -20,7 +20,7 @@ static int	check_exit_args(t_shell *shell)
 		}
 		return (ft_atoi(shell->cmd_args[1]));
 	}
-	return (i);
+	return (0);
 }
 
 void	ft_exit(t_shell *shell)
@@ -29,7 +29,7 @@ void	ft_exit(t_shell *shell)
 
 	if (shell->cmd_args[2]) // si hay dos argumentos despues de exit
 	{
-		perror("exit: too many arguments: "); // hay que mejorar esto
+		printf("exit: too many arguments\n"); // hay que mejorar esto
 		return ;
 	}
 	shell_exit = check_exit_args(shell);

@@ -21,6 +21,7 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/builtins/ft_pwd.c\
 		$(SRC_DIR)/builtins/ft_unset.c\
 		$(SRC_DIR)/exec/signal.c\
+		$(SRC_DIR)/exec/ft_executer.c\
 		$(SRC_DIR)/global_utils/env_utils.c\
 		$(SRC_DIR)/lexer/lexer_utils.c\
 		$(SRC_DIR)/lexer/lexer.c\

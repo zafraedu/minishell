@@ -60,8 +60,8 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char *cmd;     // comando que será ejecutado
-	int redir_in;  // redireccionamiento de entrada
-	int redir_out; // redireccionamiento de salida
+	int redir_in;  // hay que cambiar el name // redireccionamiento de entrada
+	int redir_out; // hay que cambiar el name // redireccionamiento de salida
 	//char *heredoc; // limitador de entrada
 	struct s_parser	*next;
 }					t_parser;
@@ -70,11 +70,12 @@ typedef struct s_parser
 typedef struct s_shell
 {
 	char			**envp;
-	char **paths;     //test
-	char **cmd_args;  //test
-	char *cmd;        //test
-	t_lexer *lexer;   // separación de tokens
-	t_parser *parser; // separación de comandos
+	char			**paths;
+	char			**cmd_args;
+	char			*cmd;
+	int				exit_status;
+	t_lexer			*lexer;
+	t_parser		*parser;
 }					t_shell;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
@@ -97,6 +98,13 @@ int					ft_foundenv(char *var, char **env);
 //signal.c
 
 void				sigint_handler(int sig);
+
+//ft_executer.c
+void				ft_executer(t_shell *msh, char **envp);
+void				ft_exec_cmd(t_shell *msh);
+
+char				*get_cmd(char **paths, char *cmd);
+char				**get_paths(char **envp);
 
 //parser
 void				ft_index(t_lexer *lex);

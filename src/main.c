@@ -32,7 +32,7 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-static char	**get_paths(char **envp) //no va aqui
+char	**get_paths(char **envp) //no va aqui
 {
 	char *path;
 
@@ -42,69 +42,22 @@ static char	**get_paths(char **envp) //no va aqui
 	return (ft_split(path, ':'));
 }
 
-// static char	*get_cmd(char **paths, char *cmd) //no va aqui
-// {
-// 	char *tmp;
-// 	char *command;
-
-// 	while (*paths)
-// 	{
-// 		tmp = ft_strjoin(*paths, "/");
-// 		command = ft_strjoin(tmp, cmd);
-// 		free(tmp);
-// 		if (access(command, X_OK) == 0)
-// 			return (command);
-// 		free(command);
-// 		paths++;
-// 	}
-// 	return (NULL);
-// }
-
-static void	ft_exec_cmd(t_shell *msh) // no va aqui
+char	*get_cmd(char **paths, char *cmd) //no va aqui
 {
-	if (is_builting(msh))
-		printf("yes\n");
-	else
-		printf("no\n");
-	// d->cmd = get_cmd(d->paths, d->cmd_args[0]);
-	// if (!d->cmd)
-	// {
-	// 	printf("error CMD\n");
-	// 	return ;
-	// }
-	// execve(d->cmd, d->cmd_args, envp);
-	// ft_memfree_all(d->paths);
-	// ft_memfree_all(d->cmd_args);
-	// ft_memfree(cmd);
-	// ft_memfree(d);
-}
+	char *tmp;
+	char *command;
 
-// void pipe_config(t_parser *parser)
-// {
-// }
-
-void	ft_executer(t_shell *msh, char **envp) //no va aqui
-{
-	t_parser *parser;
-
-	parser = msh->parser;
-	msh->envp = ft_arraydup(envp);
-	msh->paths = get_paths(envp); //ns si va aqui o dentro del bucle
-	while (parser)
+	while (*paths)
 	{
-		// extend quotes   " $ " (parser->cmd)
-		// if no hay parser->cmd ?
-		msh->cmd_args = ft_split(parser->cmd, ' ');
-		printf("cmd[0]: %s\n", msh->cmd_args[0]);
-		ft_exec_cmd(msh);
-		// ft_execute_process(msh, parser);
-		// printf("fd_in: %i\nfd_out: %i\n", parser->redir_in, parser->redir_out);//test
-		// printf("----------- first -----------------\n");//test
-		// pipe_config(parser);
-		// printf("fd_in: %i\nfd_out: %i\n", parser->redir_in, parser->redir_out);//test
-		// printf("----------- second -----------------\n");//test
-		parser = parser->next;
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(command, X_OK) == 0)
+			return (command);
+		free(command);
+		paths++;
 	}
+	return (NULL);
 }
 
 static void	ft_getinput(t_shell *msh, char **argv, char **envp)
@@ -125,15 +78,10 @@ static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
-		// ft_exec();   //no existe aun (el real me refiero)
-		// pid = fork();
-		// if (pid == 0)
-		ft_executer(msh, envp); //test
-		// else
-		// waitpid(pid, NULL, 0);
-		ft_memfree(input);              //free global
-		ft_memfree(tmp);                //free global
-		ft_free_tokenlist(&msh->lexer); //free global
+		ft_executer(msh, envp);                      //test
+		ft_memfree(input);                           //free global
+		ft_memfree(tmp);                             //free global
+		ft_free_tokenlist(&msh->lexer);              //free global
 		ft_free_parserlist(&msh->parser);
 	}
 }

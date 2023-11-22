@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void	ft_redirect(t_lexer *tmp, t_parser **cmd_node) // solo leer los fd
+void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
-	int fd;
+	int	fd;
 
 	fd = -1; // sobra
 	if (tmp->type == T_REDIR_IN)
