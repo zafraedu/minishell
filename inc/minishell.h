@@ -73,15 +73,22 @@ typedef struct s_shell
 	char			**paths;
 	char			**cmd_args;
 	char			*cmd;
+	int				stdincpy;
+	int				stdoutcpy;
 	int				exit_status;
 	t_lexer			*lexer;
 	t_parser		*parser;
 }					t_shell;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
+
+void				restore_std(int incpy, int outcpy);
+void				fork_child(t_shell *msh, t_parser *p);
+int					run_node(t_shell *msh, t_parser *p);
+
 //bultins
 
-int					is_builting(t_shell *msh);
+int					is_builting(t_shell *msh, t_parser *p, int outcpy);
 void				ft_cd(t_shell *msh);
 void				ft_echo(t_shell *msh);
 void				ft_pwd(void);

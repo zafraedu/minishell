@@ -29,6 +29,8 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/parser/parser.c\
 		$(SRC_DIR)/parser/parser_utils.c\
 		$(SRC_DIR)/parser/fill_node.c\
+		$(SRC_DIR)/exec/test.c\
+
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
