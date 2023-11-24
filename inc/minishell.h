@@ -101,7 +101,7 @@ void				sigint_handler(int sig);
 
 //ft_executer.c
 void				ft_executer(t_shell *msh, char **envp);
-void				ft_exec_cmd(t_shell *msh);
+// void				ft_exec_cmd(t_shell *msh);
 
 char				*get_cmd(char **paths, char *cmd);
 char				**get_paths(char **envp);

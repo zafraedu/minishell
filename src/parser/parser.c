@@ -45,14 +45,14 @@ void	ft_parser(t_parser **parser, t_lexer *lex)
 	// tmp2 = *parser;
 	// while (tmp2)
 	// {
-	// printf("\n");
-	// printf("command: %s\n", tmp2->cmd);
-	// if (tmp2->redir_in)
-	// printf("file_input: %i\n", tmp2->redir_in);
-	// if (tmp2->redir_out)
-	// printf("file_output: %i\n", tmp2->redir_out);
-	// if (tmp2->heredoc)
-	// 	printf("heredoc, limiter: %s\n", tmp2->heredoc);
-	// tmp2 = tmp2->next;
+	// 	printf("\n");
+	// 	printf("command: %s\n", tmp2->cmd);
+	// 	// if (tmp2->redir_in)
+	// 	printf("file_input: %i\n", tmp2->redir_in);
+	// 	// if (tmp2->redir_out)
+	// 	printf("file_output: %i\n", tmp2->redir_out);
+	// 	// if (tmp2->heredoc)
+	// 	// printf("heredoc, limiter: %s\n", tmp2->heredoc);
+	// 	tmp2 = tmp2->next;
 	// }
 }

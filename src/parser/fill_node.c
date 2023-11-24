@@ -4,7 +4,7 @@ void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	fd;
 
-	fd = -1; // sobra
+	fd = -1; //sobra esta asignacion
 	if (tmp->type == T_REDIR_IN)
 	{
 		fd = open(tmp->next->data, O_RDONLY);
@@ -84,6 +84,8 @@ void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 	t_lexer	*tmp;
 
 	tmp = lex;
+	(*cmd_node)->redir_in = STDIN_FILENO;
+	(*cmd_node)->redir_out = STDOUT_FILENO;
 	fill_redir(lex, cmd_node, &start, end);
 	while (tmp && tmp->index != start)
 		tmp = tmp->next;
