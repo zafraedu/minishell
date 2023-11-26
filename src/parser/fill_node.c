@@ -38,13 +38,9 @@ void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 		if (tmp->type == T_REDIR_IN || tmp->type == T_REDIR_OUT
 			|| tmp->type == T_APPEND || tmp->type == T_HEREDOC)
 		{
-			if (tmp->index == *start)
-			{
-				ft_redirect(tmp, cmd_node);
+			if (tmp->index == *start) //@Agustin verifica si eso funciona makina
 				*start += 2;
-			}
-			else
-				ft_redirect(tmp, cmd_node);
+			ft_redirect(tmp, cmd_node); // modificaciones directas del pipe here
 		}
 		tmp = tmp->next;
 		aux++;
@@ -86,6 +82,8 @@ void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 	tmp = lex;
 	(*cmd_node)->redir_in = STDIN_FILENO;
 	(*cmd_node)->redir_out = STDOUT_FILENO;
+	(*cmd_node)->pipe_in = -1;
+	(*cmd_node)->pipe_out = -1;
 	fill_redir(lex, cmd_node, &start, end);
 	while (tmp && tmp->index != start)
 		tmp = tmp->next;

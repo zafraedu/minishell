@@ -60,8 +60,10 @@ typedef struct s_lexer
 typedef struct s_parser
 {
 	char *cmd;     // comando que será ejecutado
-	int redir_in;  // hay que cambiar el name // redireccionamiento de entrada
-	int redir_out; // hay que cambiar el name // redireccionamiento de salida
+	int redir_in;  // redireccionamiento de entrada
+	int redir_out; // redireccionamiento de salida
+	int pipe_in;   // test
+	int pipe_out;  // test
 	//char *heredoc; // limitador de entrada
 	struct s_parser	*next;
 }					t_parser;
@@ -129,7 +131,7 @@ void				fill_redir(t_lexer *lex, t_parser **cmd_node, int *start,
 void				fill_cmd(t_lexer *tmp, t_parser **cmd_node);
 void				ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start,
 						int end);
-void				ft_free_parserlist(t_parser **parser);
+void	ft_free_parserlist(t_parser **parser); // no va aqui
 
 //lexer_utils.c
 
@@ -145,7 +147,7 @@ void	ft_free_tokenlist(t_lexer **lx); //no va aqui
 //parser.c
 
 void				ft_parser(t_parser **parser, t_lexer *lex);
-void				ft_free_parserlist(t_parser **parser);
+void	ft_free_parserlist(t_parser **parser); // no va aqui
 
 //treat_tokens.c
 

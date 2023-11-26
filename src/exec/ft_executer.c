@@ -18,7 +18,10 @@ void	fork_child(t_shell *msh, t_parser *p)
 	{
 		msh->cmd = get_cmd(msh->paths, msh->cmd_args[0]);
 		dup2(p->redir_out, STDOUT_FILENO);
-		execve(msh->cmd, msh->cmd_args, msh->envp);
+		if (execve(msh->cmd, msh->cmd_args, msh->envp) < 0)
+		{
+			//! aquí está un leak de memoria
+		}
 		exit(127); // exit_status
 	}
 	else
@@ -34,6 +37,14 @@ void	fork_child(t_shell *msh, t_parser *p)
 
 int	run_node(t_shell *msh, t_parser *p)
 {
+	int fd[2];   //test
+	if (p->next) //test
+	{
+		pipe(fd);
+		// if fd < 0 error;
+		p->pipe_out = fd[1];
+		p->next->pipe_in = fd[0];
+	}
 	if (is_builting(msh, p, msh->stdoutcpy))
 		return (0);
 	else

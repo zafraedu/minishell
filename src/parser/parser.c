@@ -33,12 +33,8 @@ void	ft_parser(t_parser **parser, t_lexer *lex)
 		return ;
 	ft_index(lex);
 	if (*parser == NULL)
-	{
-		*parser = ft_calloc(1, sizeof(t_parser));
-		cmd_node = *parser;
-	}
-	else
-		cmd_node = *parser;
+		*parser = ft_calloc(1, sizeof(t_parser)); //@Agustin, checkea esto pls
+	cmd_node = *parser;
 	if (cmd_node)
 		ft_add_nodes(&cmd_node, lex);
 	//Imprimir lista de comandos (test)
