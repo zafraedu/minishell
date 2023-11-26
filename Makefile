@@ -22,14 +22,15 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/builtins/ft_unset.c\
 		$(SRC_DIR)/exec/signal.c\
 		$(SRC_DIR)/exec/ft_executer.c\
+		$(SRC_DIR)/global_utils/cmd_utils.c\
 		$(SRC_DIR)/global_utils/env_utils.c\
+		$(SRC_DIR)/global_utils/ft_split_shell.c\
 		$(SRC_DIR)/lexer/lexer_utils.c\
 		$(SRC_DIR)/lexer/lexer.c\
 		$(SRC_DIR)/lexer/treat_tokens.c\
 		$(SRC_DIR)/parser/parser.c\
 		$(SRC_DIR)/parser/parser_utils.c\
 		$(SRC_DIR)/parser/fill_node.c\
-		$(SRC_DIR)/exec/test.c\
 
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

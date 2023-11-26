@@ -82,10 +82,6 @@ typedef struct s_shell
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
 
-void				restore_std(int incpy, int outcpy);
-void				fork_child(t_shell *msh, t_parser *p);
-int					run_node(t_shell *msh, t_parser *p);
-
 //bultins
 
 int					is_builting(t_shell *msh, t_parser *p, int outcpy);
@@ -98,8 +94,18 @@ void				ft_exit(t_shell *shell);
 void				ft_unset(t_shell *msh);
 
 //global utils
+//cmd_utils.c
+
+char				*get_cmd(char **paths, char *cmd);
+char				**get_paths(char **envp);
+
+//env_utils.c
 
 int					ft_foundenv(char *var, char **env);
+
+//ft_split_shell.c
+
+char				**ft_split_shell(char *str, char s);
 
 //exec
 //signal.c
@@ -107,13 +113,14 @@ int					ft_foundenv(char *var, char **env);
 void				sigint_handler(int sig);
 
 //ft_executer.c
-void				ft_executer(t_shell *msh, char **envp);
-// void				ft_exec_cmd(t_shell *msh);
 
-char				*get_cmd(char **paths, char *cmd);
-char				**get_paths(char **envp);
+void				ft_executer(t_shell *msh, char **envp);
+void				restore_std(int incpy, int outcpy);
+void				fork_child(t_shell *msh, t_parser *p);
+int					run_node(t_shell *msh, t_parser *p);
 
 //parser
+
 void				ft_index(t_lexer *lex);
 int					ft_count_pipes(t_lexer *lex);
 int					get_last(t_lexer *lex, int start);

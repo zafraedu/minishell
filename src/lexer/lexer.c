@@ -51,7 +51,6 @@ static int	check_syntaxis(t_lexer *node)
 	return (1);
 }
 
-// separar comando y argumentos
 static void	lexer_cmd(t_lexer *node)
 {
 	if (node->type == T_GENERAL)

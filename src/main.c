@@ -32,40 +32,11 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-char	**get_paths(char **envp) //no va aqui
-{
-	char *path;
-
-	while (ft_strncmp("PATH=", *envp, 5))
-		envp++;
-	path = (*envp + 5);
-	return (ft_split(path, ':'));
-}
-
-char	*get_cmd(char **paths, char *cmd) //no va aqui
-{
-	char *tmp;
-	char *command;
-
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, X_OK) == 0)
-			return (command);
-		free(command);
-		paths++;
-	}
-	return (NULL);
-}
-
 static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 {
 	char	*input;
 	char	*tmp;
 
-	// pid_t pid;                      //test
 	signal(SIGINT, sigint_handler); // funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	while (1)
@@ -78,11 +49,11 @@ static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 		ft_lexer(tmp, &msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
-		ft_executer(msh, envp);                      //test
-		ft_memfree(input);                           //free global
-		ft_memfree(tmp);                             //free global
-		ft_free_tokenlist(&msh->lexer);              //free global
-		ft_free_parserlist(&msh->parser);
+		ft_executer(msh, envp);
+		ft_memfree(input);                //free global
+		ft_memfree(tmp);                  //free global
+		ft_free_tokenlist(&msh->lexer);   //free global
+		ft_free_parserlist(&msh->parser); //free golbal
 	}
 }
 
@@ -94,8 +65,7 @@ int	main(int argc, char **argv, char **envp)
 	// atexit(ft_leaks); //test
 	// if (argc != 1 || argv[1])	// cuando el print ya no sea necesario
 	// 	return (EXIT_FAILURE);		// ya podremos descomentar
-	//* printf(HEADER); //imprime el header
-	// msh.envp = ft_arraydup(envp); // se puede mejorar y no va aqui
+	//* printf(HEADER); //imprime el header (si queremos claro)
 	ft_getinput(&msh, argv, envp); //argv sirve para imprimir (lo quitaremos);
 	return (EXIT_SUCCESS);
 }
