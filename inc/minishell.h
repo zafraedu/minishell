@@ -141,6 +141,17 @@ void				ft_add_token(t_lexer **lx, char *input, int i, int size);
 
 void				ft_lexer(char *input, t_lexer **lx);
 
+//$var_env.c
+
+void				ft_replace(t_lexer **lexer);
+
+//$var_utils.c
+
+void				ft_erase_node(t_lexer **lexer);
+void				ft_free_array(char **array);
+void				append_to_tmp_data(t_lexer **tmp, char *value);
+
+
 //parser.c
 
 void				ft_parser(t_parser **parser, t_lexer *lex);

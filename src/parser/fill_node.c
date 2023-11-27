@@ -38,7 +38,7 @@ static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 		if (tmp->type == T_REDIR_IN || tmp->type == T_REDIR_OUT
 			|| tmp->type == T_APPEND || tmp->type == T_HEREDOC)
 		{
-			if (tmp->index == *start) //@Agustin verifica si eso funciona makina
+			if (tmp->index == *start) //@Agustin verifica si eso funciona makina -> Debería estar bien. Modifica el start para la funcion fill_cmd
 				*start += 2;
 			ft_redirect(tmp, cmd_node);
 		}
