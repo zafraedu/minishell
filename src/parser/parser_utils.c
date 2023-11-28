@@ -47,18 +47,3 @@ int	get_last(t_lexer *lex, int start)
 	last_index = tmp->index;
 	return (last_index);
 }
-
-void	ft_free_parserlist(t_parser **parser)
-{
-	t_parser	*tmp;
-
-	while (*parser)
-	{
-		tmp = (*parser)->next;
-		free((*parser)->cmd);
-		//free((*parser)->heredoc);
-		free(*parser);
-		*parser = tmp;
-	}
-	*parser = NULL;
-}

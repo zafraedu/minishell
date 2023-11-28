@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
+static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	fd;
 
@@ -24,7 +24,7 @@ void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 	//	(*cmd_node)->heredoc = ft_strdup(tmp->next->data);
 }
 
-void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
+static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 {
 	t_lexer	*tmp;
 	int		aux;
@@ -40,14 +40,14 @@ void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 		{
 			if (tmp->index == *start) //@Agustin verifica si eso funciona makina
 				*start += 2;
-			ft_redirect(tmp, cmd_node); // modificaciones directas del pipe here
+			ft_redirect(tmp, cmd_node);
 		}
 		tmp = tmp->next;
 		aux++;
 	}
 }
 
-int	ft_len_cmd(t_lexer *tmp)
+static int	ft_len_cmd(t_lexer *tmp)
 {
 	int	len;
 
@@ -60,7 +60,7 @@ int	ft_len_cmd(t_lexer *tmp)
 	return (len);
 }
 
-void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
+static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	len;
 
@@ -82,8 +82,6 @@ void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 	tmp = lex;
 	(*cmd_node)->redir_in = STDIN_FILENO;
 	(*cmd_node)->redir_out = STDOUT_FILENO;
-	(*cmd_node)->pipe_in = -1;
-	(*cmd_node)->pipe_out = -1;
 	fill_redir(lex, cmd_node, &start, end);
 	while (tmp && tmp->index != start)
 		tmp = tmp->next;

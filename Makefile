@@ -24,6 +24,7 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/exec/ft_executer.c\
 		$(SRC_DIR)/global_utils/cmd_utils.c\
 		$(SRC_DIR)/global_utils/env_utils.c\
+		$(SRC_DIR)/global_utils/free.c\
 		$(SRC_DIR)/global_utils/ft_split_shell.c\
 		$(SRC_DIR)/lexer/lexer_utils.c\
 		$(SRC_DIR)/lexer/lexer.c\
@@ -87,7 +88,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 
 $(NAME): $(OBJS)
 	@make -sC $(LIBFT_DIR)
-	@$(CC) $(OBJS) $(CFLAGS) $(INC) $(LIBS) -g -o $@
+	@$(CC) $(OBJS) $(CFLAGS) -fsanitize=address $(INC) $(LIBS) -g -o $@
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
 .PHONY: all bonus show clean fclean re

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	restore_std(int incpy, int outcpy)
+static void	restore_std(int incpy, int outcpy)
 {
 	dup2(incpy, STDIN_FILENO);
 	dup2(outcpy, STDOUT_FILENO);
@@ -8,7 +8,7 @@ void	restore_std(int incpy, int outcpy)
 	close(outcpy);
 }
 
-void	fork_child(t_shell *msh, t_parser *p)
+static void	fork_child(t_shell *msh, t_parser *p)
 {
 	pid_t	pid;
 	int		status;
@@ -20,16 +20,16 @@ void	fork_child(t_shell *msh, t_parser *p)
 		dup2(p->redir_out, STDOUT_FILENO);
 		if (execve(msh->cmd, msh->cmd_args, msh->envp) < 0)
 		{
-			//! aquí está un leak de memoria
+			//! aquí está un leak de memoria (o no)
 		}
-		exit(127); // exit_status
+		exit(127);
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
 		// if (WIFEXITED(status))
 		// 	msh->exit_status = WEXITSTATUS(status);
-		dup2((p->redir_in), STDIN_FILENO); // ns si es necesario
+		dup2((p->redir_in), STDIN_FILENO);
 		close(p->redir_out);
 		close(p->redir_in);
 	}
@@ -37,14 +37,6 @@ void	fork_child(t_shell *msh, t_parser *p)
 
 int	run_node(t_shell *msh, t_parser *p)
 {
-	int fd[2];   //test
-	if (p->next) //test
-	{
-		pipe(fd);
-		// if fd < 0 error;
-		p->pipe_out = fd[1];
-		p->next->pipe_in = fd[0];
-	}
 	if (is_builting(msh, p, msh->stdoutcpy))
 		return (0);
 	else

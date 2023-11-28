@@ -32,13 +32,11 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-static void	ft_getinput(t_shell *msh, char **argv, char **envp)
+static void	ft_minishell(t_shell *msh, char **argv, char **envp)
 {
 	char	*input;
 	char	*tmp;
 
-	signal(SIGINT, sigint_handler); // funcion para manejar ctrl+c
-	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	while (1)
 	{
 		input = readline(READLINE_MSG);
@@ -50,10 +48,10 @@ static void	ft_getinput(t_shell *msh, char **argv, char **envp)
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
 		ft_executer(msh, envp);
-		ft_memfree(input);                //free global
-		ft_memfree(tmp);                  //free global
-		ft_free_tokenlist(&msh->lexer);   //free global
-		ft_free_parserlist(&msh->parser); //free golbal
+		ft_memfree(input);
+		ft_memfree(tmp);
+		ft_free_tokenlist(&msh->lexer);
+		ft_free_parserlist(&msh->parser);
 	}
 }
 
@@ -63,9 +61,12 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc; //test
 	// atexit(ft_leaks); //test
-	// if (argc != 1 || argv[1])	// cuando el print ya no sea necesario
-	// 	return (EXIT_FAILURE);		// ya podremos descomentar
-	//* printf(HEADER); //imprime el header (si queremos claro)
-	ft_getinput(&msh, argv, envp); //argv sirve para imprimir (lo quitaremos);
+	/*if (argc != 1 || argv[1])  //cuando el print ya no sea necesario
+		return (EXIT_FAILURE);   //ya podremos descomentar */
+	//*printf(HEADER);//imprime el header (si queremos claro);
+	signal(SIGINT, sigint_handler); //funcion para manejar ctrl+c
+	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
+	ft_minishell(&msh, argv, envp);
+	//argv sirve para imprimir (lo quitaremos);
 	return (EXIT_SUCCESS);
 }
