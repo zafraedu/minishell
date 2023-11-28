@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
+static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	fd;
 
-	fd = -1;
+	fd = -1; //sobra esta asignacion
 	if (tmp->type == T_REDIR_IN)
 	{
 		fd = open(tmp->next->data, O_RDONLY);
@@ -24,7 +24,7 @@ void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 	//	(*cmd_node)->heredoc = ft_strdup(tmp->next->data);
 }
 
-void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
+static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 {
 	t_lexer	*tmp;
 	int		aux;
@@ -38,20 +38,16 @@ void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 		if (tmp->type == T_REDIR_IN || tmp->type == T_REDIR_OUT
 			|| tmp->type == T_APPEND || tmp->type == T_HEREDOC)
 		{
-			if (tmp->index == *start)
-			{
-				ft_redirect(tmp, cmd_node);
+			if (tmp->index == *start) //@Agustin verifica si eso funciona makina
 				*start += 2;
-			}
-			else
-				ft_redirect(tmp, cmd_node);
+			ft_redirect(tmp, cmd_node);
 		}
 		tmp = tmp->next;
 		aux++;
 	}
 }
 
-int	ft_len_cmd(t_lexer *tmp)
+static int	ft_len_cmd(t_lexer *tmp)
 {
 	int	len;
 
@@ -64,7 +60,7 @@ int	ft_len_cmd(t_lexer *tmp)
 	return (len);
 }
 
-void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
+static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	len;
 
@@ -81,9 +77,11 @@ void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 
 void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 {
-	t_lexer *tmp;
+	t_lexer	*tmp;
 
 	tmp = lex;
+	(*cmd_node)->redir_in = STDIN_FILENO;
+	(*cmd_node)->redir_out = STDOUT_FILENO;
 	fill_redir(lex, cmd_node, &start, end);
 	while (tmp && tmp->index != start)
 		tmp = tmp->next;

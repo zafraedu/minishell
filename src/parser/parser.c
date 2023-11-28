@@ -27,32 +27,28 @@ void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
 void	ft_parser(t_parser **parser, t_lexer *lex)
 {
 	t_parser	*cmd_node;
-	t_parser	*tmp2;
 
+	// t_parser	*tmp2;
 	if (lex == NULL)
 		return ;
 	ft_index(lex);
 	if (*parser == NULL)
-	{
-		*parser = ft_calloc(1, sizeof(t_parser));
-		cmd_node = *parser;
-	}
-	else
-		cmd_node = *parser;
+		*parser = ft_calloc(1, sizeof(t_parser)); //@Agustin, checkea esto pls
+	cmd_node = *parser;
 	if (cmd_node)
 		ft_add_nodes(&cmd_node, lex);
 	//Imprimir lista de comandos (test)
-	/*tmp2 = *parser;
-	while (tmp2)
-	{
-		printf("\n");
-		printf("command: %s\n", tmp2->cmd);
-		if (tmp2->redir_in)
-			printf("file_input: %i\n", tmp2->redir_in);
-		if (tmp2->redir_out)
-			printf("file_output: %i\n", tmp2->redir_out);
-		// if (tmp2->heredoc)
-		// 	printf("heredoc, limiter: %s\n", tmp2->heredoc);
-		tmp2 = tmp2->next;
-	}*/
+	// tmp2 = *parser;
+	// while (tmp2)
+	// {
+	// 	printf("\n");
+	// 	printf("command: %s\n", tmp2->cmd);
+	// 	// if (tmp2->redir_in)
+	// 	printf("file_input: %i\n", tmp2->redir_in);
+	// 	// if (tmp2->redir_out)
+	// 	printf("file_output: %i\n", tmp2->redir_out);
+	// 	// if (tmp2->heredoc)
+	// 	// printf("heredoc, limiter: %s\n", tmp2->heredoc);
+	// 	tmp2 = tmp2->next;
+	// }
 }

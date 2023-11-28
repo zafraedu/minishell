@@ -11,17 +11,17 @@ void	ft_lexer(char *input, t_lexer **lexer)
 	i = 0;
 	while (input[i])
 	{
-		while (ft_isspace(input[i])) // Tratar espacios
+		while (ft_isspace(input[i]))
 			i++;
 		type = get_type(input, i);
-		if (type != T_GENERAL) // Tratar caracteres especiales
+		if (type != T_GENERAL)
 			treat_special(input, lexer, &i, type);
-		else if (input[i] == 34 || input[i] == 39) // Tratar comillas
+		else if (input[i] == 34 || input[i] == 39)
 		{
 			if (!treat_quotes(input, lexer, &i))
 				break ;
 		}
-		else // Tratar otros caracteres
+		else
 			treat_general(input, lexer, &i);
 	}
 	if (!check_syntaxis(*lexer))
@@ -51,7 +51,6 @@ static int	check_syntaxis(t_lexer *node)
 	return (1);
 }
 
-// separar comando y argumentos
 static void	lexer_cmd(t_lexer *node)
 {
 	if (node->type == T_GENERAL)
@@ -75,19 +74,4 @@ static void	lexer_cmd(t_lexer *node)
 			node->next->type = T_CMD;
 		node = node->next;
 	}
-}
-
-// Funcion para liberar la lista de tokens
-void	ft_free_tokenlist(t_lexer **lexer) //no va aqui
-{
-	t_lexer *tmp;
-
-	while (*lexer)
-	{
-		tmp = (*lexer)->next;
-		free((*lexer)->data);
-		free(*lexer);
-		*lexer = tmp;
-	}
-	*lexer = NULL;
 }

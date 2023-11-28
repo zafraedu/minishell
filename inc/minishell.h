@@ -62,6 +62,8 @@ typedef struct s_parser
 	char *cmd;     // comando que será ejecutado
 	int redir_in;  // redireccionamiento de entrada
 	int redir_out; // redireccionamiento de salida
+	// int pipe_in;   // test
+	// int pipe_out;  // test
 	//char *heredoc; // limitador de entrada
 	struct s_parser	*next;
 }					t_parser;
@@ -70,17 +72,21 @@ typedef struct s_parser
 typedef struct s_shell
 {
 	char			**envp;
-	char **paths;     //test
-	char **cmd_args;  //test
-	char *cmd;        //test
-	t_lexer *lexer;   // separación de tokens
-	t_parser *parser; // separación de comandos
+	char			**paths;
+	char			**cmd_args;
+	char			*cmd;
+	int				stdincpy;
+	int				stdoutcpy;
+	int				exit_status;
+	t_lexer			*lexer;
+	t_parser		*parser;
 }					t_shell;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
+
 //bultins
 
-int					is_builting(t_shell *msh);
+int					is_builting(t_shell *msh, t_parser *p, int outcpy);
 void				ft_cd(t_shell *msh);
 void				ft_echo(t_shell *msh);
 void				ft_pwd(void);
@@ -90,24 +96,40 @@ void				ft_exit(t_shell *shell);
 void				ft_unset(t_shell *msh);
 
 //global utils
+//cmd_utils.c
+
+char				*get_cmd(char **paths, char *cmd);
+char				**get_paths(char **envp);
+
+//env_utils.c
 
 int					ft_foundenv(char *var, char **env);
+
+//free.c
+
+void				ft_free_parserlist(t_parser **parser);
+void				ft_free_tokenlist(t_lexer **lx);
+
+//ft_split_shell.c
+
+char				**ft_split_shell(char *str, char s);
 
 //exec
 //signal.c
 
 void				sigint_handler(int sig);
 
+//ft_executer.c
+
+void				ft_executer(t_shell *msh, char **envp);
+
 //parser
+
 void				ft_index(t_lexer *lex);
 int					ft_count_pipes(t_lexer *lex);
 int					get_last(t_lexer *lex, int start);
-void				fill_redir(t_lexer *lex, t_parser **cmd_node, int *start,
-						int end);
-void				fill_cmd(t_lexer *tmp, t_parser **cmd_node);
 void				ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start,
 						int end);
-void				ft_free_parserlist(t_parser **parser);
 
 //lexer_utils.c
 
@@ -118,12 +140,10 @@ void				ft_add_token(t_lexer **lx, char *input, int i, int size);
 //lexer.c
 
 void				ft_lexer(char *input, t_lexer **lx);
-void	ft_free_tokenlist(t_lexer **lx); //no va aqui
 
 //parser.c
 
 void				ft_parser(t_parser **parser, t_lexer *lex);
-void				ft_free_parserlist(t_parser **parser);
 
 //treat_tokens.c
 

@@ -21,13 +21,18 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/builtins/ft_pwd.c\
 		$(SRC_DIR)/builtins/ft_unset.c\
 		$(SRC_DIR)/exec/signal.c\
+		$(SRC_DIR)/exec/ft_executer.c\
+		$(SRC_DIR)/global_utils/cmd_utils.c\
 		$(SRC_DIR)/global_utils/env_utils.c\
+		$(SRC_DIR)/global_utils/free.c\
+		$(SRC_DIR)/global_utils/ft_split_shell.c\
 		$(SRC_DIR)/lexer/lexer_utils.c\
 		$(SRC_DIR)/lexer/lexer.c\
 		$(SRC_DIR)/lexer/treat_tokens.c\
 		$(SRC_DIR)/parser/parser.c\
 		$(SRC_DIR)/parser/parser_utils.c\
 		$(SRC_DIR)/parser/fill_node.c\
+
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -83,7 +88,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DIR)/minishell.h
 
 $(NAME): $(OBJS)
 	@make -sC $(LIBFT_DIR)
-	@$(CC) $(OBJS) $(CFLAGS) $(INC) $(LIBS) -g -o $@
+	@$(CC) $(OBJS) $(CFLAGS) -fsanitize=address $(INC) $(LIBS) -g -o $@
 	@echo "\n$(GREEN)[Compiled $(CIAN) $@ $(GREEN)successfully]\n$(END)"
 
 .PHONY: all bonus show clean fclean re
