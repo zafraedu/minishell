@@ -20,6 +20,7 @@ static void	fork_child(t_shell *msh, t_parser *p)
 		dup2(p->redir_out, STDOUT_FILENO);
 		if (execve(msh->cmd, msh->cmd_args, msh->envp) < 0)
 		{
+			printf("test");
 			//! aquí está un leak de memoria (o no)
 		}
 		exit(127);
