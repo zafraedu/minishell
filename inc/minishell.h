@@ -146,11 +146,9 @@ void				ft_lexer(char *input, t_lexer **lx);
 void				ft_replace(t_lexer **lexer);
 
 //$var_utils.c
-
+void				process_env_substring(char **dollar_pos, char **str, char **sufix,
+					char **env_value);
 void				ft_erase_node(t_lexer **lexer);
-void				ft_free_array(char **array);
-void				append_to_tmp_data(t_lexer **tmp, char *value);
-
 
 //parser.c
 

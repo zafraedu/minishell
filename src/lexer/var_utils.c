@@ -1,5 +1,58 @@
 #include "minishell.h"
 
+void ft_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
+{
+    char *next_dollar_pos;
+    char *next_space_pos;
+
+	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
+	next_space_pos = ft_strchr(*dollar_pos + 1, ' ');
+    if (next_dollar_pos) 
+	{
+        if (next_space_pos && (next_dollar_pos > next_space_pos)) 
+		{
+            *str = ft_substr(*dollar_pos, 1, next_space_pos - *dollar_pos - 1);
+            *sufix = ft_strdup(next_space_pos);
+        } 
+		else 
+		{
+            *str = ft_substr(*dollar_pos, 1, next_dollar_pos - *dollar_pos - 1);
+            *sufix = ft_strdup(next_dollar_pos);
+        }
+    }
+}
+
+void	ft_no_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
+{
+	char	*next_space_pos;
+
+	next_space_pos = ft_strchr(*dollar_pos + 1, ' ');
+	if (next_space_pos)
+	{
+		*str = ft_substr(*dollar_pos, 1, next_space_pos - *dollar_pos - 1);
+		*sufix = ft_strdup(next_space_pos);
+	}
+	else
+	{
+		*str = ft_substr(*dollar_pos, 1, ft_strlen(*dollar_pos + 1));
+		*sufix = "";
+	}
+}
+
+void	process_env_substring(char **dollar_pos, char **str, char **sufix,
+		char **env_value)
+{
+	char	*next_dollar_pos;
+
+	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
+	if (next_dollar_pos)
+		ft_next_dollar_pos(dollar_pos, str, sufix);
+	else
+		ft_no_next_dollar_pos(dollar_pos, str, sufix);
+	*env_value = getenv(*str);
+	ft_memfree(*str);
+}
+
 t_lexer	*remove_node(t_lexer **lexer, t_lexer *tmp, t_lexer *prev)
 {
 	t_lexer	*next;
@@ -38,27 +91,3 @@ void	ft_erase_node(t_lexer **lexer)
 		}
 	}
 }
-
-/* void	ft_free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		ft_memfree(array[i]);
-		i++;
-	}
-	ft_memfree(array);
-}
-
-void	append_to_tmp_data(t_lexer **tmp, char *value)
-{
-	if ((*tmp)->data == NULL)
-		(*tmp)->data = ft_strdup(value);
-	else
-	{
-		(*tmp)->data = ft_strjoin((*tmp)->data, " ");
-		(*tmp)->data = ft_strjoin((*tmp)->data, value);
-	}
-} */
