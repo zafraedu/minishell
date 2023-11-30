@@ -4,8 +4,6 @@ void	replace_env_variable(char **data, char *prefix, char *sufix,
 		char *env_value)
 {
 	char *tmp;
-	printf("prefix:%s,\n", prefix);
-	printf("sufix:%s,\n", sufix);
 
 	ft_memfree(*data);
 	if (env_value)
@@ -35,7 +33,6 @@ void	process_env_variable(char **data, char **dollar_pos)
 	env_value = NULL;
 	str = NULL;
 	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
-	printf("next_dollar_pos:%s,\n", next_dollar_pos);
 	if (*((*dollar_pos) + 1) != '?')  //Esto deberiamos incluirlo al momento de ejecutar el comando
 		process_env_substring(dollar_pos, &str, &sufix, &env_value);
 	else
@@ -71,10 +68,7 @@ void	process_quotes(t_lexer *tmp)
 	}
 	dollar_pos = ft_strchr(tmp->data, '$');
 	while (tmp->data[0] != '\'' && dollar_pos)
-	{
 		process_env_variable(&(tmp->data), &dollar_pos);
-	}
-
 	if (aux == 1)
 	{
 		str = ft_strjoin("\"", tmp->data);
