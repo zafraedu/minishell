@@ -45,6 +45,7 @@ static void	ft_minishell(t_shell *msh, char **argv, char **envp)
 			break ;
 		add_history(tmp);
 		ft_lexer(tmp, &msh->lexer);
+		ft_replace(&msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
 		ft_executer(msh, envp);

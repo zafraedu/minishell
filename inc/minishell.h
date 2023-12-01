@@ -141,6 +141,15 @@ void				ft_add_token(t_lexer **lx, char *input, int i, int size);
 
 void				ft_lexer(char *input, t_lexer **lx);
 
+//$var_env.c
+
+void				ft_replace(t_lexer **lexer);
+
+//$var_utils.c
+void				process_env_substring(char **dollar_pos, char **str, char **sufix,
+					char **env_value);
+void				ft_erase_node(t_lexer **lexer);
+
 //parser.c
 
 void				ft_parser(t_parser **parser, t_lexer *lex);
