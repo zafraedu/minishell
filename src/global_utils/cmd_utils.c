@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**get_paths(char **envp) //no va aqui
+char	**get_paths(char **envp)
 {
 	char *path;
 
@@ -10,7 +10,7 @@ char	**get_paths(char **envp) //no va aqui
 	return (ft_split(path, ':'));
 }
 
-char	*get_cmd(char **paths, char *cmd) //no va aqui
+char	*get_cmd(char **paths, char *cmd)
 {
 	char *tmp;
 	char *command;

@@ -1,25 +1,25 @@
 #include "minishell.h"
 
-void ft_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
+void	ft_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
 {
-    char *next_dollar_pos;
-    char *next_space_pos;
+	char	*next_dollar_pos;
+	char	*next_space_pos;
 
 	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
 	next_space_pos = ft_strchr(*dollar_pos + 1, ' ');
-    if (next_dollar_pos) 
+	if (next_dollar_pos)
 	{
-        if (next_space_pos && (next_dollar_pos > next_space_pos)) 
+		if (next_space_pos && (next_dollar_pos > next_space_pos))
 		{
-            *str = ft_substr(*dollar_pos, 1, next_space_pos - *dollar_pos - 1);
-            *sufix = ft_strdup(next_space_pos);
-        } 
-		else 
+			*str = ft_substr(*dollar_pos, 1, next_space_pos - *dollar_pos - 1);
+			*sufix = ft_strdup(next_space_pos);
+		}
+		else
 		{
-            *str = ft_substr(*dollar_pos, 1, next_dollar_pos - *dollar_pos - 1);
-            *sufix = ft_strdup(next_dollar_pos);
-        }
-    }
+			*str = ft_substr(*dollar_pos, 1, next_dollar_pos - *dollar_pos - 1);
+			*sufix = ft_strdup(next_dollar_pos);
+		}
+	}
 }
 
 void	ft_no_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
