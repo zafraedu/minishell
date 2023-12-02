@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-//* a lo mejor me hace falta a futuro
 static int	ft_foundquotes(char *str, int *i)
 {
 	char	com;
@@ -56,23 +55,21 @@ char	**ft_split_shell(char *str, char s)
 	int		is;
 	int		len;
 	char	**split;
+	char	*aux;
 
 	i = 0;
 	is = 0;
 	len = 0;
-	split = calloc(sizeof(char *), ft_cwords(str, s) + 1);
-	if (!split)
-		return (0);
+	split = ft_calloc(sizeof(char *), ft_cwords(str, s) + 1);
 	while (str[i])
 	{
-		while (str[i] == s && str[i] != 0)
-		{
+		while (str[i] == s && str[i++] != 0)
 			len++;
-			i++;
-		}
 		if (ft_foundword(str, s, &i))
 		{
-			split[is++] = ft_substr(str, len, i - len);
+			aux = ft_substr(str, len, i - len);
+			split[is++] = ft_strtrim(aux, "\"\'");
+			ft_memfree(aux);
 			len = i;
 		}
 	}

@@ -44,7 +44,7 @@ int	treat_quotes(char *input, t_lexer **lexer, int *i)
 void	treat_general(char *input, t_lexer **lexer, int *i)
 {
 	int	j;
-	int quote_char;
+	int	quote_char;
 
 	j = (*i);
 	while (input[j] && !ft_isspace(input[j]) && get_type(input, j) == T_GENERAL)

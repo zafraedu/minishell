@@ -17,11 +17,13 @@ void	exec_cmd(t_shell *msh)
 
 void	ft_executer(t_shell *msh)
 {
-	pid_t		pid;
+	pid_t	pid;
 
+	t_parser *tmp; // temporal, necesario para el free
 	while (msh->parser)
 	{
 		msh->cmd_args = ft_split_shell(msh->parser->cmd, ' ');
+		ft_memfree(msh->parser->cmd);
 		if (is_builtin(msh) && msh->parser->next == NULL)
 			ft_builtin(msh);
 		else
@@ -43,7 +45,9 @@ void	ft_executer(t_shell *msh)
 			close(msh->parser->redir_in);
 		if (msh->parser->redir_out != 1)
 			close(msh->parser->redir_out);
+		tmp = msh->parser;
 		msh->parser = msh->parser->next;
+		ft_memfree(tmp);
 	}
-	// ft_memfree_all(msh->paths);
+	ft_memfree_all(msh->paths); //? ns si es nececsario
 }
