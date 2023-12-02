@@ -1,8 +1,27 @@
 #include "minishell.h"
 
-int	is_builting(t_shell *msh, t_parser *p, int stdoutcpy)
+int	is_builtin(t_shell *msh)
 {
-	dup2(p->redir_out, STDOUT_FILENO); // si es necesario
+	if (!ft_strncmp(msh->cmd_args[0], "echo", 4))
+		return (1);
+	else if (!ft_strncmp(msh->cmd_args[0], "cd", 2))
+		return (1);
+	else if (!ft_strncmp(msh->cmd_args[0], "pwd", 3))
+		return (1);
+	else if (!ft_strncmp(msh->cmd_args[0], "export", 6))
+		return (1);
+	else if (!ft_strncmp(msh->cmd_args[0], "unset", 5))
+		return (1);
+	else if (!ft_strncmp(msh->cmd_args[0], "env", 3))
+		return (1);
+	else if (!ft_strncmp(msh->cmd_args[0], "exit", 4))
+		return (1);
+	else
+		return (0);
+}
+
+void	ft_builtin(t_shell *msh)
+{
 	if (!ft_strncmp(msh->cmd_args[0], "echo", 4))
 		ft_echo(msh);
 	else if (!ft_strncmp(msh->cmd_args[0], "cd", 2))
@@ -17,11 +36,4 @@ int	is_builting(t_shell *msh, t_parser *p, int stdoutcpy)
 		ft_env(msh);
 	else if (!ft_strncmp(msh->cmd_args[0], "exit", 4))
 		ft_exit(msh); // exit_status
-	else
-		return (0);
-	dup2(stdoutcpy, STDOUT_FILENO);    //ns si es necesario
-	dup2((p->redir_in), STDIN_FILENO); //ns si es necesario
-	close(p->redir_out);               //ns si es necesario
-	close(p->redir_in);                //ns si es necesario
-	return (1);
 }

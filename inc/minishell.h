@@ -62,8 +62,6 @@ typedef struct s_parser
 	char *cmd;     // comando que será ejecutado
 	int redir_in;  // redireccionamiento de entrada
 	int redir_out; // redireccionamiento de salida
-	// int pipe_in;   // test
-	// int pipe_out;  // test
 	//char *heredoc; // limitador de entrada
 	struct s_parser	*next;
 }					t_parser;
@@ -75,8 +73,6 @@ typedef struct s_shell
 	char			**paths;
 	char			**cmd_args;
 	char			*cmd;
-	int				stdincpy;
-	int				stdoutcpy;
 	int				exit_status;
 	t_lexer			*lexer;
 	t_parser		*parser;
@@ -86,7 +82,8 @@ typedef struct s_shell
 
 //bultins
 
-int					is_builting(t_shell *msh, t_parser *p, int outcpy);
+int					is_builtin(t_shell *msh);
+void				ft_builtin(t_shell *msh);
 void				ft_cd(t_shell *msh);
 void				ft_echo(t_shell *msh);
 void				ft_pwd(void);
@@ -121,7 +118,7 @@ void				sigint_handler(int sig);
 
 //ft_executer.c
 
-void				ft_executer(t_shell *msh, char **envp);
+void				ft_executer(t_shell *msh);
 
 //parser
 
@@ -146,8 +143,8 @@ void				ft_lexer(char *input, t_lexer **lx);
 void				ft_replace(t_lexer **lexer);
 
 //$var_utils.c
-void				process_env_substring(char **dollar_pos, char **str, char **sufix,
-					char **env_value);
+void				process_env_substring(char **dollar_pos, char **str,
+						char **sufix, char **env_value);
 void				ft_erase_node(t_lexer **lexer);
 
 //parser.c
