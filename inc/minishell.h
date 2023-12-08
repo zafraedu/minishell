@@ -29,6 +29,7 @@
 # define ERR_PIPE "Pipe error\n"
 
 # define READLINE_MSG "\033[1;36mminishell\033[34m$> \033[0m"
+# define HEREDOC_MSG "\033[1;34m> \033[0m"
 
 /*═══════════════════════════ [  ENUMS  ] ════════════════════════════════════*/
 

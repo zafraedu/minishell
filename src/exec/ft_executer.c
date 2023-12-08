@@ -49,5 +49,5 @@ void	ft_executer(t_shell *msh)
 		msh->parser = msh->parser->next;
 		ft_memfree(tmp);
 	}
-	ft_memfree_all(msh->paths); //? ns si es nececsario
+	// ft_memfree_all(msh->paths); //? ns si es nececsario
 }
