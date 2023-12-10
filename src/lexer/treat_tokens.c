@@ -16,7 +16,7 @@ void	treat_special(char *input, t_lexer **lexer, int *i, int type)
 	(*i)++;
 }
 
-int	treat_quotes(char *input, t_lexer **lexer, int *i)
+int	treat_quotes(char *input, t_lexer **lexer, int *i, int *exit_status)
 {
 	char	quote_char;
 	int		j;
@@ -36,7 +36,9 @@ int	treat_quotes(char *input, t_lexer **lexer, int *i)
 	{
 		ft_add_token(lexer, input, (*i), j - (*i) + 1);
 		lexer_add_type(lexer, T_GENERAL);
-		printf("error comillas\n"); //test
+		printf("minishell: syntax error open quotes\n"); //test
+		*exit_status = 2;
+		ft_free_tokenlist(lexer);		
 		return (0);
 	}
 }

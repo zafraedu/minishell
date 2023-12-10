@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-static int	check_syntaxis(t_lexer *node);
+static int	check_syntaxis(t_lexer *node, int *exit_status);
 static void	lexer_cmd(t_lexer *node);
 
-void	ft_lexer(char *input, t_lexer **lexer)
+void	ft_lexer(char *input, t_lexer **lexer, int *exit_status)
 {
 	int	i;
 	int	type;
@@ -18,34 +18,41 @@ void	ft_lexer(char *input, t_lexer **lexer)
 			treat_special(input, lexer, &i, type);
 		else if (input[i] == 34 || input[i] == 39)
 		{
-			if (!treat_quotes(input, lexer, &i))
+			if (!treat_quotes(input, lexer, &i, exit_status))
 				break ;
 		}
 		else
 			treat_general(input, lexer, &i);
 	}
-	if (!check_syntaxis(*lexer))
+	if (!check_syntaxis(*lexer, exit_status))
+	{
+		ft_free_tokenlist(lexer);
 		return ;
+	}
 	lexer_cmd(*lexer);
 }
 
 // checkear que el prompt no haya errores de syntaxis
-static int	check_syntaxis(t_lexer *node)
+static int	check_syntaxis(t_lexer *node, int *exit_status)
 {
 	if (!node)
 		return (0);
 	if (node->type == T_PIPE)
-		return (printf("error syntex\n"), 0);
+	{
+		printf("minishell: syntax error\n");
+		return (0);
+	}
 	while (node->next)
 	{
-		if (node->type == T_REDIR_OUT && node->next->type != T_GENERAL)
-			return (printf("error syntax\n"), 0);
-		if (node->type == T_REDIR_IN && node->next->type != T_GENERAL)
-			return (printf("error syntax\n"), 0);
-		if (node->type == T_APPEND && node->next->type != T_GENERAL)
-			return (printf("error syntax\n"), 0);
-		if (node->type == T_HEREDOC && node->next->type != T_GENERAL)
-			return (printf("error syntax\n"), 0);
+		if (node->type == T_REDIR_OUT || node->type == T_APPEND || node->type == T_REDIR_IN || node->type == T_HEREDOC)
+		{
+			if (node->next->type != T_GENERAL)
+			{
+				printf("minishell: syntax error near unexpected token %s\n", node->next->data);
+				*exit_status = 2;
+				return (0);
+			}
+		}
 		node = node->next;
 	}
 	return (1);
