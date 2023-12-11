@@ -1,5 +1,37 @@
 #include "minishell.h"
 
+static int	ft_heredoc(char *limit)
+{
+	pid_t	pid;
+	int		fd[2];
+	char	*line;
+
+	if (pipe(fd) < 0)
+		return (1); //err_msg
+	pid = fork();
+	if (pid < 0)
+		return (1); //err_msg
+	if (pid == 0)
+	{
+		//signal
+		close(fd[0]);
+		while (1)
+		{
+			line = readline(HEREDOC_MSG);
+			if (!line || (!ft_strncmp(limit, line, ft_strlen(limit))
+					&& !ft_strncmp(limit, line, ft_strlen(line))))
+				exit(EXIT_SUCCESS);
+			ft_putstr_fd(line, fd[1]);
+			ft_putchar_fd('\n', fd[1]);
+			ft_memfree(line);
+		}
+	}
+	//signal
+	waitpid(-1, NULL, 0);
+	close(fd[1]);
+	return (fd[0]);
+}
+
 static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	fd;
@@ -20,8 +52,11 @@ static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 		fd = open(tmp->next->data, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		(*cmd_node)->redir_out = fd;
 	}
-	//else if (tmp->type == T_HEREDOC)
-	//	(*cmd_node)->heredoc = ft_strdup(tmp->next->data);
+	else if (tmp->type == T_HEREDOC)
+	{
+		fd = ft_heredoc(tmp->next->data);
+		(*cmd_node)->redir_in = fd;
+	}
 }
 
 static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)

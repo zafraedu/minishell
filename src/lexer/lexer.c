@@ -61,13 +61,15 @@ static void	lexer_cmd(t_lexer *node)
 			node->next->type = T_INFILE;
 		else if (node->type == T_HEREDOC && node->next->type == T_GENERAL)
 			node->next->type = T_LIMITER;
+		else if (node->type == T_LIMITER && node->next->type == T_GENERAL)
+			node->next->type = T_CMD;
 		else if (node->type == T_INFILE && node->next->type == T_GENERAL)
 			node->next->type = T_CMD;
 		else if (node->type == T_CMD && node->next->type == T_GENERAL)
 			node->next->type = T_CMD;
 		else if (node->type == T_PIPE && node->next->type == T_GENERAL)
 			node->next->type = T_CMD;
-		else if ((node->type == T_REDIR_OUT || node->type == T_APPEND)
+		else if ((node->type == T_REDIR_OUT || node->type == T_APPEND) \
 				&& node->next->type == T_GENERAL)
 			node->next->type = T_OUTFILE;
 		else if (node->type == T_OUTFILE && node->next->type == T_GENERAL)

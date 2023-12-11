@@ -7,9 +7,9 @@ void	ft_free_parserlist(t_parser **parser)
 	while (*parser)
 	{
 		tmp = (*parser)->next;
-		free((*parser)->cmd);
+		ft_memfree((*parser)->cmd);
 		//free((*parser)->heredoc);
-		free(*parser);
+		ft_memfree(*parser);
 		*parser = tmp;
 	}
 	*parser = NULL;

@@ -1,70 +1,58 @@
 #include "minishell.h"
 
-static void	restore_std(int incpy, int outcpy)
+void	exec_cmd(t_shell *msh)
 {
-	dup2(incpy, STDIN_FILENO);
-	dup2(outcpy, STDOUT_FILENO);
-	close(incpy);
-	close(outcpy);
+	char	**paths;
+	char	*cmd_path;
+
+	if (msh->parser->redir_in != 0)
+		dup2(msh->parser->redir_in, STDIN_FILENO);
+	if (msh->parser->redir_out != 1)
+		dup2(msh->parser->redir_out, STDOUT_FILENO);
+	paths = get_paths(msh->envp);
+	if (msh->cmd_args[0][0] == '/' && !access(msh->cmd_args[0], X_OK))
+		cmd_path = msh->cmd_args[0];
+	else
+		cmd_path = get_cmd(paths, msh->cmd_args[0]);
+	if (execve(cmd_path, msh->cmd_args, msh->envp) == -1)
+	{
+		printf("test: execve\n"); // ejecucion de un comando mal
+	}
+	exit(127);
 }
 
-static void	fork_child(t_shell *msh, t_parser *p)
+void	ft_executer(t_shell *msh)
 {
 	pid_t	pid;
-	int		status;
 
-	pid = fork();
-	if (pid == 0)
+	t_parser *tmp;
+	while (msh->parser)
 	{
-		msh->cmd = get_cmd(msh->paths, msh->cmd_args[0]);
-		dup2(p->redir_out, STDOUT_FILENO);
-		if (execve(msh->cmd, msh->cmd_args, msh->envp) < 0)
+		msh->cmd_args = ft_split_shell(msh->parser->cmd, ' '); //problema (comillas + export)
+		ft_memfree(msh->parser->cmd);
+		if (is_builtin(msh) && msh->parser->next == NULL)
+			ft_builtin(msh);
+		else
 		{
-			//! aquí está un leak de memoria (o no)
+			pid = fork();
+			if (pid == 0)
+			{
+				if (is_builtin(msh))
+					ft_builtin(msh);
+				else
+					exec_cmd(msh);
+			}
+			else
+				waitpid(-1, NULL, 0); // no va null y si status;
+			//err msg
 		}
-		exit(127);
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		// if (WIFEXITED(status))
-		// 	msh->exit_status = WEXITSTATUS(status);
-		dup2((p->redir_in), STDIN_FILENO);
-		close(p->redir_out);
-		close(p->redir_in);
-	}
-}
-
-int	run_node(t_shell *msh, t_parser *p)
-{
-	if (is_builting(msh, p, msh->stdoutcpy))
-		return (0);
-	else
-		fork_child(msh, p);
-	return (0);
-}
-
-void	ft_executer(t_shell *msh, char **envp)
-{
-	t_parser	*parser;
-
-	parser = msh->parser;
-	msh->stdincpy = dup(STDIN_FILENO);
-	msh->stdoutcpy = dup(STDOUT_FILENO);
-	dup2(parser->redir_in, STDIN_FILENO);
-	msh->envp = ft_arraydup(envp);
-	msh->paths = get_paths(envp); //ns si va aqui o dentro del bucle
-	while (parser)
-	{
-		// extend quotes " $ " (parser->cmd)
-		//? if (error) break ;
-		// if no hay parser->cmd ?
-		msh->cmd_args = ft_split_shell(parser->cmd, ' ');
-		run_node(msh, parser);
 		ft_memfree_all(msh->cmd_args);
-		parser = parser->next;
+		if (msh->parser->redir_in != 0)
+			close(msh->parser->redir_in);
+		if (msh->parser->redir_out != 1)
+			close(msh->parser->redir_out);
+		tmp = msh->parser;
+		msh->parser = msh->parser->next;
+		ft_memfree(tmp);
 	}
-	ft_memfree_all(msh->envp);
-	ft_memfree_all(msh->paths);
-	restore_std(msh->stdincpy, msh->stdoutcpy);
 }

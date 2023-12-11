@@ -32,7 +32,7 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-static void	ft_minishell(t_shell *msh, char **argv, char **envp)
+static void	ft_minishell(t_shell *msh, char **argv)
 {
 	char	*input;
 	char	*tmp;
@@ -48,7 +48,7 @@ static void	ft_minishell(t_shell *msh, char **argv, char **envp)
 		ft_replace(&msh->lexer);
 		ft_parser(&msh->parser, msh->lexer);
 		print_select(msh->lexer, msh->parser, argv); //test print
-		ft_executer(msh, envp);
+		ft_executer(msh);
 		ft_memfree(input);
 		ft_memfree(tmp);
 		ft_free_tokenlist(&msh->lexer);
@@ -67,7 +67,9 @@ int	main(int argc, char **argv, char **envp)
 	//*printf(HEADER);//imprime el header (si queremos claro);
 	signal(SIGINT, sigint_handler); //funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
-	ft_minishell(&msh, argv, envp);
+	msh.envp = ft_arraydup(envp);   //no va aqui
+	ft_minishell(&msh, argv);
+	ft_memfree_all(msh.envp); // no va aqui
 	//argv sirve para imprimir (lo quitaremos);
 	return (EXIT_SUCCESS);
 }

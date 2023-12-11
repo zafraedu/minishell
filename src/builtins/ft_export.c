@@ -32,7 +32,7 @@ void	ft_export(t_shell *msh)
 			else
 			{
 				msh->envp = ft_arraydelete(pos, msh->envp);
-				msh->envp = ft_arrayadd(msh->cmd_args[i], msh->envp);
+				msh->envp = ft_arrayadd(ft_strdup(msh->cmd_args[i]), msh->envp);
 			}
 			i++;
 		}

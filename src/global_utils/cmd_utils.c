@@ -2,7 +2,7 @@
 
 char	**get_paths(char **envp)
 {
-	char *path;
+	char	*path;
 
 	while (ft_strncmp("PATH=", *envp, 5))
 		envp++;
@@ -12,8 +12,8 @@ char	**get_paths(char **envp)
 
 char	*get_cmd(char **paths, char *cmd)
 {
-	char *tmp;
-	char *command;
+	char	*tmp;
+	char	*command;
 
 	while (*paths)
 	{
