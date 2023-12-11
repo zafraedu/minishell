@@ -10,7 +10,10 @@ void	exec_cmd(t_shell *msh)
 	if (msh->parser->redir_out != 1)
 		dup2(msh->parser->redir_out, STDOUT_FILENO);
 	paths = get_paths(msh->envp);
-	cmd_path = get_cmd(paths, msh->cmd_args[0]);
+	if (msh->cmd_args[0][0] == '/' && !access(msh->cmd_args[0], X_OK))
+		cmd_path = msh->cmd_args[0];
+	else
+		cmd_path = get_cmd(paths, msh->cmd_args[0]);
 	if (execve(cmd_path, msh->cmd_args, msh->envp) == -1)
 	{
 		printf("test: execve\n"); // ejecucion de un comando mal
@@ -22,10 +25,10 @@ void	ft_executer(t_shell *msh)
 {
 	pid_t	pid;
 
-	t_parser *tmp; // temporal, necesario para el free
+	t_parser *tmp;
 	while (msh->parser)
 	{
-		msh->cmd_args = ft_split_shell(msh->parser->cmd, ' ');
+		msh->cmd_args = ft_split_shell(msh->parser->cmd, ' '); //problema (comillas + export)
 		ft_memfree(msh->parser->cmd);
 		if (is_builtin(msh) && msh->parser->next == NULL)
 			ft_builtin(msh);
@@ -52,5 +55,4 @@ void	ft_executer(t_shell *msh)
 		msh->parser = msh->parser->next;
 		ft_memfree(tmp);
 	}
-	// ft_memfree_all(msh->paths); //? ns si es nececsario
 }

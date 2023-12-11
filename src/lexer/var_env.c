@@ -80,6 +80,8 @@ void	ft_replace(t_lexer **lexer)
 {
 	t_lexer	*tmp;
 
+	if (!lexer)
+		return ;
 	tmp = *lexer;
 	while (tmp)
 	{
