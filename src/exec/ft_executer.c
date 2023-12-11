@@ -11,7 +11,10 @@ void	exec_cmd(t_shell *msh)
 		dup2(msh->parser->redir_out, STDOUT_FILENO);
 	paths = get_paths(msh->envp);
 	cmd_path = get_cmd(paths, msh->cmd_args[0]);
-	execve(cmd_path, msh->cmd_args, msh->envp);
+	if (execve(cmd_path, msh->cmd_args, msh->envp) == -1)
+	{
+		printf("test: execve\n"); // ejecucion de un comando mal
+	}
 	exit(127);
 }
 
@@ -37,7 +40,7 @@ void	ft_executer(t_shell *msh)
 					exec_cmd(msh);
 			}
 			else
-				waitpid(-1, NULL, 0);
+				waitpid(-1, NULL, 0); // no va null y si status;
 			//err msg
 		}
 		ft_memfree_all(msh->cmd_args);
