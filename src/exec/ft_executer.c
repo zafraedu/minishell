@@ -28,7 +28,7 @@ void	ft_executer(t_shell *msh)
 	t_parser *tmp;
 	while (msh->parser)
 	{
-		msh->cmd_args = ft_split_shell(msh->parser->cmd, ' '); //problema (comillas + export)
+		msh->cmd_args = ft_split_shell(msh, msh->parser->cmd, ' '); //problema (comillas + export)
 		ft_memfree(msh->parser->cmd);
 		if (is_builtin(msh) && msh->parser->next == NULL)
 			ft_builtin(msh);

@@ -65,7 +65,6 @@ typedef struct s_parser
 	char *cmd;     // comando que será ejecutado
 	int redir_in;  // redireccionamiento de entrada
 	int redir_out; // redireccionamiento de salida
-	//char *heredoc; // limitador de entrada
 	struct s_parser	*next;
 }					t_parser;
 
@@ -75,7 +74,8 @@ typedef struct s_shell
 	char			**envp;
 	char			**paths;
 	char			**cmd_args;
-	char			*cmd;
+	int				count_cmd_args;
+	// char			*cmd;
 	int				exit_status;
 	t_lexer			*lexer;
 	t_parser		*parser;
@@ -112,7 +112,7 @@ void				ft_free_tokenlist(t_lexer **lx);
 
 //ft_split_shell.c
 
-char				**ft_split_shell(char *str, char s);
+char				**ft_split_shell(t_shell *msh, char *str, char s);
 
 //exec
 //signal.c
