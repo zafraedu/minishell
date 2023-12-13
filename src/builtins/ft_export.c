@@ -13,12 +13,7 @@ void	ft_export(t_shell *msh)
 	while (msh->cmd_args[i])
 	{
 		if (!ft_isalpha(msh->cmd_args[i][0]) && msh->cmd_args[i][0] != '_')
-		{
-			printf("export: %s: not a valid identifier\n", msh->cmd_args[i]);
-			i++;
-		}
-		else if (!ft_strchr(msh->cmd_args[i], '='))
-			i++;
+			printf("export: %s: not a valid identifier\n", msh->cmd_args[i++]);
 		else
 		{
 			v_len = 0;

@@ -14,7 +14,7 @@ void	exec_cmd(t_shell *msh)
 		cmd_path = msh->cmd_args[0];
 	else
 		cmd_path = get_cmd(paths, msh->cmd_args[0]);
-	if (execve(cmd_path, msh->cmd_args, msh->envp) == -1)
+	if (execve(cmd_path, msh->cmd_args,  msh->envp) == -1)
 	{
 		printf("test: execve\n"); // ejecucion de un comando mal
 	}

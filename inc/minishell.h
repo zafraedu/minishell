@@ -52,6 +52,13 @@ typedef enum e_token
 
 /*══════════════════════════ [  STRUCTS  ] ═══════════════════════════════════*/
 
+typedef struct s_env
+{
+	char			*var_name;
+	char			*value_var;
+	struct s_env	*next;
+}					t_env;
+
 typedef struct s_lexer
 {
 	int index;            //  indice del token
@@ -71,12 +78,12 @@ typedef struct s_parser
 // estructura sujeta a cambios
 typedef struct s_shell
 {
-	char			**envp;
+	char **envp; // no creo que haga falta
 	char			**paths;
 	char			**cmd_args;
 	int				count_cmd_args;
-	// char			*cmd;
 	int				exit_status;
+	t_env			*env;
 	t_lexer			*lexer;
 	t_parser		*parser;
 }					t_shell;
@@ -160,4 +167,5 @@ void				treat_special(char *input, t_lexer **lx, int *i, int type);
 int					treat_quotes(char *input, t_lexer **lx, int *i);
 void				treat_general(char *input, t_lexer **lx, int *i);
 
+void				ft_lst_env_init(t_env **env, char **envp);
 #endif
