@@ -40,6 +40,7 @@ static int	check_syntaxis(t_lexer *node, int *exit_status)
 	if (node->type == T_PIPE)
 	{
 		printf("minishell: syntax error\n");
+		*exit_status = 2;
 		return (0);
 	}
 	while (node->next)
