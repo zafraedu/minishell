@@ -1,18 +1,42 @@
 #include "minishell.h"
 
-void	ft_unset(t_shell *msh)
+static void	del_variable(t_env *node)
 {
-	int	pos;
-	int	i;
+	free(node->var_name);
+	free(node->value_var);
+	free(node);
+}
 
-	i = 1;
-	if (!msh->cmd_args[i])
+static void	ft_eraser(char *name, t_env *ptr)
+{
+	if (!ft_strcmp(name, ptr->next->var_name))
 		return ;
-	while (msh->cmd_args[i])
+	while (ptr && ptr->next)
 	{
-		pos = ft_foundenv(msh->cmd_args[i], msh->envp);
-		if (pos >= 0)
-			msh->envp = ft_arraydelete(pos, msh->envp);
-		i++;
+		if (!ft_strcmp(name, ptr->next->var_name))
+		{
+			del_variable(ptr->next);
+			ptr->next = ptr->next->next;
+			return ;
+		}
+		ptr = ptr->next;
+	}
+}
+
+void	ft_unset(t_shell *info)
+{
+	t_env	*ptr;
+	int		i;
+
+	i = 0;
+	if (!info->cmd_args[i])
+		return ;
+	info->exit_status = 0;
+	while (info->cmd_args[++i])
+	{
+		ptr = info->env;
+		if (!ptr)
+			return ;
+		ft_eraser(info->cmd_args[i], ptr);
 	}
 }

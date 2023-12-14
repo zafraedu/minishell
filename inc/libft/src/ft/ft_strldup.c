@@ -6,7 +6,7 @@
 /*   By: zafraedu <zafraedu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 18:22:24 by ezafra-r          #+#    #+#             */
-/*   Updated: 2023/12/13 11:18:54 by zafraedu         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:31:58 by zafraedu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  * @return Un puntero a la cadena duplicada,
  *	o NULL si falla la assignación de memoria
  */
-char	*strldup(const char *str, size_t len)
+char	*ft_strldup(const char *str, size_t len)
 {
 	size_t	actual_len;
 	size_t	copy_len;

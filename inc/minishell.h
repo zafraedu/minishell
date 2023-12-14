@@ -82,10 +82,10 @@ typedef struct s_shell
 	char			**paths;
 	char			**cmd_args;
 	int				count_cmd_args;
-	int				exit_status;
 	t_env			*env;
 	t_lexer			*lexer;
 	t_parser		*parser;
+	int				exit_status;
 }					t_shell;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
@@ -116,6 +116,7 @@ int					ft_foundenv(char *var, char **env);
 
 void				ft_free_parserlist(t_parser **parser);
 void				ft_free_tokenlist(t_lexer **lx);
+void				ft_free_list(t_env **list);
 
 //ft_split_shell.c
 
@@ -168,4 +169,10 @@ int					treat_quotes(char *input, t_lexer **lx, int *i);
 void				treat_general(char *input, t_lexer **lx, int *i);
 
 void				ft_lst_env_init(t_env **env, char **envp);
+void				ft_lstadd_back_env(t_env **lst, t_env *new);
+char				*get_cmd_path(char *cmd, t_env *env);
+t_env				*ft_lstnew_env(char *name, char *value, int alloc);
+char				*get_env_name(char *fullenv);
+char				*get_env_value(char *fullenv);
+
 #endif

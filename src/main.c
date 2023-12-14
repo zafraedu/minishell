@@ -69,5 +69,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
 	ft_lst_env_init(&msh.env, envp);
 	ft_minishell(&msh, argv);
+	ft_free_list(&msh.env);
 	return (EXIT_SUCCESS);
 }
