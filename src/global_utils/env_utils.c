@@ -17,5 +17,8 @@ char	*get_env_value(char *fullenv)
 	i = 0;
 	while (fullenv[i] && fullenv[i] != '=' && fullenv[i] != ' ')
 		i++;
-	return (ft_substr(fullenv, i + 1, ft_strlen(fullenv) - i));
+	if (fullenv[i + 1] == '\"')
+		return (ft_substr(fullenv, i + 2, ft_strlen(fullenv) - i));
+	else
+		return (ft_substr(fullenv, i + 1, ft_strlen(fullenv) - i));
 }

@@ -35,10 +35,6 @@ static void	exec_cmd(t_shell *msh)
 	char	**envp;
 
 	envp = env_to_array(msh);
-	if (msh->parser->redir_in != 0)
-		dup2(msh->parser->redir_in, STDIN_FILENO);
-	if (msh->parser->redir_out != 1)
-		dup2(msh->parser->redir_out, STDOUT_FILENO);
 	cmd_path = get_cmd_path(msh->cmd_args[0], msh->env);
 	if (ft_isalnum(msh->cmd_args[0][0]) && !access(msh->cmd_args[0], X_OK))
 		cmd_path = msh->cmd_args[0];
@@ -57,7 +53,6 @@ void	ft_executer(t_shell *msh)
 	while (msh->parser)
 	{
 		msh->cmd_args = ft_split_shell(msh, msh->parser->cmd, ' ');
-		//problema (comillas + export)
 		ft_memfree(msh->parser->cmd);
 		if (is_builtin(msh) && msh->parser->next == NULL)
 			ft_builtin(msh);
@@ -72,7 +67,7 @@ void	ft_executer(t_shell *msh)
 					exec_cmd(msh);
 			}
 			else
-				waitpid(-1, NULL, 0); // no va null y si status;
+				waitpid(-1, &msh->exit_status, 0);
 										//err msg
 		}
 		ft_memfree_all(msh->cmd_args);
