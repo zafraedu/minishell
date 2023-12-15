@@ -22,7 +22,7 @@ void	replace_env_variable(char **data, char *prefix, char *sufix,
 		ft_memfree(sufix);
 }
 
-void	process_env_variable(char **data, char **dollar_pos)
+void	process_env_variable(char **data, char **dollar_pos, int *exit_status)
 {
 	char	*prefix;
 	char	*sufix;
@@ -33,23 +33,29 @@ void	process_env_variable(char **data, char **dollar_pos)
 	env_value = NULL;
 	str = NULL;
 	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
+	prefix = ft_substr(*data, 0, *dollar_pos - *data);
 	if (*((*dollar_pos) + 1) != '?') //El rremplazo de $? deberiamos incluirlo al momento de ejecutar el comando
 	{
 		process_env_substring(dollar_pos, &str, &sufix, &env_value);
-		prefix = ft_substr(*data, 0, *dollar_pos - *data);
 		replace_env_variable(data, prefix, sufix, env_value);
 	}
-	if (next_dollar_pos)
+	else
 	{
-		*dollar_pos = ft_strchr(*data, '$');
-		if (*((*dollar_pos) + 1) == '?')
-			*dollar_pos = ft_strchr(*dollar_pos + 1, '$');
+		if (*((*dollar_pos) + 2) != '\0')
+			sufix = ft_strdup(*dollar_pos + 2);
+		else
+			sufix = "";
+		env_value = ft_itoa(*exit_status);
+		replace_env_variable(data, prefix, sufix, env_value);
+		ft_memfree(env_value);
 	}
+	if (next_dollar_pos)
+		*dollar_pos = ft_strchr(*data, '$');
 	else
 		*dollar_pos = NULL;
 }
 
-void	process_quotes(t_lexer *tmp)
+void	process_quotes(t_lexer *tmp, int *exit_status)
 {
 	char	*str;
 	int		aux;
@@ -66,7 +72,7 @@ void	process_quotes(t_lexer *tmp)
 	}
 	dollar_pos = ft_strchr(tmp->data, '$');
 	while (tmp->data[0] != '\'' && dollar_pos)
-		process_env_variable(&(tmp->data), &dollar_pos);
+		process_env_variable(&(tmp->data), &dollar_pos, exit_status);
 	if (aux == 1)
 	{
 		str = ft_strjoin("\"", tmp->data);
@@ -76,7 +82,7 @@ void	process_quotes(t_lexer *tmp)
 	}
 }
 
-void	ft_replace(t_lexer **lexer)
+void	ft_replace(t_lexer **lexer, int *exit_status)
 {
 	t_lexer	*tmp;
 
@@ -88,7 +94,7 @@ void	ft_replace(t_lexer **lexer)
 		if (tmp->type == T_CMD || tmp->type == T_INFILE
 			|| tmp->type == T_OUTFILE)
 		{
-			process_quotes(tmp);
+			process_quotes(tmp, exit_status);
 		}
 		tmp = tmp->next;
 	}
