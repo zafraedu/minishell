@@ -1,0 +1,17 @@
+cmd: echo $archivoQueNoExiste
+
+=================================================================
+==47645==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 1 byte(s) in 1 object(s) allocated from:
+    #0 0x7fdcd59bd887 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cpp:145
+    #1 0x5632f49d6c0c in ft_strjoin (/home/zafraedu/workspace/minishell/minishell+0x4c0c)
+    #2 0x5632f49d5357 in replace_env_variable (/home/zafraedu/workspace/minishell/minishell+0x3357)
+    #3 0x5632f49d5444 in process_env_variable (/home/zafraedu/workspace/minishell/minishell+0x3444)
+    #4 0x5632f49d5577 in process_quotes (/home/zafraedu/workspace/minishell/minishell+0x3577)
+    #5 0x5632f49d5658 in ft_replace (/home/zafraedu/workspace/minishell/minishell+0x3658)
+    #6 0x5632f49d367c in ft_minishell (/home/zafraedu/workspace/minishell/minishell+0x167c)
+    #7 0x5632f49d376f in main (/home/zafraedu/workspace/minishell/minishell+0x176f)
+    #8 0x7fdcd56b6d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 1 byte(s) leaked in 1 allocation(s).

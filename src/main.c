@@ -67,9 +67,8 @@ int	main(int argc, char **argv, char **envp)
 	//*printf(HEADER);//imprime el header (si queremos claro);
 	signal(SIGINT, sigint_handler); //funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
-	msh.envp = ft_arraydup(envp);   //no va aqui
+	ft_lst_env_init(&msh.env, envp);
 	ft_minishell(&msh, argv);
-	ft_memfree_all(msh.envp); // no va aqui
-	//argv sirve para imprimir (lo quitaremos);
+	ft_free_list(&msh.env);
 	return (EXIT_SUCCESS);
 }

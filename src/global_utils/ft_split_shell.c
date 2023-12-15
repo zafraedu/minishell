@@ -49,7 +49,7 @@ static int	ft_cwords(char *str, char s)
 	return (nwords);
 }
 
-char	**ft_split_shell(char *str, char s)
+char	**ft_split_shell(t_shell *msh, char *str, char s)
 {
 	int		i;
 	int		is;
@@ -72,6 +72,7 @@ char	**ft_split_shell(char *str, char s)
 			ft_memfree(aux);
 			len = i;
 		}
+		msh->count_cmd_args = is;
 	}
 	return (split);
 }
