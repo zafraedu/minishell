@@ -90,27 +90,65 @@ typedef struct s_shell
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
 
-//bultins
+/*-------------------------- [  bultins  ] -----------------------------------*/
+//built.c
 
 int					is_builtin(t_shell *msh);
 void				ft_builtin(t_shell *msh);
+
+//ft_cd.c
+
 void				ft_cd(t_shell *msh);
+
+//ft_echo.c
+
 void				ft_echo(t_shell *msh);
-void				ft_pwd(void);
+
+//ft_env.c
+
 void				ft_env(t_shell *shell);
-void				ft_export(t_shell *msh);
+
+//ft_exit.c
+
 void				ft_exit(t_shell *shell);
+
+//ft_export.c
+
+void				ft_export(t_shell *msh);
+void				add_arg_to_env(char *var, t_shell *msh);
+
+//ft_pwd.c
+
+void				ft_pwd(void);
+
+//ft_unset.c
+
 void				ft_unset(t_shell *msh);
 
-//global utils
+/*---------------------------- [  exec  ] ------------------------------------*/
 //cmd_utils.c
 
-char				*get_cmd(char **paths, char *cmd);
-char				**get_paths(char **envp);
+char				*get_cmd_path(char *cmd, t_env *env);
+
+//ft_executer.c
+
+void				ft_executer(t_shell *msh);
+
+//signal.c
+
+void				sigint_handler(int sig);
+
+/*------------------------ [  global_utils  ] --------------------------------*/
+//env_init.c
+
+void				ft_lst_env_init(t_env **env, char **envp);
+t_env				*ft_lstnew_env(char *name, char *value, int alloc);
+void				ft_lstadd_back_env(t_env **lst, t_env *new);
 
 //env_utils.c
 
-int					ft_foundenv(char *var, char **env);
+char				*get_env_name(char *fullenv);
+char				*get_env_value(char *fullenv);
 
 //free.c
 
@@ -122,23 +160,23 @@ void				ft_free_list(t_env **list);
 
 char				**ft_split_shell(t_shell *msh, char *str, char s);
 
-//exec
-//signal.c
+/*--------------------------- [  parser  ] -----------------------------------*/
+//fill_node
 
-void				sigint_handler(int sig);
+void				ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start,
+						int end);
 
-//ft_executer.c
-
-void				ft_executer(t_shell *msh);
-
-//parser
+//parser_utils.c
 
 void				ft_index(t_lexer *lex);
 int					ft_count_pipes(t_lexer *lex);
 int					get_last(t_lexer *lex, int start);
-void				ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start,
-						int end);
 
+//parser.c
+
+void				ft_parser(t_parser **parser, t_lexer *lex);
+
+/*---------------------------- [  lexer  ] -----------------------------------*/
 //lexer_utils.c
 
 int					get_type(char *str, int i);
@@ -149,6 +187,12 @@ void				ft_add_token(t_lexer **lx, char *input, int i, int size);
 
 void				ft_lexer(char *input, t_lexer **lx);
 
+//treat_tokens.c
+
+void				treat_special(char *input, t_lexer **lx, int *i, int type);
+int					treat_quotes(char *input, t_lexer **lx, int *i);
+void				treat_general(char *input, t_lexer **lx, int *i);
+
 //$var_env.c
 
 void				ft_replace(t_lexer **lexer);
@@ -157,22 +201,5 @@ void				ft_replace(t_lexer **lexer);
 void				process_env_substring(char **dollar_pos, char **str,
 						char **sufix, char **env_value);
 void				ft_erase_node(t_lexer **lexer);
-
-//parser.c
-
-void				ft_parser(t_parser **parser, t_lexer *lex);
-
-//treat_tokens.c
-
-void				treat_special(char *input, t_lexer **lx, int *i, int type);
-int					treat_quotes(char *input, t_lexer **lx, int *i);
-void				treat_general(char *input, t_lexer **lx, int *i);
-
-void				ft_lst_env_init(t_env **env, char **envp);
-void				ft_lstadd_back_env(t_env **lst, t_env *new);
-char				*get_cmd_path(char *cmd, t_env *env);
-t_env				*ft_lstnew_env(char *name, char *value, int alloc);
-char				*get_env_name(char *fullenv);
-char				*get_env_value(char *fullenv);
 
 #endif

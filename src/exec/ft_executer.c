@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**env_to_array(t_shell *info)
+static char	**env_to_array(t_shell *info)
 {
 	int		len;
 	t_env	*tmp;
@@ -29,7 +29,7 @@ char	**env_to_array(t_shell *info)
 	return (ret);
 }
 
-void	exec_cmd(t_shell *msh)
+static void	exec_cmd(t_shell *msh)
 {
 	char	*cmd_path;
 	char	**envp;

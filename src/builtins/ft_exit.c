@@ -29,12 +29,6 @@ void	ft_exit(t_shell *msh)
 	ft_putendl_fd("exit", 2);
 	msh->exit_status = check_exit_args(msh);
 	if (msh->exit_status != -1)
-	{
-		// ft_memfree_all(msh->cmd_args);
-		// hay que liberar memoria antes
-		//	free global
-		//	free ...
 		exit(msh->exit_status);
-	}
 	ft_putendl_fd("exit: too many arguments", 2);
 }

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
+static void	ft_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
 {
 	char	*next_dollar_pos;
 	char	*next_space_pos;
@@ -22,7 +22,7 @@ void	ft_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
 	}
 }
 
-void	ft_no_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
+static void	ft_no_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
 {
 	char	*next_space_pos;
 
@@ -49,11 +49,11 @@ void	process_env_substring(char **dollar_pos, char **str, char **sufix,
 		ft_next_dollar_pos(dollar_pos, str, sufix);
 	else
 		ft_no_next_dollar_pos(dollar_pos, str, sufix);
-	*env_value = getenv(*str);
+	*env_value = getenv(*str); // problema (cd src; echo $PWD)
 	ft_memfree(*str);
 }
 
-t_lexer	*remove_node(t_lexer **lexer, t_lexer *tmp, t_lexer *prev)
+static t_lexer	*remove_node(t_lexer **lexer, t_lexer *tmp, t_lexer *prev)
 {
 	t_lexer	*next;
 

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
+static void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
 {
 	int	start;
 	int	num_pipes;
@@ -24,7 +24,7 @@ void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
 	}
 }
 
-void	connect_pipes(t_parser **parser)
+static void	connect_pipes(t_parser **parser)
 {
 	t_parser	*current;
 	int			fd[2];

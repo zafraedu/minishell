@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-void	replace_env_variable(char **data, char *prefix, char *sufix,
+//! AQUÍ hay un leak, Agustín
+static void	replace_env_variable(char **data, char *prefix, char *sufix,
 		char *env_value)
 {
 	char	*tmp;
@@ -22,7 +23,7 @@ void	replace_env_variable(char **data, char *prefix, char *sufix,
 		ft_memfree(sufix);
 }
 
-void	process_env_variable(char **data, char **dollar_pos)
+static void	process_env_variable(char **data, char **dollar_pos)
 {
 	char	*prefix;
 	char	*sufix;
@@ -33,7 +34,8 @@ void	process_env_variable(char **data, char **dollar_pos)
 	env_value = NULL;
 	str = NULL;
 	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
-	if (*((*dollar_pos) + 1) != '?') //El rremplazo de $? deberiamos incluirlo al momento de ejecutar el comando
+	if (*((*dollar_pos) + 1) != '?')
+	//El rremplazo de $? deberiamos incluirlo al momento de ejecutar el comando
 	{
 		process_env_substring(dollar_pos, &str, &sufix, &env_value);
 		prefix = ft_substr(*data, 0, *dollar_pos - *data);
@@ -49,7 +51,7 @@ void	process_env_variable(char **data, char **dollar_pos)
 		*dollar_pos = NULL;
 }
 
-void	process_quotes(t_lexer *tmp)
+static void	process_quotes(t_lexer *tmp)
 {
 	char	*str;
 	int		aux;
