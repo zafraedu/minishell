@@ -185,17 +185,17 @@ void				ft_add_token(t_lexer **lx, char *input, int i, int size);
 
 //lexer.c
 
-void				ft_lexer(char *input, t_lexer **lx);
+void				ft_lexer(char *input, t_lexer **lx, int *exit_status);
 
 //treat_tokens.c
 
 void				treat_special(char *input, t_lexer **lx, int *i, int type);
-int					treat_quotes(char *input, t_lexer **lx, int *i);
+int					treat_quotes(char *input, t_lexer **lx, int *i, int *exit_status);
 void				treat_general(char *input, t_lexer **lx, int *i);
 
 //$var_env.c
 
-void				ft_replace(t_lexer **lexer);
+void				ft_replace(t_lexer **lexer, int *exit_status);
 
 //$var_utils.c
 void				process_env_substring(char **dollar_pos, char **str,
