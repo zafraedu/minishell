@@ -40,7 +40,7 @@ static void	exec_cmd(t_shell *msh)
 		cmd_path = msh->cmd_args[0];
 	if (execve(cmd_path, msh->cmd_args, envp) == -1)
 	{
-		printf("test: execve\n"); // ejecucion de un comando mal
+		printf("%s: command not found\n", msh->cmd_args[0]);
 	}
 	exit(127);
 }
@@ -68,7 +68,8 @@ void	ft_executer(t_shell *msh)
 			}
 			else
 				waitpid(-1, &msh->exit_status, 0);
-										//err msg
+			if (WIFEXITED(msh->exit_status))
+				msh->exit_status = WEXITSTATUS(msh->exit_status);
 		}
 		ft_memfree_all(msh->cmd_args);
 		if (msh->parser->redir_in != 0)

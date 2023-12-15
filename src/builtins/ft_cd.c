@@ -19,7 +19,7 @@ void	ft_cd(t_shell *msh)
 	if (chdir(path))
 		perror("cd");
 	else
-		ft_pwd(); //test
+		ft_pwd(msh); //test
 	ft_memfree(path);
 	ft_change_pwd_env(msh);
 }

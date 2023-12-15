@@ -49,7 +49,7 @@ void	process_env_substring(char **dollar_pos, char **str, char **sufix,
 		ft_next_dollar_pos(dollar_pos, str, sufix);
 	else
 		ft_no_next_dollar_pos(dollar_pos, str, sufix);
-	*env_value = getenv(*str); // problema (cd src; echo $PWD)
+	*env_value = getenv(*str); //! problema (cd src; echo $PWD)
 	ft_memfree(*str);
 }
 

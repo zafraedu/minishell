@@ -119,7 +119,7 @@ void				add_arg_to_env(char *var, t_shell *msh);
 
 //ft_pwd.c
 
-void				ft_pwd(void);
+void				ft_pwd(t_shell *msh);
 
 //ft_unset.c
 

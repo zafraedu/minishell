@@ -27,7 +27,7 @@ void	ft_builtin(t_shell *msh)
 	else if (!ft_strncmp(msh->cmd_args[0], "cd", 2))
 		ft_cd(msh);
 	else if (!ft_strncmp(msh->cmd_args[0], "pwd", 3))
-		ft_pwd();
+		ft_pwd(msh);
 	else if (!ft_strncmp(msh->cmd_args[0], "export", 6))
 		ft_export(msh);
 	else if (!ft_strncmp(msh->cmd_args[0], "unset", 5))

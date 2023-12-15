@@ -49,11 +49,11 @@ void	ft_lst_env_init(t_env **env, char **envp)
 	i = -1;
 	while (++i < ft_arraylen(envp))
 	{
-			var_name = get_env_name(envp[i]);
-			var_value = get_env_value(envp[i]);
-			new = ft_lstnew_env(var_name, var_value, 1);
-			ft_lstadd_back_env(env, new);
-			ft_memfree(var_name);
-			ft_memfree(var_value);
+		var_name = get_env_name(envp[i]);
+		var_value = get_env_value(envp[i]);
+		new = ft_lstnew_env(var_name, var_value, 1);
+		ft_lstadd_back_env(env, new);
+		ft_memfree(var_name);
+		ft_memfree(var_value);
 	}
 }
