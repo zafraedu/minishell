@@ -195,11 +195,10 @@ void				treat_general(char *input, t_lexer **lx, int *i);
 
 //$var_env.c
 
-void				ft_replace(t_lexer **lexer, int *exit_status);
+void				ft_replace(t_shell *msh);
 
 //$var_utils.c
-void				process_env_substring(char **dollar_pos, char **str,
-						char **sufix, char **env_value);
+char				*process_env_substring(char **dollar_pos, char **sufix, t_shell *msh);
 void				ft_erase_node(t_lexer **lexer);
 
 #endif

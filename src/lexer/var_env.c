@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-//! AQUÍ hay un leak, Agustín
 static void	replace_env_variable(char **data, char *prefix, char *sufix,
 		char *env_value)
 {
@@ -16,7 +15,14 @@ static void	replace_env_variable(char **data, char *prefix, char *sufix,
 	}
 	else
 	{
-		*data = ft_strjoin(prefix, sufix);
+		if (prefix[0] != '\0' && sufix[0] != '\0')
+			*data = ft_strjoin(prefix, sufix);
+		else if (prefix[0] != '\0')
+			*data = ft_strdup(prefix);
+		else if (sufix[0] != '\0')
+			*data = ft_strdup(sufix);
+		else
+			*data = "";
 		ft_memfree(prefix);
 	}
 	if (sufix[0] != '\0')
@@ -24,21 +30,16 @@ static void	replace_env_variable(char **data, char *prefix, char *sufix,
 }
 
 
-static void	process_env_variable(char **data, char **dollar_pos, int *exit_status)
+static void	process_env_variable(char **data, char **dollar_pos, t_shell *msh)
 {
 	char	*prefix;
 	char	*sufix;
 	char	*env_value;
-	char	*str;
-	char	*next_dollar_pos;
 
-	env_value = NULL;
-	str = NULL;
-	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
 	prefix = ft_substr(*data, 0, *dollar_pos - *data);
-	if (*((*dollar_pos) + 1) != '?') //El rremplazo de $? deberiamos incluirlo al momento de ejecutar el comando
+	if (*((*dollar_pos) + 1) != '?')
 	{
-		process_env_substring(dollar_pos, &str, &sufix, &env_value);
+		env_value = process_env_substring(dollar_pos, &sufix, msh);
 		replace_env_variable(data, prefix, sufix, env_value);
 	}
 	else
@@ -47,17 +48,14 @@ static void	process_env_variable(char **data, char **dollar_pos, int *exit_statu
 			sufix = ft_strdup(*dollar_pos + 2);
 		else
 			sufix = "";
-		env_value = ft_itoa(*exit_status);
+		env_value = ft_itoa(msh->exit_status);
 		replace_env_variable(data, prefix, sufix, env_value);
 		ft_memfree(env_value);
 	}
-	if (next_dollar_pos)
-		*dollar_pos = ft_strchr(*data, '$');
-	else
-		*dollar_pos = NULL;
+	*dollar_pos = ft_strchr(*data, '$');
 }
 
-static void	process_quotes(t_lexer *tmp, int *exit_status)
+static void	process_quotes(t_shell *msh, t_lexer *tmp)
 {
 	char	*str;
 	int		aux;
@@ -74,7 +72,7 @@ static void	process_quotes(t_lexer *tmp, int *exit_status)
 	}
 	dollar_pos = ft_strchr(tmp->data, '$');
 	while (tmp->data[0] != '\'' && dollar_pos)
-		process_env_variable(&(tmp->data), &dollar_pos, exit_status);
+		process_env_variable(&(tmp->data), &dollar_pos, msh);
 	if (aux == 1)
 	{
 		str = ft_strjoin("\"", tmp->data);
@@ -84,21 +82,21 @@ static void	process_quotes(t_lexer *tmp, int *exit_status)
 	}
 }
 
-void	ft_replace(t_lexer **lexer, int *exit_status)
+void	ft_replace(t_shell *msh)
 {
 	t_lexer	*tmp;
 
-	if (!lexer)
+	if (!msh || !msh->lexer)
 		return ;
-	tmp = *lexer;
+	tmp = msh->lexer;
 	while (tmp)
 	{
 		if (tmp->type == T_CMD || tmp->type == T_INFILE
 			|| tmp->type == T_OUTFILE)
 		{
-			process_quotes(tmp, exit_status);
+			process_quotes(msh, tmp);
 		}
 		tmp = tmp->next;
 	}
-	ft_erase_node(lexer);
+	ft_erase_node(&(msh->lexer));
 }

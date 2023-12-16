@@ -39,18 +39,35 @@ static void	ft_no_next_dollar_pos(char **dollar_pos, char **str, char **sufix)
 	}
 }
 
-void	process_env_substring(char **dollar_pos, char **str, char **sufix,
-		char **env_value)
+char	*ft_find(char *str, t_shell *msh)
+{
+	t_env	*tmp;
+
+	tmp = msh->env;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->var_name, str))
+			return (tmp->value_var);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*process_env_substring(char **dollar_pos, char **sufix,	t_shell *msh)
 {
 	char	*next_dollar_pos;
+	char	*env_value;
+	char 	*str;
 
 	next_dollar_pos = ft_strchr(*dollar_pos + 1, '$');
 	if (next_dollar_pos)
-		ft_next_dollar_pos(dollar_pos, str, sufix);
+		ft_next_dollar_pos(dollar_pos, &str, sufix);
 	else
-		ft_no_next_dollar_pos(dollar_pos, str, sufix);
-	*env_value = getenv(*str); //! problema (cd src; echo $PWD)
-	ft_memfree(*str);
+		ft_no_next_dollar_pos(dollar_pos, &str, sufix);
+	env_value = ft_find(str, msh); //! problema (cd src; echo $PWD)
+	ft_memfree(str);
+
+	return (env_value);
 }
 
 static t_lexer	*remove_node(t_lexer **lexer, t_lexer *tmp, t_lexer *prev)
