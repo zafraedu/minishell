@@ -2,9 +2,9 @@
 
 static void	del_variable(t_env *node)
 {
-	free(node->var_name);
-	free(node->value_var);
-	free(node);
+	ft_memfree(node->var_name);
+	ft_memfree(node->value_var);
+	ft_memfree(node);
 }
 
 static void	ft_eraser(char *name, t_env *ptr)

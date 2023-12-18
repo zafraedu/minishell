@@ -32,7 +32,7 @@ void	ft_lexer(char *input, t_lexer **lexer, int *exit_status)
 	lexer_cmd(*lexer);
 }
 
-int check_pipe_syntaxis(t_lexer *node, int *exit_status)
+int	check_pipe_syntaxis(t_lexer *node, int *exit_status)
 {
 	if (node->type == T_PIPE)
 	{
@@ -42,7 +42,8 @@ int check_pipe_syntaxis(t_lexer *node, int *exit_status)
 	}
 	while (node)
 	{
-		if ((node->type == T_PIPE && !node->next) || (node->type == T_PIPE && node->next->type == T_PIPE))
+		if ((node->type == T_PIPE && !node->next) || (node->type == T_PIPE
+				&& node->next->type == T_PIPE))
 		{
 			printf("minishell: syntax error near unexpected token |\n");
 			*exit_status = 2;
@@ -62,14 +63,14 @@ static int	check_syntaxis(t_lexer *node, int *exit_status)
 		return (0);
 	while (node->next)
 	{
-		if (node->type == T_REDIR_OUT || node->type == T_APPEND || node->type == T_REDIR_IN || node->type == T_HEREDOC)
+		if ((node->type == T_REDIR_OUT || node->type == T_APPEND
+				|| node->type == T_REDIR_IN || node->type == T_HEREDOC)
+			&& node->next->type != T_GENERAL)
 		{
-			if (node->next->type != T_GENERAL)
-			{
-				printf("minishell: syntax error near unexpected token %s\n", node->next->data);
-				*exit_status = 2;
-				return (0);
-			}
+			printf("minishell: syntax error near unexpected token %s\n",
+					node->next->data);
+			*exit_status = 2;
+			return (0);
 		}
 		node = node->next;
 	}
@@ -94,7 +95,7 @@ static void	lexer_cmd(t_lexer *node)
 			node->next->type = T_CMD;
 		else if (node->type == T_PIPE && node->next->type == T_GENERAL)
 			node->next->type = T_CMD;
-		else if ((node->type == T_REDIR_OUT || node->type == T_APPEND) \
+		else if ((node->type == T_REDIR_OUT || node->type == T_APPEND)
 				&& node->next->type == T_GENERAL)
 			node->next->type = T_OUTFILE;
 		else if (node->type == T_OUTFILE && node->next->type == T_GENERAL)

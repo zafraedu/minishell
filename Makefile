@@ -23,7 +23,6 @@ SRCS = $(SRC_DIR)/main.c\
 		$(SRC_DIR)/exec/cmd_utils.c\
 		$(SRC_DIR)/exec/signal.c\
 		$(SRC_DIR)/exec/ft_executer.c\
-		$(SRC_DIR)/global_utils/env_init.c\
 		$(SRC_DIR)/global_utils/env_utils.c\
 		$(SRC_DIR)/global_utils/free.c\
 		$(SRC_DIR)/global_utils/ft_split_shell.c\

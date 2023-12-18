@@ -38,7 +38,7 @@ int	treat_quotes(char *input, t_lexer **lexer, int *i, int *exit_status)
 		lexer_add_type(lexer, T_GENERAL);
 		printf("minishell: syntax error open quotes\n"); //test
 		*exit_status = 2;
-		ft_free_tokenlist(lexer);		
+		ft_free_tokenlist(lexer);
 		return (0);
 	}
 }

@@ -89,7 +89,6 @@ typedef struct s_shell
 }					t_shell;
 
 /*═════════════════════════ [  FUNCTIONS  ] ══════════════════════════════════*/
-
 /*-------------------------- [  bultins  ] -----------------------------------*/
 //built.c
 
@@ -139,16 +138,13 @@ void				ft_executer(t_shell *msh);
 void				sigint_handler(int sig);
 
 /*------------------------ [  global_utils  ] --------------------------------*/
-//env_init.c
-
-void				ft_lst_env_init(t_env **env, char **envp);
-t_env				*ft_lstnew_env(char *name, char *value, int alloc);
-void				ft_lstadd_back_env(t_env **lst, t_env *new);
-
 //env_utils.c
 
 char				*get_env_name(char *fullenv);
 char				*get_env_value(char *fullenv);
+void				ft_lst_env_init(t_env **env, char **envp);
+t_env				*ft_lstnew_env(char *name, char *value, int alloc);
+void				ft_lstadd_back_env(t_env **lst, t_env *new);
 
 //free.c
 
@@ -190,7 +186,8 @@ void				ft_lexer(char *input, t_lexer **lx, int *exit_status);
 //treat_tokens.c
 
 void				treat_special(char *input, t_lexer **lx, int *i, int type);
-int					treat_quotes(char *input, t_lexer **lx, int *i, int *exit_status);
+int					treat_quotes(char *input, t_lexer **lx, int *i,
+						int *exit_status);
 void				treat_general(char *input, t_lexer **lx, int *i);
 
 //$var_env.c
@@ -198,7 +195,8 @@ void				treat_general(char *input, t_lexer **lx, int *i);
 void				ft_replace(t_shell *msh);
 
 //$var_utils.c
-char				*process_env_substring(char **dollar_pos, char **sufix, t_shell *msh);
+char				*process_env_substring(char **dollar_pos, char **sufix,
+						t_shell *msh);
 void				ft_erase_node(t_lexer **lexer);
 
 #endif

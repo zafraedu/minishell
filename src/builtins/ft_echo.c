@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_echo(t_shell *msh)// probable de que aqui este el problema d (echo hola | wc)
+void	ft_echo(t_shell *msh)
 {
 	int	i;
 

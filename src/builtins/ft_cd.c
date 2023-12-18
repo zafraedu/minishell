@@ -32,8 +32,8 @@ static void	ft_change_oldpwd_env(t_shell *info)
 	path = getcwd(NULL, 0);
 	to_send = ft_strjoin("OLDPWD=", path);
 	add_arg_to_env(to_send, info);
-	free(to_send);
-	free(path);
+	ft_memfree(to_send);
+	ft_memfree(path);
 }
 
 static void	ft_change_pwd_env(t_shell *msh)
@@ -47,10 +47,10 @@ static void	ft_change_pwd_env(t_shell *msh)
 		if (ft_strcmp(tmp->var_name, "PWD") == 0)
 		{
 			pwd = getcwd(NULL, 0);
-			free(tmp->value_var);
+			ft_memfree(tmp->value_var);
 			tmp->value_var = ft_strdup(pwd);
 		}
 		tmp = tmp->next;
 	}
-	free(pwd);
+	ft_memfree(pwd);
 }

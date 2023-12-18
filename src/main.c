@@ -32,18 +32,20 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
-static void	ft_minishell(t_shell *msh, char **argv)
+static void	ft_minishell(t_shell *msh, char **argv, char **envp)
 {
 	char	*input;
 	char	*tmp;
 
+	ft_lst_env_init(&msh->env, envp);
 	while (1)
 	{
 		input = readline(READLINE_MSG);
 		tmp = ft_strtrim(input, " \t\n\v\f\r");
 		if (!input)
 			break ;
-		add_history(tmp);
+		if (tmp[0] != 0)
+			add_history(tmp);
 		ft_lexer(tmp, &msh->lexer, &msh->exit_status);
 		ft_replace(msh);
 		ft_parser(&msh->parser, msh->lexer);
@@ -54,6 +56,7 @@ static void	ft_minishell(t_shell *msh, char **argv)
 		ft_free_tokenlist(&msh->lexer);
 		ft_free_parserlist(&msh->parser);
 	}
+	ft_free_list(&msh->env);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -67,8 +70,6 @@ int	main(int argc, char **argv, char **envp)
 	//*printf(HEADER);//imprime el header (si queremos claro);
 	signal(SIGINT, sigint_handler); //funcion para manejar ctrl+c
 	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
-	ft_lst_env_init(&msh.env, envp);
-	ft_minishell(&msh, argv);
-	ft_free_list(&msh.env);
+	ft_minishell(&msh, argv, envp);
 	return (EXIT_SUCCESS);
 }

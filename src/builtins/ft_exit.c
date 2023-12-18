@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-// verifica que el argumento sea un numero
 static int	check_exit_args(t_shell *msh)
 {
 	int	i;

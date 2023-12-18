@@ -27,9 +27,7 @@ static int	ft_heredoc(char *limit)
 		}
 	}
 	//signal
-	waitpid(-1, NULL, 0);
-	close(fd[1]);
-	return (fd[0]);
+	return (waitpid(-1, NULL, 0), close(fd[1]), fd[0]);
 }
 
 static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)

@@ -29,7 +29,6 @@ static void	replace_env_variable(char **data, char *prefix, char *sufix,
 		ft_memfree(sufix);
 }
 
-
 static void	process_env_variable(char **data, char **dollar_pos, t_shell *msh)
 {
 	char	*prefix;
