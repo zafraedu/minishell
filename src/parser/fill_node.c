@@ -13,7 +13,7 @@ static int	ft_heredoc(char *limit)
 		return (1); //err_msg
 	if (pid == 0)
 	{
-		//signal
+		g_signal = S_HEREDOC;
 		close(fd[0]);
 		while (1)
 		{
@@ -26,7 +26,7 @@ static int	ft_heredoc(char *limit)
 			ft_memfree(line);
 		}
 	}
-	//signal
+	g_signal = S_HEREDOC_END;
 	return (waitpid(-1, NULL, 0), close(fd[1]), fd[0]);
 }
 
@@ -34,7 +34,6 @@ static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	fd;
 
-	fd = -1; //sobra esta asignacion
 	if (tmp->type == T_REDIR_IN)
 	{
 		fd = open(tmp->next->data, O_RDONLY);
@@ -54,6 +53,8 @@ static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 	{
 		fd = ft_heredoc(tmp->next->data);
 		(*cmd_node)->redir_in = fd;
+		if (g_signal != S_CANCEL_EXEC)
+			g_signal = S_BASE;
 	}
 }
 

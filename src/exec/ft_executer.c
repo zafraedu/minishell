@@ -73,6 +73,7 @@ void	ft_executer(t_shell *msh)
 			ft_builtin(msh);
 		else
 		{
+			g_signal = S_CMD;
 			pid = fork();
 			if (pid == 0)
 			{
@@ -85,6 +86,7 @@ void	ft_executer(t_shell *msh)
 				waitpid(-1, &msh->exit_status, 0);
 			if (WIFEXITED(msh->exit_status))
 				msh->exit_status = WEXITSTATUS(msh->exit_status);
+			g_signal = S_BASE;
 		}
 		ft_next_cmd(msh);
 	}
