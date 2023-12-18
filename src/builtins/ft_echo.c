@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+/**
+ * @brief Simula el comando `echo` de shell.
+ *
+ * Esta función maneja el comando "echo", que imprime mensajes en la salida
+ * estándar o la redirige según sea necesario. Puede incluir opciones como "-n"
+ * para evitar el salto de línea al final del mensaje.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 void	ft_echo(t_shell *msh)
 {
 	int	i;

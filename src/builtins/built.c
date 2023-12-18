@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+/**
+ * @brief Verifica si el comando actual es un(builtin) en el shell.
+ *
+ * Esta función compara el comando actual con una lista predefinida de comandos
+ * integrados y devuelve 1 si el comando es un builtin, o 0 si no lo es.
+ *
+ * @param msh Un puntero al contexto del shell.
+ * @return 1 si el comando es un builtin, 0 en caso contrario.
+ */
 int	is_builtin(t_shell *msh)
 {
 	if (!ft_strncmp(msh->cmd_args[0], "echo", 4))
@@ -20,6 +29,15 @@ int	is_builtin(t_shell *msh)
 		return (0);
 }
 
+/**
+ * @file built.c
+ * @brief Ejecuta el (builtin) correspondiente según el comando actual.
+ *
+ * Esta función determina el comando integrado actual y llama a la función
+ * correspondiente para ejecutarlo.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 void	ft_builtin(t_shell *msh)
 {
 	if (!ft_strncmp(msh->cmd_args[0], "echo", 4))

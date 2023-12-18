@@ -1,5 +1,83 @@
 #include "minishell.h"
 
+static void		ft_export_without_arg(t_shell *msh);
+static t_env	*sort_list(t_env *lst);
+static t_env	*copy_list(t_env *lst);
+static int		check_export(char *arg);
+
+/**
+ * @brief Gestiona la exportación de variables de entorno en el shell.
+ *
+ * Esta función maneja el comando "export", que permite la exportación de
+ * variables de entorno. Puede exportar variables específicas o, si no se
+ * proporcionan argumentos, mostrar todas las variables exportadas.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
+void	ft_export(t_shell *msh)
+{
+	int	i;
+
+	msh->exit_status = 0;
+	if (msh->count_cmd_args == 1)
+		ft_export_without_arg(msh);
+	else
+	{
+		i = 0;
+		while (msh->cmd_args[++i])
+		{
+			if (check_export(msh->cmd_args[i]))
+				add_arg_to_env(msh->cmd_args[i], msh);
+			else
+				msh->exit_status = 1;
+		}
+	}
+}
+
+/**
+ * @brief Muestra todas las variables de entorno ordenadas y formateadas para
+ * el comando "export".
+ *
+ * Esta función crea una copia ordenada de la lista de variables de entorno del
+ * shell, y luego imprime cada variable en el formato adecuado para el comando
+ * "export". Si el valor de la variable de entorno es una cadena no vacía, se
+ * imprime en el formato "declare -x nombre=\"valor\""; de lo contrario, se
+ * imprime "declare -x nombre".
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
+static void	ft_export_without_arg(t_shell *msh)
+{
+	t_env	*tmp;
+	t_env	*lst_cpy;
+
+	lst_cpy = copy_list(msh->env);
+	tmp = sort_list(lst_cpy);
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->var_name, "_\0", 2))
+			printf(" \r");
+		else if (tmp->value_var[0])
+			printf("declare -x %s=\"%s\"\n", tmp->var_name, tmp->value_var);
+		else
+			printf("declare -x %s\n", tmp->var_name);
+		tmp = tmp->next;
+	}
+	ft_free_list(&lst_cpy);
+}
+
+/**
+ * @brief Ordena la lista enlazada de variables de entorno por nombre de manera
+ * ascendente.
+ *
+ * Esta función implementa el algoritmo de ordenación de burbuja para ordenar la
+ * lista enlazada de variables de entorno por el nombre de las variables de
+ * manera ascendente.
+ *
+ * @param lst Un puntero a la lista enlazada original de variables de entorno.
+ * @return Un puntero a la lista enlazada ordenada por nombre de manera
+ * ascendente.
+ */
 static t_env	*sort_list(t_env *lst)
 {
 	t_env	*tmp;
@@ -27,6 +105,17 @@ static t_env	*sort_list(t_env *lst)
 	return (lst);
 }
 
+/**
+ * @brief Devuelve una copia de la lista enlazada de variables de entorno.
+ *
+ * Esta función crea una nueva lista enlazada que es una copia exacta de la
+ * lista original de variables de entorno, incluyendo la duplicación de cada
+ * nodo y sus datos asociados.
+ *
+ * @param lst Un puntero a la lista enlazada original de variables de entorno.
+ * @return Un puntero a la nueva lista enlazada que es una copia de la
+ * lista original.
+ */
 static t_env	*copy_list(t_env *lst)
 {
 	t_env	*cpy;
@@ -46,27 +135,17 @@ static t_env	*copy_list(t_env *lst)
 	return (cpy);
 }
 
-void	ft_export_without_arg(t_shell *msh)
-{
-	t_env	*tmp;
-	t_env	*lst_cpy;
-
-	lst_cpy = copy_list(msh->env);
-	tmp = sort_list(lst_cpy);
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->var_name, "_\0", 2))
-			printf(" \r");
-		else if (tmp->value_var[0])
-			printf("declare -x %s=\"%s\"\n", tmp->var_name, tmp->value_var);
-		else
-			printf("declare -x %s\n", tmp->var_name);
-		tmp = tmp->next;
-	}
-	ft_free_list(&lst_cpy);
-}
-
-int	check_export(char *arg)
+/**
+ * @brief Verifica si un argumento es válido.
+ *
+ * Esta función verifica si un argumento proporcionado al comando "export" es un
+ * identificador válido, siguiendo las reglas de nomenclatura de variables de
+ * entorno. Imprime un mensaje de error si el identificador no es válido.
+ *
+ * @param arg Una cadena que representa el argumento a verificar.
+ * @return 1 si el argumento es un identificador válido, 0 si no lo es.
+ */
+static int	check_export(char *arg)
 {
 	int		i;
 	char	*name;
@@ -89,63 +168,4 @@ int	check_export(char *arg)
 		}
 	}
 	return (ft_memfree(name), 1);
-}
-
-int	check_variable(char *name, char *value, t_shell *info)
-{
-	t_env	*ptr;
-
-	ptr = info->env;
-	if (!ptr)
-		return (0);
-	while (ptr)
-	{
-		if (!ft_strcmp(ptr->var_name, name))
-		{
-			free(ptr->var_name);
-			free(ptr->value_var);
-			ptr->var_name = name;
-			ptr->value_var = value;
-			return (1);
-		}
-		ptr = ptr->next;
-	}
-	return (0);
-}
-
-void	add_arg_to_env(char *var, t_shell *msh)
-{
-	t_env	*env;
-	char	*name;
-	char	*value;
-
-	if (!ft_strrchr(var, '='))
-		return ;
-	name = get_env_name(var);
-	value = get_env_value(var);
-	if (!check_variable(name, value, msh))
-	{
-		env = ft_lstnew_env(name, value, 0);
-		ft_lstadd_back_env(&msh->env, env);
-	}
-}
-
-void	ft_export(t_shell *msh)
-{
-	int	i;
-
-	msh->exit_status = 0;
-	if (msh->count_cmd_args == 1)
-		ft_export_without_arg(msh);
-	else
-	{
-		i = 0;
-		while (msh->cmd_args[++i])
-		{
-			if (check_export(msh->cmd_args[i]))
-				add_arg_to_env(msh->cmd_args[i], msh);
-			else
-				msh->exit_status = 1;
-		}
-	}
 }

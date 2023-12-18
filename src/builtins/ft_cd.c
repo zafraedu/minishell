@@ -3,7 +3,17 @@
 static void	ft_change_oldpwd_env(t_shell *info);
 static void	ft_change_pwd_env(t_shell *msh);
 
-
+/**
+ * @file ft_cd.c
+ * @brief Cambia el directorio de trabajo actual del shell.
+ *
+ * Esta función maneja el comando "cd" para cambiar el directorio de trabajo
+ * actual. Puede recibir un argumento para el nuevo directorio o cambiar al
+ * directorio HOME si no se proporciona ninguno. Además, actualiza las variables
+ * de entorno PWD y OLDPWD.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 void	ft_cd(t_shell *msh)
 {
 	char	*path;
@@ -24,6 +34,15 @@ void	ft_cd(t_shell *msh)
 	ft_change_pwd_env(msh);
 }
 
+/**
+ * @brief Actualiza la variable de entorno "OLDPWD".
+ *
+ * Esta función construye una cadena que representa la variable de entorno
+ * "OLDPWD" seguida del directorio de trabajo actual y la agrega al entorno
+ * del shell mediante la función `add_arg_to_env`.
+ *
+ * @param info Un puntero al contexto del shell.
+ */
 static void	ft_change_oldpwd_env(t_shell *info)
 {
 	char	*to_send;
@@ -36,6 +55,15 @@ static void	ft_change_oldpwd_env(t_shell *info)
 	ft_memfree(path);
 }
 
+/**
+ * @brief Actualiza la variable de entorno "PWD".
+ *
+ * Esta función busca la variable de entorno "PWD" en la lista enlazada de
+ * variables de entorno del shell. Luego, actualiza su valor con el directorio
+ * de trabajo actual obtenido mediante la función `getcwd`.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 static void	ft_change_pwd_env(t_shell *msh)
 {
 	t_env	*tmp;

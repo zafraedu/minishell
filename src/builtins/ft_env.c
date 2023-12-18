@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+/**
+ * @brief Simula el comando `env` de shell.
+ *
+ * Esta función maneja el comando "env", que puede mostrar las variables de
+ * entorno del shell actual o ejecutar un comando en un entorno modificado
+ * si se proporciona un comando adicional.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 void	ft_env(t_shell *msh)
 {
 	t_env	*tmp;
