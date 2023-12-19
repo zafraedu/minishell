@@ -40,10 +40,9 @@ static void	exec_cmd(t_shell *msh)
 	if (msh->parser->redir_out != 1)
 		dup2(msh->parser->redir_out, STDOUT_FILENO);
 	cmd_path = get_cmd_path(msh->cmd_args[0], msh->env);
-	if (ft_isalnum(msh->cmd_args[0][0]) && !access(msh->cmd_args[0], X_OK))
+	if (!ft_isalnum(msh->cmd_args[0][0]) && !access(msh->cmd_args[0], X_OK))
 		cmd_path = msh->cmd_args[0];
-	if (execve(cmd_path, msh->cmd_args, envp) == -1)
-		printf("%s: command not found\n", msh->cmd_args[0]); //no va aqui
+	execve(cmd_path, msh->cmd_args, envp);
 	exit(127);
 }
 
@@ -59,6 +58,16 @@ static void	ft_next_cmd(t_shell *msh)
 	tmp = msh->parser;
 	msh->parser = msh->parser->next;
 	ft_memfree(tmp);
+}
+static void	handle_status(t_shell *msh)
+{
+	if (WIFEXITED(msh->exit_status))
+		msh->exit_status = WEXITSTATUS(msh->exit_status);
+	if (msh && msh->exit_status == 127)
+		printf("%s: command not found\n", msh->cmd_args[0]);
+	if (g_signal == S_SIGINT_CMD) // no esta funcionando
+		msh->exit_status = 130;
+	g_signal = S_BASE;
 }
 
 void	ft_executer(t_shell *msh)
@@ -84,9 +93,7 @@ void	ft_executer(t_shell *msh)
 			}
 			else
 				waitpid(-1, &msh->exit_status, 0);
-			if (WIFEXITED(msh->exit_status))
-				msh->exit_status = WEXITSTATUS(msh->exit_status);
-			g_signal = S_BASE;
+			handle_status(msh);
 		}
 		ft_next_cmd(msh);
 	}

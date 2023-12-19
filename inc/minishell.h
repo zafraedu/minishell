@@ -207,27 +207,13 @@ void		ft_free_list(t_env **list);
 
 char		**ft_split_shell(t_shell *msh, char *str, char s);
 
-/*--------------------------- [  parser  ] -----------------------------------*/
-//fill_node
-
-void		ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end);
-
-//parser_utils.c
-
-void		ft_index(t_lexer *lex);
-int			ft_count_pipes(t_lexer *lex);
-int			get_last(t_lexer *lex, int start);
-
-//parser.c
-
-void		ft_parser(t_parser **parser, t_lexer *lex);
-
 /*---------------------------- [  lexer  ] -----------------------------------*/
 //lexer_utils.c
 
 int			get_type(char *str, int i);
 void		lexer_add_type(t_lexer **ls, int type);
 void		ft_add_token(t_lexer **lx, char *input, int i, int size);
+char		*ft_find(char *str, t_shell *msh);
 
 //lexer.c
 
@@ -247,5 +233,24 @@ void		ft_replace(t_shell *msh);
 char		*process_env_substring(char **dollar_pos, char **sufix,
 				t_shell *msh);
 void		ft_erase_node(t_lexer **lexer);
+
+/*--------------------------- [  parser  ] -----------------------------------*/
+//fill_node.c
+
+void		ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end);
+
+//heredoc.c
+
+int			ft_heredoc(char *limit);
+
+//parser_utils.c
+
+void		ft_index(t_lexer *lex);
+int			ft_count_pipes(t_lexer *lex);
+int			get_last(t_lexer *lex, int start);
+
+//parser.c
+
+void		ft_parser(t_parser **parser, t_lexer *lex);
 
 #endif

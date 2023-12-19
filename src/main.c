@@ -1,9 +1,26 @@
 #include "minishell.h"
 
+static void	ft_minishell(t_shell *msh, char **envp);
+static void	ft_prev_exec(char *tmp, t_shell *msh);
+static void	ft_clean_shell(char *tmp, char *input, t_shell *msh);
+
 // void ft_leaks(void)
 // {
 // system("leaks -q minishell");
 // }
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	msh;
+
+	// atexit(ft_leaks); //test
+	if (argc != 1 || argv[1])
+		return (EXIT_FAILURE);
+	//*printf(HEADER);//imprime el header (si queremos claro);
+	signal_init();
+	ft_minishell(&msh, envp);
+	return (EXIT_SUCCESS);
+}
 
 static void	ft_minishell(t_shell *msh, char **envp)
 {
@@ -21,30 +38,26 @@ static void	ft_minishell(t_shell *msh, char **envp)
 			break ;
 		if (tmp[0] != 0)
 			add_history(tmp);
-		ft_lexer(tmp, &msh->lexer, &msh->exit_status);
-		ft_replace(msh);
-		ft_parser(&msh->parser, msh->lexer);
+		ft_prev_exec(tmp, msh);
 		if (g_signal != S_CANCEL_EXEC)
 			ft_executer(msh);
-		ft_memfree(input);
-		ft_memfree(tmp);
-		ft_free_tokenlist(&msh->lexer);
-		ft_free_parserlist(&msh->parser);
+		ft_clean_shell(tmp, input, msh);
 		g_signal = S_BASE;
 	}
 	ft_free_list(&msh->env);
 }
 
-int	main(int argc, char **argv, char **envp)
+static void	ft_prev_exec(char *tmp, t_shell *msh)
 {
-	t_shell	msh;
+	ft_lexer(tmp, &msh->lexer, &msh->exit_status);
+	ft_replace(msh);
+	ft_parser(&msh->parser, msh->lexer);
+}
 
-	(void)argc; //test
-	// atexit(ft_leaks); //test
-	if (argc != 1 || argv[1])
-		return (EXIT_FAILURE);
-	//*printf(HEADER);//imprime el header (si queremos claro);
-	signal_init();
-	ft_minishell(&msh, envp);
-	return (EXIT_SUCCESS);
+static void	ft_clean_shell(char *tmp, char *input, t_shell *msh)
+{
+	ft_memfree(input);
+	ft_memfree(tmp);
+	ft_free_tokenlist(&msh->lexer);
+	ft_free_parserlist(&msh->parser);
 }

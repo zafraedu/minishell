@@ -8,8 +8,8 @@ static void	sigint_handler_aux(void);
 void	signal_init(void)
 {
 	g_signal = S_BASE;
-	signal(SIGINT, sigint_handler); //funcion para manejar ctrl+c
-	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 static void	sigint_handler(int sig)

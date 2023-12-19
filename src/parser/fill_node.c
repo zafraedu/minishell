@@ -1,33 +1,44 @@
 #include "minishell.h"
 
-static int	ft_heredoc(char *limit)
-{
-	pid_t	pid;
-	int		fd[2];
-	char	*line;
+static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end);
+static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node);
+static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node);
+static int	ft_len_cmd(t_lexer *tmp);
 
-	if (pipe(fd) < 0)
-		return (1); //err_msg
-	pid = fork();
-	if (pid < 0)
-		return (1); //err_msg
-	if (pid == 0)
+void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
+{
+	t_lexer	*tmp;
+
+	tmp = lex;
+	(*cmd_node)->redir_in = STDIN_FILENO;
+	(*cmd_node)->redir_out = STDOUT_FILENO;
+	fill_redir(lex, cmd_node, &start, end);
+	while (tmp && tmp->index != start)
+		tmp = tmp->next;
+	fill_cmd(tmp, cmd_node);
+}
+
+static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
+{
+	t_lexer	*tmp;
+	int		aux;
+
+	tmp = lex;
+	while (tmp && tmp->index != *start)
+		tmp = tmp->next;
+	aux = *start;
+	while (tmp && aux <= end)
 	{
-		g_signal = S_HEREDOC;
-		close(fd[0]);
-		while (1)
+		if (tmp->type == T_REDIR_IN || tmp->type == T_REDIR_OUT
+			|| tmp->type == T_APPEND || tmp->type == T_HEREDOC)
 		{
-			line = readline(HEREDOC_MSG);
-			if (!line || (!ft_strncmp(limit, line, ft_strlen(limit))
-					&& !ft_strncmp(limit, line, ft_strlen(line))))
-				exit(EXIT_SUCCESS);
-			ft_putstr_fd(line, fd[1]);
-			ft_putchar_fd('\n', fd[1]);
-			ft_memfree(line);
+			if (tmp->index == *start)
+				*start += 2;
+			ft_redirect(tmp, cmd_node);
 		}
+		tmp = tmp->next;
+		aux++;
 	}
-	g_signal = S_HEREDOC_END;
-	return (waitpid(-1, NULL, 0), close(fd[1]), fd[0]);
 }
 
 static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
@@ -58,42 +69,6 @@ static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 	}
 }
 
-static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
-{
-	t_lexer	*tmp;
-	int		aux;
-
-	tmp = lex;
-	while (tmp && tmp->index != *start)
-		tmp = tmp->next;
-	aux = *start;
-	while (tmp && aux <= end)
-	{
-		if (tmp->type == T_REDIR_IN || tmp->type == T_REDIR_OUT
-			|| tmp->type == T_APPEND || tmp->type == T_HEREDOC)
-		{
-			if (tmp->index == *start)
-				*start += 2;
-			ft_redirect(tmp, cmd_node);
-		}
-		tmp = tmp->next;
-		aux++;
-	}
-}
-
-static int	ft_len_cmd(t_lexer *tmp)
-{
-	int	len;
-
-	len = 0;
-	while (tmp && tmp->type == T_CMD)
-	{
-		len += (ft_strlen(tmp->data) + 1);
-		tmp = tmp->next;
-	}
-	return (len);
-}
-
 static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	len;
@@ -109,15 +84,15 @@ static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 	}
 }
 
-void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
+static int	ft_len_cmd(t_lexer *tmp)
 {
-	t_lexer	*tmp;
+	int	len;
 
-	tmp = lex;
-	(*cmd_node)->redir_in = STDIN_FILENO;
-	(*cmd_node)->redir_out = STDOUT_FILENO;
-	fill_redir(lex, cmd_node, &start, end);
-	while (tmp && tmp->index != start)
+	len = 0;
+	while (tmp && tmp->type == T_CMD)
+	{
+		len += (ft_strlen(tmp->data) + 1);
 		tmp = tmp->next;
-	fill_cmd(tmp, cmd_node);
+	}
+	return (len);
 }

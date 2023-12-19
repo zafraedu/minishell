@@ -54,7 +54,6 @@ int	check_pipe_syntaxis(t_lexer *node, int *exit_status)
 	return (1);
 }
 
-// checkear que el prompt no haya errores de syntaxis
 static int	check_syntaxis(t_lexer *node, int *exit_status)
 {
 	if (!node)
