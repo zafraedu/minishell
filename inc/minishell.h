@@ -27,7 +27,21 @@ extern int	g_signal;
 # include <unistd.h>
 
 /*═══════════════════════════ [  MACROS  ] ═══════════════════════════════════*/
-//errors
+// Imprime el encabezado al inicializar el programa
+# define HEADER ("\n\033[1;36m\
+███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     \n\
+████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     \n\
+██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     \n\
+██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     \n\
+██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗\n\
+╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\n\
+\n\033[0m\
+                A simple shell implemented in C                    \n\
+                             \033[1;34mBy\033[0m                   \n\
+\t\t--- \033[1;36mezafra-r\033[0m && \033[1;36magvincen\033[0m --- \n\
+\n")
+
+//!errors
 # define ERR_CMD "Command not found\n" // @return Command not found
 # define ERR_PIPE "Pipe error\n" // @return Pipe error
 //message display
@@ -37,17 +51,18 @@ extern int	g_signal;
 /*═══════════════════════════ [  ENUMS  ] ════════════════════════════════════*/
 /**
  * @enum e_signal
- *
+ * @brief Enumeración que representa los tipos de señales utilizados para
+ * emular el comportamiento en shell.
 */
 typedef enum e_signal
 {
-	S_BASE,
-	S_HEREDOC,
-	S_HEREDOC_END,
-	S_SIGINT,
-	S_SIGINT_CMD,
-	S_CMD,
-	S_CANCEL_EXEC,
+	S_BASE,        // señal Base
+	S_HEREDOC,     // entra en el heredoc
+	S_HEREDOC_END, // finalización del heredoc
+	S_SIGINT,      // Ctrl + C
+	S_SIGINT_CMD,  // Ctrl + C en medio de una comando
+	S_CMD,         // se ejecuta un comando
+	S_CANCEL_EXEC, // Ctrl + D en heredoc
 	S_SIZE
 }			t_signal;
 

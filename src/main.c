@@ -8,7 +8,7 @@ static void	ft_clean_shell(char *tmp, char *input, t_shell *msh);
 // {
 // system("leaks -q minishell");
 // }
-// atexit(ft_leaks); //test
+// atexit(ft_leaks);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1 || argv[1])
 		return (EXIT_FAILURE);
-	//*printf(HEADER);//imprime el header (si queremos claro);
+	printf("%s", HEADER);
 	signal_init();
 	ft_minishell(&msh, envp);
 	return (EXIT_SUCCESS);
