@@ -41,7 +41,7 @@ static void	process_quotes(t_shell *msh, t_lexer *tmp)
 	dollar_pos = ft_strchr(tmp->data, '$');
 	while (tmp->data[0] != '\'' && dollar_pos)
 		process_env_var(&(tmp->data), &dollar_pos, msh);
-	if (aux == 1)
+	if (aux == 1 && tmp->type == T_CMD)
 	{
 		str = ft_strjoin("\"", tmp->data);
 		ft_memfree(tmp->data);

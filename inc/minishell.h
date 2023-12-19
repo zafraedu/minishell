@@ -179,6 +179,7 @@ void		ft_unset(t_shell *msh);
 //cmd_utils.c
 
 char		*get_cmd_path(char *cmd, t_env *env);
+char		**env_to_array(t_shell *info);
 
 //ft_executer.c
 
