@@ -47,3 +47,17 @@ void	ft_add_token(t_lexer **lexer, char *input, int i, int size)
 		current->next = new;
 	}
 }
+
+char	*ft_find(char *str, t_shell *msh)
+{
+	t_env	*tmp;
+
+	tmp = msh->env;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->var_name, str))
+			return (tmp->value_var);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}

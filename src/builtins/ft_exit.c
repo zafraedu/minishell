@@ -16,7 +16,7 @@ void	ft_exit(t_shell *msh)
 {
 	ft_putendl_fd("exit", 2);
 	msh->exit_status = check_exit_args(msh);
-	if (msh->exit_status != -1)
+	if (msh->exit_status != 1)
 		exit(msh->exit_status);
 	ft_putendl_fd("exit: too many arguments", 2);
 }
@@ -38,7 +38,7 @@ static int	check_exit_args(t_shell *msh)
 	int	i;
 
 	if (msh->count_cmd_args > 2)
-		return (-1);
+		return (1);
 	if (msh->cmd_args[1])
 	{
 		i = -1;

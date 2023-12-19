@@ -1,5 +1,23 @@
 #include "minishell.h"
 
+static void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex);
+static void	connect_pipes(t_parser **parser);
+
+void	ft_parser(t_parser **parser, t_lexer *lex)
+{
+	t_parser	*cmd_node;
+
+	if (lex == NULL)
+		return ;
+	ft_index(lex);
+	if (*parser == NULL)
+		*parser = ft_calloc(1, sizeof(t_parser));
+	cmd_node = *parser;
+	if (cmd_node)
+		ft_add_nodes(&cmd_node, lex);
+	connect_pipes(parser);
+}
+
 static void	ft_add_nodes(t_parser **cmd_node, t_lexer *lex)
 {
 	int	start;
@@ -38,19 +56,4 @@ static void	connect_pipes(t_parser **parser)
 		current->next->redir_in = fd[0];
 		current = current->next;
 	}
-}
-
-void	ft_parser(t_parser **parser, t_lexer *lex)
-{
-	t_parser	*cmd_node;
-
-	if (lex == NULL)
-		return ;
-	ft_index(lex);
-	if (*parser == NULL)
-		*parser = ft_calloc(1, sizeof(t_parser));
-	cmd_node = *parser;
-	if (cmd_node)
-		ft_add_nodes(&cmd_node, lex);
-	connect_pipes(parser);
 }

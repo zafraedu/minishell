@@ -1,32 +1,44 @@
 #include "minishell.h"
 
-static char	**env_to_array(t_shell *info)
-{
-	int		len;
-	t_env	*tmp;
-	char	**ret;
-	char	*tmp_str;
+static void	child_proccess(t_shell *msh);
+static void	exec_cmd(t_shell *msh);
+static void	ft_next_cmd(t_shell *msh);
+static void	handle_status(t_shell *msh);
 
-	len = 0;
-	tmp = info->env;
-	while (tmp)
+void	ft_executer(t_shell *msh)
+{
+	pid_t	pid;
+
+	while (msh->parser)
 	{
-		len++;
-		tmp = tmp->next;
+		if (!ft_isascii(msh->parser->cmd[0]))
+		{
+			msh->exit_status = 1;
+			break ;
+		}
+		msh->cmd_args = ft_split_shell(msh, msh->parser->cmd, 32);
+		if (is_builtin(msh))
+			ft_builtin(msh);
+		else
+		{
+			g_signal = S_CMD;
+			pid = fork();
+			if (pid == 0)
+				child_proccess(msh);
+			else
+				waitpid(-1, &msh->exit_status, 0);
+			handle_status(msh);
+		}
+		ft_next_cmd(msh);
 	}
-	ret = malloc((sizeof(char *) * len) + 1);
-	tmp = info->env;
-	len = 0;
-	while (tmp)
-	{
-		tmp_str = ft_strjoin(tmp->var_name, "=");
-		ret[len] = ft_strjoin(tmp_str, tmp->value_var);
-		ft_memfree(tmp_str);
-		tmp = tmp->next;
-		len++;
-	}
-	ret[len] = NULL;
-	return (ret);
+}
+
+static void	child_proccess(t_shell *msh)
+{
+	if (is_builtin(msh))
+		ft_builtin(msh);
+	else
+		exec_cmd(msh);
 }
 
 static void	exec_cmd(t_shell *msh)
@@ -40,10 +52,12 @@ static void	exec_cmd(t_shell *msh)
 	if (msh->parser->redir_out != 1)
 		dup2(msh->parser->redir_out, STDOUT_FILENO);
 	cmd_path = get_cmd_path(msh->cmd_args[0], msh->env);
-	if (ft_isalnum(msh->cmd_args[0][0]) && !access(msh->cmd_args[0], X_OK))
+	if (!ft_isalnum(msh->cmd_args[0][0]))
+	{
+		ft_memfree(cmd_path);
 		cmd_path = msh->cmd_args[0];
-	if (execve(cmd_path, msh->cmd_args, envp) == -1)
-		printf("%s: command not found\n", msh->cmd_args[0]); //no va aqui
+	}
+	execve(cmd_path, msh->cmd_args, envp);
 	exit(127);
 }
 
@@ -51,6 +65,7 @@ static void	ft_next_cmd(t_shell *msh)
 {
 	t_parser	*tmp;
 
+	ft_memfree(msh->parser->cmd);
 	ft_memfree_all(msh->cmd_args);
 	if (msh->parser->redir_in != 0)
 		close(msh->parser->redir_in);
@@ -60,32 +75,13 @@ static void	ft_next_cmd(t_shell *msh)
 	msh->parser = msh->parser->next;
 	ft_memfree(tmp);
 }
-
-void	ft_executer(t_shell *msh)
+static void	handle_status(t_shell *msh)
 {
-	pid_t	pid;
-
-	while (msh->parser)
-	{
-		msh->cmd_args = ft_split_shell(msh, msh->parser->cmd, ' ');
-		ft_memfree(msh->parser->cmd);
-		if (is_builtin(msh))
-			ft_builtin(msh);
-		else
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				if (is_builtin(msh))
-					ft_builtin(msh);
-				else
-					exec_cmd(msh);
-			}
-			else
-				waitpid(-1, &msh->exit_status, 0);
-			if (WIFEXITED(msh->exit_status))
-				msh->exit_status = WEXITSTATUS(msh->exit_status);
-		}
-		ft_next_cmd(msh);
-	}
+	if (WIFEXITED(msh->exit_status))
+		msh->exit_status = WEXITSTATUS(msh->exit_status);
+	if (msh && msh->exit_status == 127)
+		printf("%s: command not found\n", msh->cmd_args[0]);
+	if (g_signal == S_SIGINT_CMD)
+		msh->exit_status = 130;
+	g_signal = S_BASE;
 }

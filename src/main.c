@@ -1,5 +1,9 @@
 #include "minishell.h"
 
+static void	ft_minishell(t_shell *msh, char **argv, char **envp);
+static void	ft_prev_exec(char *tmp, t_shell *msh);
+static void	ft_clean_shell(char *tmp, char *input, t_shell *msh);
+
 // void ft_leaks(void)
 // {
 // system("leaks -q minishell");
@@ -32,6 +36,20 @@ void	print_select(t_lexer *lex, t_parser *par, char **argv) //test
 	}
 }
 
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	msh;
+
+	(void)argc;
+	// atexit(ft_leaks); //test
+	// if (argc != 1 || argv[1])
+	// 	return (EXIT_FAILURE);
+	//*printf(HEADER);//imprime el header (si queremos claro);
+	signal_init();
+	ft_minishell(&msh, argv, envp);
+	return (EXIT_SUCCESS);
+}
+
 static void	ft_minishell(t_shell *msh, char **argv, char **envp)
 {
 	char	*input;
@@ -40,36 +58,35 @@ static void	ft_minishell(t_shell *msh, char **argv, char **envp)
 	ft_lst_env_init(&msh->env, envp);
 	while (1)
 	{
+		if (g_signal == S_SIGINT)
+			msh->exit_status = 1;
 		input = readline(READLINE_MSG);
 		tmp = ft_strtrim(input, " \t\n\v\f\r");
 		if (!input)
 			break ;
 		if (tmp[0] != 0)
 			add_history(tmp);
-		ft_lexer(tmp, &msh->lexer, &msh->exit_status);
-		ft_replace(msh);
-		ft_parser(&msh->parser, msh->lexer);
+		ft_prev_exec(tmp, msh);
 		print_select(msh->lexer, msh->parser, argv); //test print
-		ft_executer(msh);
-		ft_memfree(input);
-		ft_memfree(tmp);
-		ft_free_tokenlist(&msh->lexer);
-		ft_free_parserlist(&msh->parser);
+		if (g_signal != S_CANCEL_EXEC)
+			ft_executer(msh);
+		ft_clean_shell(tmp, input, msh);
+		g_signal = S_BASE;
 	}
 	ft_free_list(&msh->env);
 }
 
-int	main(int argc, char **argv, char **envp)
+static void	ft_prev_exec(char *tmp, t_shell *msh)
 {
-	t_shell	msh;
+	ft_lexer(tmp, &msh->lexer, &msh->exit_status);
+	ft_replace(msh);
+	ft_parser(&msh->parser, msh->lexer);
+}
 
-	(void)argc; //test
-	// atexit(ft_leaks); //test
-	/*if (argc != 1 || argv[1])  //cuando el print ya no sea necesario
-		return (EXIT_FAILURE);   //ya podremos descomentar */
-	//*printf(HEADER);//imprime el header (si queremos claro);
-	signal(SIGINT, sigint_handler); //funcion para manejar ctrl+c
-	signal(SIGQUIT, SIG_IGN);       // SIG_IGN ignora la señal SIGQUIT (ctrl+\)
-	ft_minishell(&msh, argv, envp);
-	return (EXIT_SUCCESS);
+static void	ft_clean_shell(char *tmp, char *input, t_shell *msh)
+{
+	ft_memfree(input);
+	ft_memfree(tmp);
+	ft_free_tokenlist(&msh->lexer);
+	ft_free_parserlist(&msh->parser);
 }

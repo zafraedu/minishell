@@ -1,60 +1,21 @@
 #include "minishell.h"
 
-static int	ft_heredoc(char *limit)
+static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end);
+static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node);
+static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node);
+static int	ft_len_cmd(t_lexer *tmp);
+
+void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 {
-	pid_t	pid;
-	int		fd[2];
-	char	*line;
+	t_lexer	*tmp;
 
-	if (pipe(fd) < 0)
-		return (1); //err_msg
-	pid = fork();
-	if (pid < 0)
-		return (1); //err_msg
-	if (pid == 0)
-	{
-		//signal
-		close(fd[0]);
-		while (1)
-		{
-			line = readline(HEREDOC_MSG);
-			if (!line || (!ft_strncmp(limit, line, ft_strlen(limit))
-					&& !ft_strncmp(limit, line, ft_strlen(line))))
-				exit(EXIT_SUCCESS);
-			ft_putstr_fd(line, fd[1]);
-			ft_putchar_fd('\n', fd[1]);
-			ft_memfree(line);
-		}
-	}
-	//signal
-	return (waitpid(-1, NULL, 0), close(fd[1]), fd[0]);
-}
-
-static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
-{
-	int	fd;
-
-	fd = -1; //sobra esta asignacion
-	if (tmp->type == T_REDIR_IN)
-	{
-		fd = open(tmp->next->data, O_RDONLY);
-		(*cmd_node)->redir_in = fd;
-	}
-	else if (tmp->type == T_REDIR_OUT)
-	{
-		fd = open(tmp->next->data, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		(*cmd_node)->redir_out = fd;
-	}
-	else if (tmp->type == T_APPEND)
-	{
-		fd = open(tmp->next->data, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		(*cmd_node)->redir_out = fd;
-	}
-	else if (tmp->type == T_HEREDOC)
-	{
-		fd = ft_heredoc(tmp->next->data);
-		(*cmd_node)->redir_in = fd;
-	}
+	tmp = lex;
+	(*cmd_node)->redir_in = STDIN_FILENO;
+	(*cmd_node)->redir_out = STDOUT_FILENO;
+	fill_redir(lex, cmd_node, &start, end);
+	while (tmp && tmp->index != start)
+		tmp = tmp->next;
+	fill_cmd(tmp, cmd_node);
 }
 
 static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
@@ -80,17 +41,32 @@ static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 	}
 }
 
-static int	ft_len_cmd(t_lexer *tmp)
+static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
-	int	len;
+	int	fd;
 
-	len = 0;
-	while (tmp && tmp->type == T_CMD)
+	if (tmp->type == T_REDIR_IN)
 	{
-		len += (ft_strlen(tmp->data) + 1);
-		tmp = tmp->next;
+		fd = open(tmp->next->data, O_RDONLY);
+		(*cmd_node)->redir_in = fd;
 	}
-	return (len);
+	else if (tmp->type == T_REDIR_OUT)
+	{
+		fd = open(tmp->next->data, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		(*cmd_node)->redir_out = fd;
+	}
+	else if (tmp->type == T_APPEND)
+	{
+		fd = open(tmp->next->data, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		(*cmd_node)->redir_out = fd;
+	}
+	else if (tmp->type == T_HEREDOC)
+	{
+		fd = ft_heredoc(tmp->next->data);
+		(*cmd_node)->redir_in = fd;
+		if (g_signal != S_CANCEL_EXEC)
+			g_signal = S_BASE;
+	}
 }
 
 static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
@@ -108,15 +84,15 @@ static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 	}
 }
 
-void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
+static int	ft_len_cmd(t_lexer *tmp)
 {
-	t_lexer	*tmp;
+	int	len;
 
-	tmp = lex;
-	(*cmd_node)->redir_in = STDIN_FILENO;
-	(*cmd_node)->redir_out = STDOUT_FILENO;
-	fill_redir(lex, cmd_node, &start, end);
-	while (tmp && tmp->index != start)
+	len = 0;
+	while (tmp && tmp->type == T_CMD)
+	{
+		len += (ft_strlen(tmp->data) + 1);
 		tmp = tmp->next;
-	fill_cmd(tmp, cmd_node);
+	}
+	return (len);
 }
