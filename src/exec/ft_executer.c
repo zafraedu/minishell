@@ -5,6 +5,15 @@ static void	exec_cmd(t_shell *msh);
 static void	ft_next_cmd(t_shell *msh);
 static void	handle_status(t_shell *msh);
 
+/**
+ * @brief Ejecuta los comandos parseados en el contexto del shell.
+ *
+ * Esta función ejecuta los comandos parseados en el contexto del shell, ya sea
+ * como comandos internos (builtins) o como comandos externos utilizando el
+ * sistema de procesos.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 void	ft_executer(t_shell *msh)
 {
 	pid_t	pid;
@@ -33,6 +42,11 @@ void	ft_executer(t_shell *msh)
 	}
 }
 
+/**
+ * @brief Función ejecutada por el proceso hijo.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 static void	child_proccess(t_shell *msh)
 {
 	if (is_builtin(msh))
@@ -41,6 +55,11 @@ static void	child_proccess(t_shell *msh)
 		exec_cmd(msh);
 }
 
+/**
+ * @brief Ejecuta un comando externo en el contexto del proceso hijo.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 static void	exec_cmd(t_shell *msh)
 {
 	char	*cmd_path;
@@ -61,6 +80,14 @@ static void	exec_cmd(t_shell *msh)
 	exit(127);
 }
 
+/**
+ * @brief Avanza al siguiente comando parseado en la lista.
+ *
+ * Esta función avanza al siguiente comando parseado en la lista, liberando la
+ * memoria asociada al comando actual.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 static void	ft_next_cmd(t_shell *msh)
 {
 	t_parser	*tmp;
@@ -75,6 +102,16 @@ static void	ft_next_cmd(t_shell *msh)
 	msh->parser = msh->parser->next;
 	ft_memfree(tmp);
 }
+
+/**
+ * @brief Maneja el estado de finalización del proceso hijo.
+ *
+ * Esta función maneja el estado de finalización del proceso hijo después de la
+ * ejecución de un comando. Actualiza el código de salida del proceso hijo y
+ * realiza acciones específicas dependiendo del estado y las señales recibidas.
+ *
+ * @param msh Un puntero al contexto del shell.
+ */
 static void	handle_status(t_shell *msh)
 {
 	if (WIFEXITED(msh->exit_status))

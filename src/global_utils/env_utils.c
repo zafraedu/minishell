@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+/**
+ * @brief Obtiene el nombre de la variable de entorno.
+ *
+ * @param fullenv La cadena completa de variable de entorno que contiene el
+ * nombre y el valor de la variable.
+ * @return Un puntero a una nueva cadena que representa el nombre de la variable
+ * de entorno.
+ */
 char	*get_env_name(char *fullenv)
 {
 	int	i;
@@ -10,6 +18,14 @@ char	*get_env_name(char *fullenv)
 	return (ft_substr(fullenv, 0, i));
 }
 
+/**
+ * @brief Obtiene el valor de la variable de entorno.
+ *
+ * @param fullenv La cadena completa de variable de entorno que contiene el
+ * nombre y el valor de la variable.
+ * @return Un puntero a una nueva cadena que representa el valor de la variable
+ * de entorno.
+ */
 char	*get_env_value(char *fullenv)
 {
 	int	i;
@@ -23,6 +39,12 @@ char	*get_env_value(char *fullenv)
 		return (ft_substr(fullenv, i + 1, ft_strlen(fullenv) - i));
 }
 
+/**
+ * @brief Agrega un nuevo nodo al final de la lista de variables de entorno.
+ *
+ * @param lst Puntero al puntero al inicio de la lista de variables de entorno.
+ * @param new El nuevo nodo que se va a agregar al final de la lista.
+ */
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
 	t_env	*tmp;
@@ -38,6 +60,15 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	tmp->next = new;
 }
 
+/**
+ * @brief Crea un nuevo nodo de la lista de variables de entorno.
+ *
+ * @param name El nombre de la variable de entorno.
+ * @param value El valor de la variable de entorno.
+ * @param alloc Un indicador que especifica si se debe asignar memoria para
+ * las cadenas de nombre y valor.
+ * @return Un puntero al nuevo nodo de la lista de variables de entorno.
+ */
 t_env	*ft_lstnew_env(char *name, char *value, int alloc)
 {
 	t_env	*new_node;
@@ -61,6 +92,12 @@ t_env	*ft_lstnew_env(char *name, char *value, int alloc)
 	return (new_node);
 }
 
+/**
+ * @brief Inicializa la lista de variables de entorno a partir de `envp`.
+ *
+ * @param env Puntero al puntero al inicio de la lista de variables de entorno.
+ * @param envp El array de cadenas de entorno.
+ */
 void	ft_lst_env_init(t_env **env, char **envp)
 {
 	t_env	*new;

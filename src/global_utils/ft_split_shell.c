@@ -4,6 +4,16 @@ static int	ft_cwords(char *str, char s);
 static int	ft_foundword(char *str, char s, int *i);
 static int	ft_foundquotes(char *str, int *i);
 
+/**
+ * @brief Divide una cadena en fragmentos utilizando un delimitador y elimina
+ * las comillas.
+ *
+ *
+ * @param msh Un puntero a la estructura de la shell.
+ * @param str La cadena que se va a dividir.
+ * @param s El delimitador utilizado para dividir la cadena.
+ * @return Un array de cadenas (fragmentos) resultante de la división.
+ */
 char	**ft_split_shell(t_shell *msh, char *str, char s)
 {
 	int		i;
@@ -32,6 +42,13 @@ char	**ft_split_shell(t_shell *msh, char *str, char s)
 	return (split);
 }
 
+/**
+ * @brief Cuenta el número de palabras en una cadena utilizando un delimitador.
+ *
+ * @param str La cadena en la que contar las palabras.
+ * @param s El delimitador utilizado para contar las palabras.
+ * @return El número de palabras en la cadena.
+ */
 static int	ft_cwords(char *str, char s)
 {
 	int	i;
@@ -51,6 +68,15 @@ static int	ft_cwords(char *str, char s)
 	return (nwords);
 }
 
+/**
+ * @brief Determina si se ha encontrado una palabra en una cadena.
+ *
+ * @param str La cadena en la que buscar la palabra.
+ * @param s El delimitador utilizado para determinar el final de la palabra.
+ * @param i Un puntero al índice utilizado para recorrer la cadena y actualizar
+ * la posición actual después de encontrar la palabra.
+ * @return 1 si se ha encontrado una palabra, 0 en caso contrario.
+ */
 static int	ft_foundword(char *str, char s, int *i)
 {
 	if (str[*i] != s && str[*i] != 0)
@@ -65,6 +91,14 @@ static int	ft_foundword(char *str, char s, int *i)
 	return (0);
 }
 
+/**
+ * @brief Determina si se han encontrado comillas simples/dobles en una cadena.
+ *
+ * @param str La cadena en la que buscar las comillas.
+ * @param i Un puntero al índice utilizado para recorrer la cadena y actualizar
+ * la posición actual después de encontrar las comillas.
+ * @return 1 si se han encontrado comillas, 0 en caso contrario.
+ */
 static int	ft_foundquotes(char *str, int *i)
 {
 	char	com;

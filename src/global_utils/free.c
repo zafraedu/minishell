@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+/**
+ * @brief Libera la memoria asociada con la lista de comandos (parser).
+ *
+ * @param parser Puntero al puntero al inicio de la lista de comandos (parser).
+ */
 void	ft_free_parserlist(t_parser **parser)
 {
 	t_parser	*tmp;
@@ -14,6 +19,11 @@ void	ft_free_parserlist(t_parser **parser)
 	*parser = NULL;
 }
 
+/**
+ * @brief Libera la memoria asociada con la lista de tokens (lexer).
+ *
+ * @param lexer Puntero al puntero al inicio de la lista de tokens (lexer).
+ */
 void	ft_free_tokenlist(t_lexer **lexer)
 {
 	t_lexer	*tmp;
@@ -28,6 +38,11 @@ void	ft_free_tokenlist(t_lexer **lexer)
 	*lexer = NULL;
 }
 
+/**
+ * @brief Libera la memoria asociada con la lista de variables de entorno.
+ *
+ * @param list Puntero al puntero al inicio de la lista de variables de entorno.
+ */
 void	ft_free_list(t_env **list)
 {
 	t_env	*tmp;
