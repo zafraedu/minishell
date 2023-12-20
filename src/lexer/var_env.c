@@ -4,6 +4,14 @@ static void	process_quotes(t_shell *msh, t_lexer *tmp);
 static void	process_env_var(char **data, char **dollar_pos, t_shell *msh);
 static void	replace_env_var(char **data, char *p_fix, char *s_fix, char *value);
 
+/**
+ * @brief Reemplaza las variables de entorno en los tokens de comando.
+ *
+ * Esta función reemplaza las variables de entorno presentes en los tokens de
+ * comando, archivo de entrada y archivo de salida de la lista de tokens (lexer)
+ *
+ * @param msh Un puntero a la estructura del shell.
+ */
 void	ft_replace(t_shell *msh)
 {
 	t_lexer	*tmp;
@@ -23,6 +31,16 @@ void	ft_replace(t_shell *msh)
 	ft_erase_node(&(msh->lexer));
 }
 
+/**
+ * @brief Procesa las comillas y las variables de entorno en el token.
+ *
+ * Esta función procesa las comillas y las variables de entorno en el token
+ * dado. Elimina las comillas si son comillas dobles y procesa las variables
+ * de entorno presentes en el token.
+ *
+ * @param msh Un puntero a la estructura del shell (t_shell).
+ * @param tmp Un puntero al nodo del token (t_lexer) que se está procesando.
+ */
 static void	process_quotes(t_shell *msh, t_lexer *tmp)
 {
 	char	*str;
@@ -50,6 +68,19 @@ static void	process_quotes(t_shell *msh, t_lexer *tmp)
 	}
 }
 
+/**
+ * @brief Procesa una variable de entorno en una cadena de datos.
+ *
+ * Esta función procesa una variable de entorno en la cadena de datos
+ * proporcionada. Extrae el prefijo, el sufijo y el valor de la variable de
+ * entorno, y reemplaza la variable en la cadena de datos.
+ *
+ * @param data Un puntero al puntero de la cadena de datos que contiene la
+ * variable de entorno.
+ * @param dollar_pos Un puntero al puntero que apunta a la posición del símbolo
+ * '$' en la cadena de datos.
+ * @param msh Un puntero a la estructura del shell (t_shell).
+ */
 static void	process_env_var(char **data, char **dollar_pos, t_shell *msh)
 {
 	char	*prefix;
@@ -75,6 +106,17 @@ static void	process_env_var(char **data, char **dollar_pos, t_shell *msh)
 	*dollar_pos = ft_strchr(*data, '$');
 }
 
+/**
+ * @brief Reemplaza una variable de entorno en una cadena de datos con su valor
+ * correspondiente, toma el prefijo, el sufijo y el valor proporcionados, y crea
+ * una nueva cadena de datos resultante.
+ *
+ * @param data Un puntero al puntero de la cadena de datos que contiene la
+ * variable de entorno.
+ * @param prefix El prefijo de la variable de entorno en la cadena de datos.
+ * @param sufix El sufijo de la variable de entorno en la cadena de datos.
+ * @param value El valor de la variable de entorno.
+ */
 static void	replace_env_var(char **data, char *prefix, char *sufix, char *value)
 {
 	char	*tmp;

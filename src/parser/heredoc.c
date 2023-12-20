@@ -2,6 +2,19 @@
 
 static void	ft_heredoc_loop(char *limit, int fd);
 
+/**
+ * @brief Ejecuta un comando heredoc para proporcionar una entrada de texto
+ * hasta que se encuentre un delimitador específico.
+ *
+ * Esta función crea un proceso hijo para ejecutar un comando heredoc,
+ * proporcionando una entrada de texto hasta que se encuentre un delimitador
+ * específico. Utiliza un tubo (`pipe`) para comunicarse con el proceso hijo y
+ * leer la entrada de texto desde el proceso padre.
+ *
+ * @param limit Puntero a la cadena que sirve como delimitador para el heredoc.
+ * @return El descriptor de archivo (`fd`) que representa la entrada de texto
+ * proporcionada por el heredoc.
+ */
 int	ft_heredoc(char *limit)
 {
 	pid_t	pid;
@@ -22,6 +35,14 @@ int	ft_heredoc(char *limit)
 	return (waitpid(-1, NULL, 0), close(fd[1]), fd[0]);
 }
 
+/**
+ * @brief Bucle principal para la ejecución del comando heredoc, proporcionando
+ * entrada de texto hasta que se encuentra un delimitador específico.
+ *
+ * @param limit Puntero a la cadena que sirve como delimitador para el heredoc.
+ * @param fd El descriptor de archivo en el que se escribe la entrada de texto
+ * proporcionada por el heredoc.
+ */
 static void	ft_heredoc_loop(char *limit, int fd)
 {
 	char	*line;

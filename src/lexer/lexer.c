@@ -3,6 +3,14 @@
 static int	check_syntaxis(t_lexer *node, int *exit_status);
 static void	lexer_cmd(t_lexer *node);
 
+/**
+ * @brief Analiza la entrada para generar una lista de tokens (lexer).
+ *
+ * @param input La cadena de entrada que se va a analizar.
+ * @param lexer Puntero al puntero al primer elemento de la lista de tokens(lex)
+ * @param exit_status Un puntero a la variable que almacena el estado de salida
+ * del análisis.
+ */
 void	ft_lexer(char *input, t_lexer **lexer, int *exit_status)
 {
 	int	i;
@@ -32,6 +40,14 @@ void	ft_lexer(char *input, t_lexer **lexer, int *exit_status)
 	lexer_cmd(*lexer);
 }
 
+/**
+ * @brief Verifica la sintaxis de los tokens relacionados con los pipes en la
+ * lista de tokens.
+ *
+ * @param node Un puntero al primer elemento de la lista de tokens (lexer).
+ * @param exit_status Puntero a la variable que almacena el estado de salida..
+ * @return 1 si la sintaxis es correcta, 0 si hay un error de sintaxis.
+ */
 int	check_pipe_syntaxis(t_lexer *node, int *exit_status)
 {
 	if (node->type == T_PIPE)
@@ -54,6 +70,13 @@ int	check_pipe_syntaxis(t_lexer *node, int *exit_status)
 	return (1);
 }
 
+/**
+ * @brief Verifica la sintaxis de la lista de tokens (lexer).
+ *
+ * @param node Un puntero al primer elemento de la lista de tokens (lexer).
+ * @param exit_status Un puntero a la variable que almacena el estado de salida.
+ * @return 1 si la sintaxis es correcta, 0 si hay un error de sintaxis.
+ */
 static int	check_syntaxis(t_lexer *node, int *exit_status)
 {
 	if (!node)
@@ -76,6 +99,12 @@ static int	check_syntaxis(t_lexer *node, int *exit_status)
 	return (1);
 }
 
+/**
+ * @brief Asigna tipos específicos a los tokens relacionados con comandos en la
+ * lista de tokens (lexer), como T_CMD, T_INFILE, T_LIMITER, T_OUTFILE, etc.
+ *
+ * @param node Un puntero al primer elemento de la lista de tokens (lexer).
+ */
 static void	lexer_cmd(t_lexer *node)
 {
 	if (node->type == T_GENERAL)

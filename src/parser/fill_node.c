@@ -5,6 +5,20 @@ static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node);
 static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node);
 static int	ft_len_cmd(t_lexer *tmp);
 
+/**
+ * @brief Rellena un nodo de comando con información desde la lista de tokens.
+ *
+ * Esta función toma una lista de tokens (`t_lexer`), identifica el comando y
+ * las redirecciones asociadas en el rango especificado por `start` y `end`, y
+ * rellena un nodo de comando (`t_parser`) con la información correspondiente.
+ *
+ * @param lex Un puntero a la lista de tokens (`t_lexer`) que contiene la
+ * información de la línea de comandos.
+ * @param cmd_node Un puntero al puntero del nodo de comando (`t_parser`)
+ * que se rellenará con la información del comando y las redirecciones.
+ * @param start El índice que indica el comienzo del rango en la lista de tokens
+ * @param end El índice que indica el final del rango en la lista de tokens.
+ */
 void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 {
 	t_lexer	*tmp;
@@ -18,6 +32,21 @@ void	ft_fill_node(t_lexer *lex, t_parser **cmd_node, int start, int end)
 	fill_cmd(tmp, cmd_node);
 }
 
+/**
+ * @brief Rellena la info de redirección en un nodo de comando (`t_parser`).
+ *
+ * Esta función toma una lista de tokens (`t_lexer`) y busca redirecciones en el
+ * rango especificado por `start` y `end`. Luego, rellena la información de
+ * redirección en un nodo de comando (`t_parser`) con la información.
+ *
+ * @param lex Un puntero a la lista de tokens (`t_lexer`) que contiene
+ * la información de la línea de comandos.
+ * @param cmd_node Un puntero al puntero del nodo de comando (`t_parser`) que se
+ * rellenará con la información de redirección.
+ * @param start Un puntero al índice que indica el comienzo del rango en la
+ * lista de tokens.
+ * @param end El índice que indica el final del rango en la lista de tokens.
+ */
 static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 {
 	t_lexer	*tmp;
@@ -41,6 +70,18 @@ static void	fill_redir(t_lexer *lex, t_parser **cmd_node, int *start, int end)
 	}
 }
 
+/**
+ * @brief Realiza la redirección de entrada/salida para un nodo de comando.
+ *
+ * Esta función toma un nodo de token de redirección (`t_lexer`) y realiza la
+ * redirección correspondiente en un nodo de comando (`t_parser`), actualizando
+ * los descriptores de archivo según sea necesario.
+ *
+ * @param tmp Un puntero al nodo de token de redirección (`t_lexer`)
+ * que contiene la información de la redirección.
+ * @param cmd_node Un puntero al puntero del nodo de comando (`t_parser`)
+ * en el que se realizará la redirección.
+ */
 static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	fd;
@@ -69,6 +110,19 @@ static void	ft_redirect(t_lexer *tmp, t_parser **cmd_node)
 	}
 }
 
+/**
+ * @brief Llena el campo de comando de un nodo de comando (`t_parser`).
+ *
+ * Esta función toma un nodo de token de comando (`t_lexer`) y llena el campo de
+ * comando de un nodo de comando (`t_parser`) con los datos de los nodos de
+ * comando (`t_lexer`) consecutivos, concatenándolos y separándolos con espacios
+ * según sea necesario.
+ *
+ * @param tmp Un puntero al nodo de token de comando (`t_lexer`) que contiene la
+ * información del comando.
+ * @param cmd_node Un puntero al puntero del nodo de comando (`t_parser`) en el
+ * que se llenará el campo de comando.
+ */
 static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 {
 	int	len;
@@ -84,6 +138,13 @@ static void	fill_cmd(t_lexer *tmp, t_parser **cmd_node)
 	}
 }
 
+/**
+ * @brief Calcula la longitud total del comando concatenando los datos de los
+ * nodos de comando consecutivos.
+ *
+ * @param tmp Un puntero al nodo de token de comando (`t_lexer`).
+ * @return La longitud total del comando.
+ */
 static int	ft_len_cmd(t_lexer *tmp)
 {
 	int	len;
