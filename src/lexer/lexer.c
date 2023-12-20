@@ -52,7 +52,7 @@ int	check_pipe_syntaxis(t_lexer *node, int *exit_status)
 {
 	if (node->type == T_PIPE)
 	{
-		printf("minishell: syntax error near unexpected token |\n");
+		printf("%s |\n", ERR_TOKEN);
 		*exit_status = 2;
 		return (0);
 	}
@@ -61,7 +61,7 @@ int	check_pipe_syntaxis(t_lexer *node, int *exit_status)
 		if ((node->type == T_PIPE && !node->next) || (node->type == T_PIPE
 				&& node->next->type == T_PIPE))
 		{
-			printf("minishell: syntax error near unexpected token |\n");
+			printf("%s |\n", ERR_TOKEN);
 			*exit_status = 2;
 			return (0);
 		}
@@ -89,8 +89,7 @@ static int	check_syntaxis(t_lexer *node, int *exit_status)
 				|| node->type == T_REDIR_IN || node->type == T_HEREDOC)
 			&& node->next->type != T_GENERAL)
 		{
-			printf("minishell: syntax error near unexpected token %s\n",
-					node->next->data);
+			printf("%s %s\n", ERR_TOKEN, node->next->data);
 			*exit_status = 2;
 			return (0);
 		}

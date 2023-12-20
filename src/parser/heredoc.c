@@ -21,10 +21,10 @@ int	ft_heredoc(char *limit)
 	int		fd[2];
 
 	if (pipe(fd) < 0)
-		return (1); //err_msg
+		return (ft_putendl_fd(ERR_PIPE, 2), 1);
 	pid = fork();
 	if (pid < 0)
-		return (1); //err_msg
+		return (ft_putendl_fd(ERR_FORK, 2), 1);
 	if (pid == 0)
 	{
 		g_signal = S_HEREDOC;

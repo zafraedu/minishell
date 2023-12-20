@@ -117,7 +117,7 @@ static void	handle_status(t_shell *msh)
 	if (WIFEXITED(msh->exit_status))
 		msh->exit_status = WEXITSTATUS(msh->exit_status);
 	if (msh && msh->exit_status == 127)
-		printf("%s: command not found\n", msh->cmd_args[0]);
+		printf("%s: %s\n", msh->cmd_args[0], ERR_CMD);
 	if (g_signal == S_SIGINT_CMD)
 		msh->exit_status = 130;
 	g_signal = S_BASE;

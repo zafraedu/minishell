@@ -41,10 +41,15 @@ extern int	g_signal;
 \t\t--- \033[1;36mezafra-r\033[0m && \033[1;36magvincen\033[0m --- \n\
 \n")
 
-//!errors
-# define ERR_CMD "Command not found\n" // @return Command not found
-# define ERR_PIPE "Pipe error\n" // @return Pipe error
+//errors
+
+# define ERR_CMD "command not found"
+# define ERR_PIPE "minishell: failed to open pipe"
+# define ERR_FORK "minishell: failed to forking"
+# define ERR_TOKEN "minishell: syntax error near unexpected token"
+
 //message display
+
 # define READLINE_MSG "\033[1;36mminishell\033[34m$> \033[0m"
 # define HEREDOC_MSG "\033[1;34m> \033[0m" // @return >
 
