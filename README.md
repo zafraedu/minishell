@@ -131,4 +131,4 @@ En 42 School, se espera que casi todos los proyectos se escriban de acuerdo con 
 
 
 ## LICENSE
-Este trabajo se publica bajo los términos de [42 Unlicense](,/LICENSE).
+Este trabajo se publica bajo los términos de [42 Unlicense](https://github.com/zafraedu/minishell/blob/main/LICENSE).
