@@ -15,7 +15,7 @@
 	<a href="#how-to-use">Usage</a> •
 	<a href="#mandatory">Mandatory</a> •
 	<a href="#norme">Norminette</a> •
-	<a href="#license">License</a> •
+	<a href="#license">License</a>
 </p>
 
 ## About
