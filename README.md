@@ -20,7 +20,7 @@
 
 ## About
 
-El shell es un programa que el usuario puede utilizar para interactuar con los servicios de un sistema operativo. Bash es el shell GNU y actualmente es el programa de shell más común. Tomamos el desafío de recrear bash muy literalmente, así que lo primero que hicimos fue aprender cómo funciona realmente bash con la ayuda de este artículo. Básicamente, divide el proceso en 4 pasos: lexer → parser → expander → executor, que replicamos en nuestro proyecto.
+El shell es un programa que el usuario puede utilizar para interactuar con los servicios de un sistema operativo. Bash es el shell GNU y actualmente es el programa de shell más común. Tomamos el desafío de recrear bash muy literalmente, así que lo primero que hicimos fue aprender cómo funciona realmente bash con la ayuda de este artículo. Básicamente, divide el proceso en 3 pasos: lexer → parser → executor, que replicamos en nuestro proyecto.
 
 ## HOW TO USE
 
