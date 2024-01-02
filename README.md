@@ -31,7 +31,7 @@ sudo apt-get install make libreadline-dev
 ```
 2 - Clonar el repositorio:
 ```bash
-git clone <code> && cd minishell
+git clone https://github.com/zafraedu/minishell.git && cd minishell
 ```
 3 - Ejecutar el Makefile
 ```bash
