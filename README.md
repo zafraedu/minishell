@@ -8,6 +8,7 @@
 	<img src='https://img.shields.io/badge/Málaga-00599C?style=flat&logo=42&logoColor=white'/>
 </div>
 
+
 ---
 
 <p align="center">
@@ -18,6 +19,7 @@
 	<a href="#license">License</a>
 </p>
 
+A mini recreation of bash. Implementing previously learned concepts like file descriptors and processes. Made with [Agustin Vincenti](https://github.com/vincenag).
 ## About
 
 El shell es un programa que el usuario puede utilizar para interactuar con los servicios de un sistema operativo. Bash es el shell GNU y actualmente es el programa de shell más común. Tomamos el desafío de recrear bash muy literalmente, así que lo primero que hicimos fue aprender cómo funciona realmente bash con la ayuda de este artículo. Básicamente, divide el proceso en 3 pasos: lexer → parser → executor, que replicamos en nuestro proyecto.
