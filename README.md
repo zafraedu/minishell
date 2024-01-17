@@ -1,4 +1,4 @@
-![header push_swap](assets/header_minishell.jpg)
+![header minishell](assets/header_minishell.png)
 
 <div align="center">
 	<img src="https://img.shields.io/badge/status-finished-success?color=%2300599C&style=flat" />
@@ -23,6 +23,9 @@ A mini recreation of bash. Implementing previously learned concepts like file de
 ## About
 
 El shell es un programa que el usuario puede utilizar para interactuar con los servicios de un sistema operativo. Bash es el shell GNU y actualmente es el programa de shell más común. Tomamos el desafío de recrear bash muy literalmente, así que lo primero que hicimos fue aprender cómo funciona realmente bash con la ayuda de este artículo. Básicamente, divide el proceso en 3 pasos: lexer → parser → executor, que replicamos en nuestro proyecto.
+
+[Click aquí](./assets/es.subject.pdf) para ver el `subject` del proyecto.
+[Click aquí](./assets/EvaListES.pdf) para ver la `hoja de corrección` del proyecto.
 
 ## HOW TO USE
 
